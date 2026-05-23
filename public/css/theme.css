@@ -1,0 +1,26 @@
+:root[data-theme="light"] {
+    --bg: #f8f9fa;
+    --text: #212529;
+    --sidebar: #6f73d2;
+    --card: #ffffff;
+}
+
+:root[data-theme="dark"] {
+    --bg: #0f172a;
+    --text: #e5e7eb;
+    --sidebar: #1e1b4b;
+    --card: #1e293b;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+.sidebar {
+    background-color: var(--sidebar);
+}
+
+.card {
+    background-color: var(--card);
+}

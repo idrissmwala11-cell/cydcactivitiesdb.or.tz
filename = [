@@ -1,0 +1,176 @@
+============================================================
+MODEL: HomeVisitation
+TABLE: home_visitations
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, jina, namba, shule, darasa, last_program, likes_program, participant_comments, mtaa, mazingira, nyumba, paa, choo, milo, wanaume, wanawake, tabia, visit_date, maoni, mtembelezaji, nafasi, user_id, created_at, updated_at
+============================================================
+MODEL: TalentsInformation
+TABLE: talents_information
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, student_name, participant_number, age, gender, mentor, talent_type, talent_description, talent_duration, has_competed, competition_details, achievements, needs_training, training_details, comments, user_id, created_at, updated_at
+============================================================
+MODEL: SkillsInformation
+TABLE: skills_information
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, student_name, gender, student_id, skill_category, specific_skills, skills_type, group_skills_details, skill_level, has_certification, certification_details, mentor, challenges, support_received, comments, user_id, created_at, updated_at
+============================================================
+MODEL: ParentsInformation
+TABLE: parents_information
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, parent_name, parent_of, activity, support_type, address, parent_comments, supervisor_comments, submission_date, user_id, created_at, updated_at, status, admin_comments, approved_by, approved_at
+============================================================
+MODEL: SpecialProgram
+TABLE: special_programs
+HAS user_id: YES
+HAS created_at: YES
+HAS date: YES
+HAS submitted_at: NO
+COLUMNS: id, date, teacher, topic, age_range, teacher_feedback, supervisor_feedback, user_id, created_at, updated_at
+============================================================
+MODEL: TalentAttendance
+TABLE: talent_attendance
+HAS user_id: YES
+HAS created_at: YES
+HAS date: YES
+HAS submitted_at: NO
+COLUMNS: id, date, instructor_name, talent_taught, attendance_count, instructor_comments, supervisor_comments, lesson_topic, user_id, created_at, updated_at
+============================================================
+MODEL: SkillsAttendance
+TABLE: skills_attendance
+HAS user_id: YES
+HAS created_at: YES
+HAS date: YES
+HAS submitted_at: NO
+COLUMNS: id, date, teacher_name, lesson_topic, present_count, teacher_comments, supervisor_comments, lesson_topic_details, user_id, created_at, updated_at
+============================================================
+MODEL: CurriculumAttendance
+TABLE: curriculum_attendance
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, tarehe, jina_la_mwalimu, somo, wahudhuria, maoni_ya_mwalimu, maoni_ya_msimamizi, mada, user_id, created_at, updated_at
+============================================================
+MODEL: MasomoYaMtaala
+TABLE: masomo_ya_mtaala
+HAS user_id: YES
+HAS created_at: YES
+HAS date: YES
+HAS submitted_at: NO
+COLUMNS: id, user_id, status, date, teacher, subject_type, age_group, topic, category, student_feedback, teacher_feedback, created_at, updated_at
+============================================================
+MODEL: MasomoYaFani
+TABLE: masomo_ya_fani
+HAS user_id: YES
+HAS created_at: YES
+HAS date: YES
+HAS submitted_at: YES
+COLUMNS: id, date, teacher, fani_type, topic, student_preferences, student_feedback, teacher_feedback, user_id, created_at, updated_at, status, admin_notes, submitted_at
+============================================================
+MODEL: VocationalTraining
+TABLE: vocational_training
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, student_name, school_name, skill_category, training_level, user_id, created_at, updated_at
+============================================================
+MODEL: SavingGroup
+TABLE: saving_groups
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, group_name, member_count, group_mentor, registration_status, savings_level, bank_account, group_progress, user_id, created_at, updated_at
+============================================================
+MODEL: CenterLeadership
+TABLE: center_leadership
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, center_name, leadership_list, challenges, feedback, status, user_id, created_at, updated_at
+============================================================
+MODEL: ClusterLeader
+TABLE: cluster_leaders
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, cluster_name, yds_name, leaders_count, meeting_count, gethro_practice, term_end, additional_notes, user_id, created_at, updated_at
+============================================================
+MODEL: BaseLeader
+TABLE: base_leaders
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, base_name, leaders_count, meeting_count, term_end, additional_notes, user_id, created_at, updated_at, approval_status, admin_comments, approved_by, approved_at
+============================================================
+MODEL: NationalLeader
+TABLE: national_leaders
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, center, term_end, challenges, comments, user_id, created_at, updated_at
+============================================================
+MODEL: OutOfMinistryLeader
+TABLE: out_of_ministry_leaders
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, leaders_count, term_end, user_id, created_at, updated_at
+============================================================
+MODEL: Submission
+TABLE: submissions
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: YES
+COLUMNS: id, user_id, program_type, section_type, form_data, status, admin_notes, submitted_at, reviewed_at, reviewed_by, created_at, updated_at
+============================================================
+MODEL: Participant
+TABLE: talents_information
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, student_name, participant_number, age, gender, mentor, talent_type, talent_description, talent_duration, has_competed, competition_details, achievements, needs_training, training_details, comments, user_id, created_at, updated_at
+============================================================
+MODEL: AbsentParticipant
+TABLE: absent_participants
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, attendance_id, attendance_type, participant_name, participant_number, status, user_id, created_at, updated_at
+============================================================
+MODEL: TalentAbsentParticipant
+TABLE: talent_absent_participants
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, attendance_id, participant_name, participant_number, status, user_id, created_at, updated_at
+============================================================
+MODEL: CurriculumAttendanceParticipant
+TABLE: curriculum_attendance_participants
+HAS user_id: YES
+HAS created_at: YES
+HAS date: NO
+HAS submitted_at: NO
+COLUMNS: id, curriculum_attendance_id, participant_name, participant_number, status, user_id, created_at, updated_at

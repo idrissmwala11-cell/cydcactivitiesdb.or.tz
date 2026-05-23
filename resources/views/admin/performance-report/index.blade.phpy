@@ -1,0 +1,172 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container-fluid py-4">
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="fw-bold mb-1">Center Performance Report</h2>
+                    <p class="text-muted mb-0">All modules grouped by center ID</p>
+                    <small class="text-secondary">
+                        Period: <strong>{{ $periodLabel }}</strong> |
+                        From: <strong>{{ $startDate->format('d M Y') }}</strong> |
+                        To: <strong>{{ $endDate->format('d M Y') }}</strong>
+                    </small>
+                </div>
+
+                <form action="{{ route('admin.performance-report.generate') }}" method="POST" class="d-flex gap-2">
+                    @csrf
+              
+                    <button type="submit" class="btn btn-primary">Run Report</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body">
+                    <div class="text-muted small">Total Centers</div>
+                    <div class="fs-2 fw-bold">{{ $summary['total_centers'] }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+<select name="period" class="form-select" style="min-width: 180px;">
+    <option value="weekly" {{ $period === 'weekly' ? 'selected' : '' }}>Weekly</option>
+    <option value="monthly" {{ $period === 'monthly' ? 'selected' : '' }}>Monthly</option>
+    <option value="bimonthly" {{ $period === 'bimonthly' ? 'selected' : '' }}>Last 2 Months</option>
+</select>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body">
+                    <div class="text-muted small">Active Centers</div>
+                    <div class="fs-2 fw-bold text-success">{{ $summary['active_centers'] }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body">
+                    <div class="text-muted small">Inactive Centers</div>
+                    <div class="fs-2 fw-bold text-danger">{{ $summary['inactive_centers'] }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body">
+                    <div class="text-muted small">Top Center</div>
+                    <div class="fs-4 fw-bold">{{ $summary['top_center_id'] }}</div>
+                    <small>{{ $summary['top_center_records'] }} records</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h5 class="fw-bold mb-1">Performance Graph</h5>
+        </div>
+        <div class="card-body p-4">
+            @if($reportData->count() > 0)
+                <div id="performanceChart"></div>
+            @else
+                <div class="text-center text-muted py-5">No data found.</div>
+            @endif
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h5 class="fw-bold mb-1">Center Ranking Table</h5>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead style="background:#f8fafc;">
+                    <tr>
+                        <th class="px-4 py-3">Rank</th>
+                        <th class="px-4 py-3">Center ID</th>
+                        <th class="px-4 py-3">Users</th>
+                        <th class="px-4 py-3">Records</th>
+                        <th class="px-4 py-3">Performance %</th>
+                        <th class="px-4 py-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($reportData as $item)
+                        <tr>
+                            <td class="px-4 py-3 fw-bold">{{ $item['rank'] }}</td>
+                            <td class="px-4 py-3">{{ $item['center_id'] }}</td>
+                            <td class="px-4 py-3">{{ $item['total_users'] }}</td>
+                            <td class="px-4 py-3">{{ $item['total_records'] }}</td>
+                            <td class="px-4 py-3">{{ number_format($item['percentage'], 2) }}%</td>
+                            <td class="px-4 py-3">
+                                @if($item['status'] === 'Active')
+                                    <span class="badge bg-success">Active</span>
+                                @else
+                                    <span class="badge bg-danger">Inactive</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">No data available.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if($reportData->count() > 0)
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const chartLabels = @json($reportData->pluck('center_id')->values());
+    const chartSeries = @json($reportData->pluck('percentage')->values());
+    const chartRecords = @json($reportData->pluck('total_records')->values());
+
+    const options = {
+        chart: {
+            type: 'bar',
+            height: Math.max(450, chartLabels.length * 55)
+        },
+        series: [{
+            name: 'Performance %',
+            data: chartSeries
+        }],
+        xaxis: {
+            categories: chartLabels,
+            min: 0,
+            max: 100
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                borderRadius: 6,
+                barHeight: '70%'
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val, opts) {
+                const records = chartRecords[opts.dataPointIndex] ?? 0;
+                return val + '% (' + records + ')';
+            }
+        }
+    };
+
+    const chart = new ApexCharts(document.querySelector("#performanceChart"), options);
+    chart.render();
+});
+</script>
+@endif
+@endsection

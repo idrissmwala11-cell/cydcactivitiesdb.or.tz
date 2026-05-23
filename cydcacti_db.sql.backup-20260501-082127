@@ -1,0 +1,2526 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Apr 30, 2026 at 08:10 PM
+-- Server version: 10.11.16-MariaDB-cll-lve
+-- PHP Version: 8.4.20
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `cydcacti_db`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `abscent`
+--
+
+CREATE TABLE `abscent` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `attendance_id` bigint(20) UNSIGNED NOT NULL,
+  `jina_la_mshiriki` varchar(255) NOT NULL,
+  `namba_ya_mshiriki` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `absent_participants`
+--
+
+CREATE TABLE `absent_participants` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `attendance_id` bigint(20) UNSIGNED NOT NULL,
+  `attendance_type` varchar(255) NOT NULL DEFAULT 'curriculum',
+  `participant_name` varchar(255) NOT NULL,
+  `participant_number` varchar(255) NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'absent',
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `absent_participants`
+--
+
+INSERT INTO `absent_participants` (`id`, `attendance_id`, `attendance_type`, `participant_name`, `participant_number`, `status`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'curriculum', 'Brian Isaya Jacob', 'TZ069200075', 'absent', 25, '2025-10-03 08:26:06', '2025-10-03 08:26:06'),
+(2, 1, 'curriculum', 'Mathayo Joseph Makeja', 'TZ069200199', 'absent', 25, '2025-10-03 08:26:06', '2025-10-03 08:26:06'),
+(3, 1, 'curriculum', 'Jofrey Emanuel Musa', 'TZ069200051', 'absent', 25, '2025-10-03 08:26:06', '2025-10-03 08:26:06'),
+(4, 2, 'curriculum', 'ELIZABETH STEVEN', 'TZ069200016', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(5, 2, 'curriculum', 'LIGHTNES EMANUEL', 'TZ069200007', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(6, 2, 'curriculum', 'THOMAS AGUSTINO', 'TZ069200203', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(7, 2, 'curriculum', 'MATHAYO JOSEPH', 'TZ069200199', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(8, 2, 'curriculum', 'SALOME LEONARD', 'TZ069200110', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(9, 2, 'curriculum', 'LEONARD MASANJA', 'TZ069200024', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(10, 2, 'curriculum', 'YOHANA ISAKA', 'TZ069200073', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(11, 2, 'curriculum', 'JOFREY EMANUEL', 'TZ069200051', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(12, 2, 'curriculum', 'RAHEL MUSSA', 'TZ069200099', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(13, 2, 'curriculum', 'YUSUPH MBUGA', 'T069200128', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(14, 2, 'curriculum', 'RITHA MBUKE', 'TZ069200153', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(15, 2, 'curriculum', 'PAUL PETER', 'TZ069200034', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(16, 2, 'curriculum', 'EDNAMARY ABEL', 'TZ069200052', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(17, 2, 'curriculum', 'PENDO KIGABO', 'TZ069200089', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(18, 2, 'curriculum', 'JUMANNE SAMWEL', 'TZ069200129', 'absent', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(19, 3, 'curriculum', 'George James Kadelema', 'TZ067900232', 'absent', 8, '2026-01-17 11:35:49', '2026-01-17 11:35:49'),
+(20, 3, 'curriculum', 'Swai Ntulu', 'TZ067900007', 'absent', 8, '2026-01-17 11:35:49', '2026-01-17 11:35:49'),
+(21, 3, 'curriculum', 'Franco John', 'TZ067900068', 'absent', 8, '2026-01-17 11:35:49', '2026-01-17 11:35:49'),
+(22, 3, 'curriculum', 'Juma Msafiri Juma', 'TZ067900267', 'absent', 8, '2026-01-17 11:35:49', '2026-01-17 11:35:49'),
+(23, 3, 'curriculum', 'Andrea Kadelema Kashindye', 'TZ067900234', 'absent', 8, '2026-01-17 11:35:49', '2026-01-17 11:35:49'),
+(24, 4, 'curriculum', 'George James Kadelema', 'TZ067900232', 'absent', 8, '2026-01-17 11:36:24', '2026-01-17 11:36:24'),
+(25, 4, 'curriculum', 'Swai Ntulu', 'TZ067900007', 'absent', 8, '2026-01-17 11:36:24', '2026-01-17 11:36:24'),
+(26, 4, 'curriculum', 'Franco John', 'TZ067900068', 'absent', 8, '2026-01-17 11:36:24', '2026-01-17 11:36:24'),
+(27, 4, 'curriculum', 'Juma Msafiri Juma', 'TZ067900267', 'absent', 8, '2026-01-17 11:36:24', '2026-01-17 11:36:24'),
+(28, 4, 'curriculum', 'Andrea Kadelema Kashindye', 'TZ067900234', 'absent', 8, '2026-01-17 11:36:24', '2026-01-17 11:36:24'),
+(29, 5, 'curriculum', 'Lucia Paschal', 'TZ067900210', 'absent', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(30, 5, 'curriculum', 'Devotha George', 'TZ067900188', 'absent', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(31, 5, 'curriculum', 'Akon Anderson', 'TZ067900133', 'absent', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(32, 5, 'curriculum', 'Godfrey Oscar anderson', 'TZ067900087', 'absent', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(33, 5, 'curriculum', 'James Baraka', 'TZ067900018', 'absent', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(34, 5, 'curriculum', 'Lucia Rashid', 'TZ067900164', 'absent', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(35, 5, 'curriculum', 'Aisha Nasoro Kataliwa', 'TZ067900228', 'absent', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(36, 5, 'curriculum', 'Joyce Samwel John', 'TZ067900044', 'absent', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(37, 6, 'curriculum', 'Braiton John Kadelema', 'TZ067900001', 'absent', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(38, 6, 'curriculum', 'Julius Haridi Mwanang\'ombe', 'TZ067900002', 'absent', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(39, 6, 'curriculum', 'Sospita Malisel Afredi', 'TZ067900005', 'absent', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(40, 6, 'curriculum', 'Jackson Mathew Michael', 'TZ067900028', 'absent', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(41, 6, 'curriculum', 'Anderson Petro Nzaniye', 'TZ067900116', 'absent', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(42, 6, 'curriculum', 'Starloard Mapambano Juma', 'TZ067900148', 'absent', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(43, 6, 'curriculum', 'Shalom Nelson Enock', 'TZ067900179', 'absent', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(44, 6, 'curriculum', 'Amon Benedicto Sinto', 'TZ067900193', 'absent', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(45, 7, 'curriculum', 'Ndoloki Mdaki', 'TZ067900071', 'absent', 8, '2026-01-24 11:31:39', '2026-01-24 11:31:39'),
+(46, 7, 'curriculum', 'Andrea Kadelema Kashindye', 'TZ067900234', 'absent', 8, '2026-01-24 11:31:39', '2026-01-24 11:31:39'),
+(47, 7, 'curriculum', 'Franco John', 'TZ067900068', 'absent', 8, '2026-01-24 11:31:39', '2026-01-24 11:31:39'),
+(48, 7, 'curriculum', 'George James Kadelema', 'TZ067900232', 'absent', 8, '2026-01-24 11:31:39', '2026-01-24 11:31:39'),
+(49, 8, 'curriculum', 'Ndoloki Mdaki', 'TZ067900071', 'absent', 8, '2026-01-24 11:34:23', '2026-01-24 11:34:23'),
+(50, 9, 'curriculum', 'STARLOARD MAPAMBANO JUMA', 'TZ067900147', 'absent', 31, '2026-01-24 12:33:26', '2026-01-24 12:33:26'),
+(51, 9, 'curriculum', 'ANDASON PETER NZANIYE', 'TZ067900116', 'absent', 31, '2026-01-24 12:33:26', '2026-01-24 12:33:26'),
+(52, 9, 'curriculum', 'DERICK MESHACK EMMANUEL', 'TZ067900221', 'absent', 31, '2026-01-24 12:33:26', '2026-01-24 12:33:26'),
+(53, 9, 'curriculum', 'HARIDI ADAMU', 'TZ067900248', 'absent', 31, '2026-01-24 12:33:26', '2026-01-24 12:33:26'),
+(54, 9, 'curriculum', 'PASKAL KENA SAMSON', 'TZ067900136', 'absent', 31, '2026-01-24 12:33:26', '2026-01-24 12:33:26'),
+(76, 23, 'curriculum', 'David', 'TZ056500168', 'absent', 32, '2026-03-16 07:48:02', '2026-03-16 07:48:02'),
+(77, 23, 'curriculum', 'Isdory', 'TZ056500201', 'absent', 32, '2026-03-16 07:48:02', '2026-03-16 07:48:02'),
+(83, 26, 'curriculum', 'Ndoloki Mdaki', 'TZ067900071', 'absent', 8, '2026-03-28 12:11:26', '2026-03-28 12:11:26'),
+(84, 26, 'curriculum', 'Andrea Kadelema Kashindye', 'TZ067900234', 'absent', 8, '2026-03-28 12:11:26', '2026-03-28 12:11:26'),
+(85, 25, 'curriculum', 'Mwasiti Sudi Mzee', 'TZ06790080', 'absent', 8, '2026-03-28 12:56:32', '2026-03-28 12:56:32'),
+(86, 25, 'curriculum', 'Priscar Julius', 'TZ06790050', 'absent', 8, '2026-03-28 12:56:32', '2026-03-28 12:56:32'),
+(87, 25, 'curriculum', 'Janeth Erasto', 'TZ06790256', 'absent', 8, '2026-03-28 12:56:32', '2026-03-28 12:56:32'),
+(88, 25, 'curriculum', 'Salma Ramadhan', 'TZ067900254', 'absent', 8, '2026-03-28 12:56:32', '2026-03-28 12:56:32'),
+(98, 45, 'curriculum', 'Shalom Nelson', 'Tz067900179', 'absent', 31, '2026-04-11 12:30:08', '2026-04-11 12:30:08'),
+(99, 45, 'curriculum', 'Atukuzwe Petro', 'Tz067903003', 'absent', 31, '2026-04-11 12:30:08', '2026-04-11 12:30:08'),
+(100, 45, 'curriculum', 'Asheli benedicto', 'Tz067900187', 'absent', 31, '2026-04-11 12:30:08', '2026-04-11 12:30:08'),
+(101, 45, 'curriculum', 'John meshaki', 'Tz067900006', 'absent', 31, '2026-04-11 12:30:08', '2026-04-11 12:30:08'),
+(102, 45, 'curriculum', 'Eliki chacha', 'Tz067900226', 'absent', 31, '2026-04-11 12:30:08', '2026-04-11 12:30:08'),
+(122, 52, 'curriculum', 'RAHELI NGASA KULWA', 'TZ0679244', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(123, 52, 'curriculum', 'BRANDINA J. PATRICK', 'TZ0679079', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(124, 52, 'curriculum', 'SALMA J. MASUDI', 'TZ067900', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(125, 52, 'curriculum', 'UPENDO SIFA PAUL', 'TZ067900', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(126, 52, 'curriculum', 'ANGELA E. BISAGA', 'TZ067900119', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(127, 52, 'curriculum', 'BARAKA D. ESPIRUS', 'TZ067900', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(128, 52, 'curriculum', 'ADAM HASSAN CHACHA', 'TZ067900247', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(129, 52, 'curriculum', 'JUMANNE J.', 'TZ0679141', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(130, 52, 'curriculum', 'TEDY E. ALBERTO', 'TZ067981', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(131, 52, 'curriculum', 'SAUDA S. ADAMU', 'TZO679', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(132, 52, 'curriculum', 'PILI S. KIZWALO', 'TZ0679238', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(133, 52, 'curriculum', 'MONICA M. KILOSA', 'TZ067962', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(134, 52, 'curriculum', 'WARDA M. YASSIN', 'TZ0679157', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(135, 52, 'curriculum', 'BERTHA B, JUMA', 'TZ0679256', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(136, 52, 'curriculum', 'NICHOLAUS N. MALEMBE', 'TZ0679890', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(137, 52, 'curriculum', 'CECILIA J. ELIAS', 'TZ067978', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(138, 52, 'curriculum', 'JANETH E. KYOMOE', 'TZ0679253', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(139, 52, 'curriculum', 'MAISALA KHARFANI ABASI', 'TZ0679108', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24'),
+(140, 52, 'curriculum', 'ANNASTAZIA GODFREY MAGANA', 'TZ0679205', 'absent', 31, '2026-04-11 13:00:24', '2026-04-11 13:00:24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `alevel_students`
+--
+
+CREATE TABLE `alevel_students` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_name` varchar(255) NOT NULL,
+  `school_name` varchar(255) NOT NULL,
+  `school_address` varchar(255) NOT NULL,
+  `form_level` varchar(255) NOT NULL,
+  `completion_date` date DEFAULT NULL,
+  `performance` varchar(255) NOT NULL,
+  `division` varchar(255) NOT NULL,
+  `points` varchar(255) NOT NULL,
+  `department` varchar(255) NOT NULL,
+  `other_combination` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `announcements`
+--
+
+CREATE TABLE `announcements` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `announcements`
+--
+
+INSERT INTO `announcements` (`id`, `user_id`, `title`, `message`, `created_at`, `updated_at`) VALUES
+(1, 2, 'MABORESHO YA CYDC ACTIVITIES DATABASE', 'SHALOM WAPENDWA\r\n\r\n\r\nMaboresho ya database yamefanyika kwenye link zote na sasa zote\r\nzinafanya kazi bila yachangamoto yoyote, maeneo yaliyofanyiwa maboresho\r\nuser kuona taarifa za mwingine kwa baadhi ya maeneo, user kushindwa\r\nkuona taarifa zake alizo upload, na changamoto zingine, isipo kuwa link\r\nmbili bado zipo kwenye maboresho, ambazo ni School info na Leardership\r\ninfo pekee.\r\nkipengele kinachoongezwa user ataweza ku run ripot kuona data ambazo\r\nzimejazwa na user wa kituo chake.\r\n\r\nBARIKIWA.\r\n\r\nRegards,\r\n\r\nCYDC Activities Database\r\nContact Support\r\nEmail: info@cydcactivitiesdb.co.tz\r\nPhone: +255 673 746 031\r\nIddy Mwala', '2026-03-26 11:32:02', '2026-03-26 11:32:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `base_leaders`
+--
+
+CREATE TABLE `base_leaders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `base_name` varchar(255) NOT NULL,
+  `leaders_count` int(11) NOT NULL,
+  `meeting_count` varchar(255) NOT NULL,
+  `term_end` date NOT NULL,
+  `additional_notes` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `approval_status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `admin_comments` text DEFAULT NULL,
+  `approved_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `approved_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `base_leader_details`
+--
+
+CREATE TABLE `base_leader_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `base_leader_id` bigint(20) UNSIGNED NOT NULL,
+  `leader_name` varchar(255) NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `gender` enum('male','female') NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) NOT NULL,
+  `value` mediumtext NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cache`
+--
+
+INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
+('cydc-cache-enodingo@gmail.com|197.250.226.221', 'i:2;', 1777461893),
+('cydc-cache-enodingo@gmail.com|197.250.226.221:timer', 'i:1777461893;', 1777461893),
+('cydc-cache-idrissmwala11@gmail.com|196.249.121.75', 'i:1;', 1777462257),
+('cydc-cache-idrissmwala11@gmail.com|196.249.121.75:timer', 'i:1777462257;', 1777462257);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `center_leadership`
+--
+
+CREATE TABLE `center_leadership` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `center_name` varchar(255) NOT NULL,
+  `leadership_list` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`leadership_list`)),
+  `challenges` text DEFAULT NULL,
+  `feedback` text DEFAULT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'pending',
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `center_leadership`
+--
+
+INSERT INTO `center_leadership` (`id`, `center_name`, `leadership_list`, `challenges`, `feedback`, `status`, `user_id`, `created_at`, `updated_at`) VALUES
+(2, '5', '[{\"namba\":\"1\",\"jina_la_kiongozi\":\"Charrles Samwel Tula\",\"namba_ya_kiongozi\":\"TZ069200076\",\"cheo\":\"Mkuu wa Kituo\"},{\"namba\":\"2\",\"jina_la_kiongozi\":\"Lightness Emmanuel Godfrey\",\"namba_ya_kiongozi\":\"TZ069200007\",\"cheo\":\"Makamu mkuu wa kituo\"},{\"namba\":\"3\",\"jina_la_kiongozi\":\"Sarah Zakayo Enock\",\"namba_ya_kiongozi\":\"TZ069200201\",\"cheo\":\"Katibu\"},{\"namba\":\"4\",\"jina_la_kiongozi\":\"Elizabet Steven Daud\",\"namba_ya_kiongozi\":\"TZ069200016\",\"cheo\":\"Mhasibu\"},{\"namba\":\"5\",\"jina_la_kiongozi\":\"Brian Isaya Yakobo\",\"namba_ya_kiongozi\":\"TZ069200075\",\"cheo\":\"Waziri wa michezo\"}]', 'kuwa na muda mfupi wa kukutana na waau mbalimbali', 'Tutaendelea kuwajengea uwezo ili waweze kuwa imara katika masuala ya usimamizi', 'pending', 25, '2025-11-18 06:26:33', '2025-11-18 06:26:33'),
+(3, '12', '[{\"namba\":\"TZ06790005\",\"jina_la_kiongozi\":\"SOSPETER MALISELI\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"RAISI\"},{\"namba\":\"TZ067900028\",\"jina_la_kiongozi\":\"JACKSON MATHEW\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"MAKAMU WA KWANZA WA RAISI\"},{\"namba\":\"TZ067900\",\"jina_la_kiongozi\":\"ELESIA KASANGA\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"MAKAMU WA PILI WA RAISI\"},{\"namba\":\"TZ067900187\",\"jina_la_kiongozi\":\"ASHERY BENEDICTO\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"KATIBU MKUU\"},{\"namba\":\"TZ067900193\",\"jina_la_kiongozi\":\"AMONI SINTO\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"MUHAZINA\"},{\"namba\":\"TZ06790006\",\"jina_la_kiongozi\":\"JOHN MESHACK\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"WAZIRI WA UBUNIFU NA UJUZI\"},{\"namba\":\"TZ067900013\",\"jina_la_kiongozi\":\"JUMA KILABASAGA\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"WAZIRI WA AFYA\"},{\"namba\":\"TZ067900115\",\"jina_la_kiongozi\":\"MASUDI MASUMBUKO\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"WAZIRI WA MZAINGIRA\"},{\"namba\":\"TZ067900121\",\"jina_la_kiongozi\":\"DERICK MESHACK\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"WAZIRI WA MICHEZO\"},{\"namba\":\"TZ06790003\",\"jina_la_kiongozi\":\"JULIANA CLEMENT\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"WAZIRI WA MICHEZO\"},{\"namba\":\"TZ067900191\",\"jina_la_kiongozi\":\"REBECCA JONAS\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"WAZIRI WA CHAKULA\"},{\"namba\":\"TZ067900179\",\"jina_la_kiongozi\":\"SHALOM NELSON\",\"namba_ya_kiongozi\":\"0\",\"cheo\":\"STOREKEEPER\"}]', NULL, 'Serikali ya vijana inatekeleza majukumu yake kwa kufanya vikao kila robo mwaka ambapo mwakilishi wao (raisi) anaingia moja kwa moja kwenye vikao vya kamati ya huduma kuwasilisha ajenda za vijana na watoto', 'pending', 31, '2026-01-10 08:27:00', '2026-01-10 08:27:00'),
+(8, '2', '[{\"namba\":\"1.\",\"jina_la_kiongozi\":\"Kuruthumu Amani Juma\",\"namba_ya_kiongozi\":\"0685778938\",\"cheo\":\"Katibu Mkuu wa kituo\"},{\"namba\":\"2.\",\"jina_la_kiongozi\":\"Beth Peter Mahitanyi\",\"namba_ya_kiongozi\":\"0687425668\",\"cheo\":\"Waziri wa chakula\"}]', 'Kusimamia washirik wenzao', 'Wanahitaji kuwezeshwa somo la uongozi ili wajitambue', 'approved', 5, '2026-04-11 10:03:04', '2026-04-11 10:03:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chat_messages`
+--
+
+CREATE TABLE `chat_messages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sender_id` bigint(20) UNSIGNED NOT NULL,
+  `recipient_id` bigint(20) UNSIGNED NOT NULL,
+  `message` text NOT NULL,
+  `read_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `chat_messages`
+--
+
+INSERT INTO `chat_messages` (`id`, `sender_id`, `recipient_id`, `message`, `read_at`, `created_at`, `updated_at`) VALUES
+(1, 2, 35, 'hi', '2026-04-16 13:27:35', '2026-04-16 13:27:28', '2026-04-16 13:27:35'),
+(2, 35, 2, 'hi mambo', '2026-04-16 13:27:59', '2026-04-16 13:27:54', '2026-04-16 13:27:59'),
+(3, 23, 2, 'Hi', '2026-04-18 14:44:34', '2026-04-18 14:41:22', '2026-04-18 14:44:34'),
+(4, 2, 23, 'Hi my Beautiful wife 💕', NULL, '2026-04-18 14:45:10', '2026-04-18 14:45:10'),
+(5, 2, 5, 'Habari kiongozi maboresho ya link ya school information yamekamilika kikamilifu', '2026-04-19 17:45:04', '2026-04-19 16:51:40', '2026-04-19 17:45:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cluster_leaders`
+--
+
+CREATE TABLE `cluster_leaders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `cluster_name` varchar(255) NOT NULL,
+  `yds_name` varchar(255) NOT NULL,
+  `leaders_count` int(11) NOT NULL,
+  `meeting_count` varchar(255) NOT NULL,
+  `gethro_practice` varchar(255) NOT NULL,
+  `term_end` date NOT NULL,
+  `additional_notes` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cluster_leader_details`
+--
+
+CREATE TABLE `cluster_leader_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `cluster_leader_id` bigint(20) UNSIGNED NOT NULL,
+  `leader_name` varchar(255) NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `gender` enum('male','female') NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `college_info`
+--
+
+CREATE TABLE `college_info` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_name` varchar(255) NOT NULL,
+  `college_name` varchar(255) NOT NULL,
+  `course` varchar(255) NOT NULL,
+  `program_level` varchar(255) NOT NULL,
+  `other_level` varchar(255) DEFAULT NULL,
+  `completion_date` date NOT NULL,
+  `physical_address` text NOT NULL,
+  `challenges` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `curriculum_attendance`
+--
+
+CREATE TABLE `curriculum_attendance` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tarehe` date NOT NULL,
+  `jina_la_mwalimu` varchar(255) NOT NULL,
+  `somo` varchar(255) NOT NULL,
+  `wahudhuria` int(11) NOT NULL,
+  `maoni_ya_mwalimu` text DEFAULT NULL,
+  `maoni_ya_msimamizi` text DEFAULT NULL,
+  `mada` text NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `curriculum_attendance`
+--
+
+INSERT INTO `curriculum_attendance` (`id`, `tarehe`, `jina_la_mwalimu`, `somo`, `wahudhuria`, `maoni_ya_mwalimu`, `maoni_ya_msimamizi`, `mada`, `user_id`, `created_at`, `updated_at`) VALUES
+(2, '2026-01-24', 'LESA SAMWEL KATABILA', 'USAFI WA KINYWA', 11, 'Watoto wamefurahia somo vizuri', 'Mwalimu aendelee kuwafundisha katika ubora wao na umri wao', 'USAFI WA MENO', 8, '2026-01-24 09:48:06', '2026-01-24 09:48:06'),
+(3, '2026-01-24', 'LESA SAMWEL KATABILA', 'USAFI WA KINYWA', 11, 'Watoto wamefurahia somo vizuri', 'Mwalimu aendelee kuwafundisha katika ubora wao na umri wao', 'USAFI WA MENO', 8, '2026-01-24 09:48:36', '2026-01-24 09:48:36'),
+(12, '2026-03-28', 'George Paschal', 'ALPHA', 13, 'Wamehudhuria kwa furaha', 'Alpha inatupa hata ongezeko la vijana kuhudhuria katika program hivyo tuongeze namna ya kuwafikia vijana', 'Yesu ni nani kwako? -  Unafiri Yesu alifufuka', 8, '2026-03-28 10:51:25', '2026-03-28 10:51:25'),
+(13, '2026-03-21', 'EFRAIM GASPAR', 'ALPHA', 13, 'somo limeeleweka vizuri sana.', NULL, 'UNAMFAHAM YESU KAMA NANI.', 8, '2026-03-28 11:23:10', '2026-03-28 11:23:41'),
+(15, '2026-04-04', 'EFRAIM GASPAR', 'KWANINI YESU ALIKUFA?', 15, 'somo limeeleka vyema,ntaendelea na maada inayo fuata.', NULL, 'sababu ya kufa kwa Yesu ni kwaajili ya kutukomboa wana damu .', 31, '2026-04-04 09:47:39', '2026-04-04 09:47:39'),
+(16, '2026-04-04', 'martine  makoye  mkiwa', 'KWANINI YESU ALIKUFA?', 13, 'somo  limeeleweka', NULL, 'kifo  cha  Yesu  amekufa  ili  mwanadam  apate  ukombozi', 31, '2026-04-04 09:55:19', '2026-04-04 09:55:19'),
+(26, '2026-04-11', 'Efraim Gaspar', 'MAOMBI.', 6, 'Somo limeeleweka vizuri sanaa,nitaendelea na maada inayo fuata.', NULL, 'kwa nini tunaomba ?\r\nkipi hutokea tunapo omba?', 12, '2026-04-11 09:46:07', '2026-04-11 09:46:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `curriculum_attendance_participants`
+--
+
+CREATE TABLE `curriculum_attendance_participants` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `curriculum_attendance_id` bigint(20) UNSIGNED NOT NULL,
+  `participant_name` varchar(255) NOT NULL,
+  `participant_number` varchar(255) DEFAULT NULL,
+  `status` enum('present','absent') NOT NULL DEFAULT 'present',
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `curriculum_attendance_participants`
+--
+
+INSERT INTO `curriculum_attendance_participants` (`id`, `curriculum_attendance_id`, `participant_name`, `participant_number`, `status`, `user_id`, `created_at`, `updated_at`) VALUES
+(7, 26, '1.Julius halidi', 'TZ -O679-002', 'present', 12, '2026-04-11 09:46:07', '2026-04-11 09:46:07'),
+(8, 26, '2.Franko john', 'TZ -O679-068', 'present', 12, '2026-04-11 09:46:07', '2026-04-11 09:46:07'),
+(9, 26, '3.Pili sospeter', 'TZ -O679-238', 'present', 12, '2026-04-11 09:46:07', '2026-04-11 09:46:07'),
+(10, 26, '4.Anastazia godfrey', 'TZ -O679-205', 'present', 12, '2026-04-11 09:46:07', '2026-04-11 09:46:07'),
+(11, 26, '5.Chiku shabani', 'TZ -O679-009', 'present', 12, '2026-04-11 09:46:07', '2026-04-11 09:46:07'),
+(12, 26, '6.Brandina john', 'TZ -O679-0079', 'present', 12, '2026-04-11 09:46:07', '2026-04-11 09:46:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cydc_center_leaders`
+--
+
+CREATE TABLE `cydc_center_leaders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `leader_count` int(11) NOT NULL,
+  `challenges` text DEFAULT NULL,
+  `comments` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cydc_leader_details`
+--
+
+CREATE TABLE `cydc_leader_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `submission_id` bigint(20) UNSIGNED NOT NULL,
+  `leader_number` int(11) NOT NULL,
+  `leader_name` varchar(255) NOT NULL,
+  `leader_id` varchar(255) NOT NULL,
+  `leader_position` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `exam_results`
+--
+
+CREATE TABLE `exam_results` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `school_information_record_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `student_name` varchar(255) DEFAULT NULL,
+  `school_name` varchar(255) DEFAULT NULL,
+  `class_level` varchar(255) DEFAULT NULL,
+  `exam_type` varchar(255) DEFAULT NULL,
+  `exam_year` varchar(255) DEFAULT NULL,
+  `best_subjects` text DEFAULT NULL,
+  `failed_subjects` text DEFAULT NULL,
+  `comments` text DEFAULT NULL,
+  `performance` varchar(255) DEFAULT NULL,
+  `education_level` varchar(255) DEFAULT NULL,
+  `exam_name` varchar(255) DEFAULT NULL,
+  `subject_name` varchar(255) DEFAULT NULL,
+  `grade` varchar(255) DEFAULT NULL,
+  `marks` decimal(5,2) DEFAULT NULL,
+  `division` varchar(255) DEFAULT NULL,
+  `position` varchar(255) DEFAULT NULL,
+  `remarks` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `exam_results`
+--
+
+INSERT INTO `exam_results` (`id`, `user_id`, `school_information_record_id`, `student_name`, `school_name`, `class_level`, `exam_type`, `exam_year`, `best_subjects`, `failed_subjects`, `comments`, `performance`, `education_level`, `exam_name`, `subject_name`, `grade`, `marks`, `division`, `position`, `remarks`, `created_at`, `updated_at`) VALUES
+(1, 35, NULL, 'idriss mwala', 'UNYANYEMBE SECONDARY SCHOOL', 'Darasa la 5', 'Annual', '2026', 'jhg', 'iujl', 'ikjhgdf', 'Nzuri', 'primary', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-19 18:51:22', '2026-04-19 18:51:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `home_visitations`
+--
+
+CREATE TABLE `home_visitations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `jina` varchar(255) NOT NULL,
+  `namba` varchar(255) NOT NULL,
+  `shule` varchar(255) NOT NULL,
+  `darasa` varchar(255) NOT NULL,
+  `last_program` varchar(255) NOT NULL,
+  `likes_program` varchar(255) NOT NULL,
+  `participant_comments` text DEFAULT NULL,
+  `mtaa` varchar(255) NOT NULL,
+  `mazingira` varchar(255) NOT NULL,
+  `nyumba` varchar(255) NOT NULL,
+  `paa` varchar(255) NOT NULL,
+  `choo` varchar(255) NOT NULL,
+  `milo` varchar(255) NOT NULL,
+  `wanaume` int(11) NOT NULL,
+  `wanawake` int(11) NOT NULL,
+  `tabia` text DEFAULT NULL,
+  `visit_date` date NOT NULL,
+  `maoni` text DEFAULT NULL,
+  `mtembelezaji` varchar(255) NOT NULL,
+  `nafasi` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `home_visitations`
+--
+
+INSERT INTO `home_visitations` (`id`, `jina`, `namba`, `shule`, `darasa`, `last_program`, `likes_program`, `participant_comments`, `mtaa`, `mazingira`, `nyumba`, `paa`, `choo`, `milo`, `wanaume`, `wanawake`, `tabia`, `visit_date`, `maoni`, `mtembelezaji`, `nafasi`, `user_id`, `created_at`, `updated_at`) VALUES
+(7, 'Alijunia Hamisi Masanja', 'TZ056500233', 'MORAVIAN NYASA DAY CARE', 'CHEKECHEA', '17/01/2026', 'Ndio', 'Mshiriki anatakiwa kutembelewa zaidi na kujuliwa hali', 'Gulioni', 'Mabaya', 'Yao', 'Nyasi', 'Wanachoo', '1', 2, 3, 'Nzuri', '2025-12-20', 'Mshiriki anahitaji msaada sana maana anapoishi hapana uafadhali kabisa.', 'Jenipher', 'Mwanajamii', 32, '2026-01-21 08:34:10', '2026-01-21 08:34:10'),
+(9, 'Prince Migela', 'TZ082700201', 'shule ya msingi umoja', 'Darasa la Sita', '24/01/2026', 'Ndio', 'Anahidi kuhudhuria programu na kusoma kwa bidii', 'Urambo mjini', 'Hafifu', 'Yao', 'Bati', 'Wanachoo', '2', 2, 1, 'Nzuri sana', '2026-01-28', 'Anahitaji uangalizi wa karibu kwa sababu bado hajaimarika vizuri kwa sababu ya operation aliyofanya', 'Steward Nashon', 'Afisa Mawasiliano na Afya', 5, '2026-01-28 06:02:57', '2026-01-28 06:02:57'),
+(10, 'Jofrey Tanu Ntungu', 'TZ082700240', 'Uyumbu secondary school', 'Kidato cha kwanza', '3/01/2026', 'Ndio', 'Anaahidi kusoma kwa bidii', 'Urambo mjini', 'Hafifu', 'Yao', 'Bati', 'Wanachoo', '2', 4, 3, 'Nzuri', '2026-01-28', 'Awezeshwe kupata tuition(masomo ya ziada) kila likizo anaporudi kutoka shule', 'Steward Nashon', 'Afisa Mawasiliano na Afya', 5, '2026-01-28 06:09:27', '2026-01-28 06:09:27'),
+(11, 'Aurelia Lucas Lucas', 'TZ082700324', 'Uyumbu secondary school', 'Kidato cha kwanza', '3/01/2026', 'Ndio', 'Anaahidi kusoma kwa bidii', 'Urambo mjini', 'Hafifu', 'Yao', 'Bati', 'Wanachoo', '2', 3, 4, 'Nzuri', '2026-01-28', 'Awezeshwe kupata tuition kila likizo', 'Steward Nashon', 'Afisa Mawasiliano na Afya', 5, '2026-01-28 06:11:56', '2026-01-28 06:11:56'),
+(13, 'Anjelina Joseph Kajoro', 'TZ06790051', 'Amemaliza', 'Amemaliza kidato cha nne', '7/2/2026', 'Hapana', 'Anafurahi sana kutembelewa na ameahidi kuhudhuria program kwani mgonjwa aliyekuwa anamuuguza amekwisha pona', 'Ubarani', 'Mazuri', 'Yao', 'Bati', 'Wanachoo', 'Zaidi ya 3', 0, 3, 'Nzuri', '2026-03-04', 'Mshiriki anaendelea vizuri na familia yake ingawa alikuwa anamuuguza Dada yake hivi karibuni ila kwasasa anaendelea vizuri hivyo ameahidi kuhudhuria kituoni.', 'Flora Ilomo', 'Afisa mawasiliano na afya', 12, '2026-03-04 09:35:20', '2026-03-04 09:35:20'),
+(14, 'Kulwa Boniphace', 'TZ067900177', 'Muhitimu', 'Muhitimu', '21/2/2026', 'Hapana', 'Amefurahi kutembelewa na ameahidi kuhudhuria program', 'Ubarani', 'Yanaridhisha', 'Yao', 'Bati', 'Wanachoo', '1', 4, 3, 'Nzuri', '2026-03-04', 'Mshiriki anaendelea vizuri na familia yake na nimemsisitza ahudhurie kituoni', 'Flora Ilomo', 'Afisa mawasiliano na afya', 12, '2026-03-04 09:52:53', '2026-03-04 09:52:53'),
+(15, 'Jema Philbert Jumanne', 'TZ067900158', 'Amemaliza', 'Amemaliza', '28/2/2026', 'Ndio', 'Amefurahi kutembelewa', 'Kitega uchumi', 'Yakuridhisha', 'Yao', 'Bati', 'Wanachoo', '2', 3, 4, 'Nzuri', '2026-03-04', 'Mshiriki anaendelea vizuri', 'Flora Ilomo', 'Afisa mawasiliano na afya', 12, '2026-03-04 10:00:05', '2026-03-04 10:00:05'),
+(16, 'Rehema Ramadhani Selemani', 'TZ067900030', 'Amemaliza', 'Amemaliza', '7/3/2026', 'Ndio', 'Anaendelea vizuri na familia yake', 'Majengo ya Tabora', 'Yakuridhisha', 'Mpangaji', 'Bati', 'Wanachoo', '1', 1, 3, 'Nzuri', '2026-03-16', 'Mshiriki anaendelea vizuri na familia yake ingawa mazingira si mazuri sana', 'Flora Ilomo', 'Social worker', 12, '2026-03-16 08:21:28', '2026-03-16 08:21:28'),
+(17, 'Paul John Masalu', 'TZ067900126', 'Amemaliza', 'Amemaliza', '8/11/2026', 'Ndio', 'Mshiriki anaendelea vizuri na ameahidi kuhudhuria program', 'Majengo ya Tabora', 'Yakuridhisha', 'Yao', 'Bati', 'Wanachoo', '2', 3, 4, 'Nzuri', '2026-03-16', 'Mazingira si mazuri sana na kwasasa mshiriki hana cha kufanya nimemshauri ahudhurie kituoni na ameomba aende kujifunza ufundi wa magari na pikipiki', 'Flora', 'Social worker', 12, '2026-03-16 09:01:17', '2026-03-16 09:01:17'),
+(18, 'Sabina Hassan Nyamaliba', 'TZ067900004', 'Amemaliza', 'Amemaliza', '4/10/2025', 'Ndio', 'Anaendelea vizuri na familia yake', 'Machinjioni', 'Mazuri', 'Yao', 'Bati', 'Wanachoo', '3', 1, 5, 'Nzuri', '2026-03-16', 'Mshiriki anaendelea vizuri na familia yake na ameahidi kuhudhuria kituoni', 'Flora Ilomo', 'Social worker', 12, '2026-03-16 09:43:55', '2026-03-16 09:43:55'),
+(19, 'Thelesia Ernest', 'TZ067900081', 'Sister Irene', 'Kidato cha nne', '14/3/2026', 'Ndio', 'Anaendelea vizuri na familia yake na amefurahi kutembelewa', 'Ostarbey', 'Mazuri', 'Yao', 'Bati', 'Wanachoo', '2', 3, 3, 'Nzuri', '2026-03-16', 'Mshiriki anaendelea vizuri na familia yake', 'Flora Ilomo', 'Social worker', 12, '2026-03-16 09:47:48', '2026-03-16 09:47:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `attempts` tinyint(3) UNSIGNED NOT NULL,
+  `reserved_at` int(10) UNSIGNED DEFAULT NULL,
+  `available_at` int(10) UNSIGNED NOT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_batches`
+--
+
+CREATE TABLE `job_batches` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `total_jobs` int(11) NOT NULL,
+  `pending_jobs` int(11) NOT NULL,
+  `failed_jobs` int(11) NOT NULL,
+  `failed_job_ids` longtext NOT NULL,
+  `options` mediumtext DEFAULT NULL,
+  `cancelled_at` int(11) DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `finished_at` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `masomo_ya_fani`
+--
+
+CREATE TABLE `masomo_ya_fani` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `teacher` varchar(255) NOT NULL,
+  `fani_type` varchar(255) NOT NULL,
+  `topic` varchar(255) NOT NULL,
+  `student_preferences` text DEFAULT NULL,
+  `student_feedback` text DEFAULT NULL,
+  `teacher_feedback` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` enum('draft','submitted','approved','rejected') NOT NULL DEFAULT 'draft',
+  `admin_notes` text DEFAULT NULL,
+  `submitted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `masomo_ya_fani`
+--
+
+INSERT INTO `masomo_ya_fani` (`id`, `date`, `teacher`, `fani_type`, `topic`, `student_preferences`, `student_feedback`, `teacher_feedback`, `user_id`, `created_at`, `updated_at`, `status`, `admin_notes`, `submitted_at`) VALUES
+(1, '2025-09-27', 'Yohana Wiliam Kereta', 'Chelehani', 'Ushonaji wa Gauni Mtindo Mpya', 'Kujifundisha kushona ili waweze kujitegemea katika maisha yao wanapokuwa tayari wamehitimu Elimu zao', 'Muda uongezwe wa kujifunza pia tupate na mishono mpya mingi ili tuongeze maarifa', 'Vijana waongeze bidii katika mafunzo ambayo nawapatia ili wawe bora kwa kila eneo', 8, '2025-10-06 11:45:41', '2025-10-06 11:45:41', 'submitted', NULL, '2025-10-06 11:45:41'),
+(2, '2025-09-27', 'Yohana Wiliam Kereta', 'Chelehani', 'Ushonaji wa Gauni Mtindo Mpya', 'Kujifundisha kushona ili waweze kujitegemea katika maisha yao wanapokuwa tayari wamehitimu Elimu zao', 'Muda uongezwe wa kujifunza pia tupate na mishono mpya mingi ili tuongeze maarifa', 'Vijana waongeze bidii katika mafunzo ambayo nawapatia ili wawe bora kwa kila eneo', 8, '2025-10-06 11:46:23', '2025-10-06 11:46:23', 'submitted', NULL, '2025-10-06 11:46:23'),
+(3, '2025-11-10', 'REGINA RICHARD NANGI', 'UTENGENEZAJI WA SABUNI', 'KUTENGENEZA SABUNI KWA VITENDO', 'KUTENGENEZA SABUNI KWA VITENDO', 'SOMO LIMEELEWEKA KWANI WANAFUNZI WAMEWEZA KUTENGENEZA SABUNI KWA VITENDO WENYEWE KWA USIMAMIZI WA MWALIMU', 'SOMO LIMEELEWEKA', 20, '2025-10-07 08:20:49', '2025-10-07 08:20:49', 'submitted', NULL, '2025-10-07 08:20:49'),
+(4, '2025-11-10', 'REGINA RICHARD NANGI', 'UTENGENEZAJI WA SABUNI', 'KUTENGENEZA SABUNI KWA VITENDO', 'KUTENGENEZA SABUNI KWA VITENDO', 'SOMO LIMEELEWEKA KWANI WANAFUNZI WAMEWEZA KUTENGENEZA SABUNI KWA VITENDO WENYEWE KWA USIMAMIZI WA MWALIMU', 'SOMO LIMEELEWEKA', 20, '2025-10-07 08:21:22', '2025-10-07 08:21:46', 'submitted', NULL, '2025-10-07 08:21:46'),
+(5, '2025-11-10', 'REGINA RICHARD NANGI', 'UTENGENEZAJI WA SABUNI', 'KUTENGENEZA SABUNI KWA VITENDO', 'KUTENGENEZA SABUNI KWA VITENDO', 'SOMO LIMEELEWEKA KWANI WANAFUNZI WAMEWEZA KUTENGENEZA SABUNI KWA VITENDO WENYEWE KWA USIMAMIZI WA MWALIMU', 'SOMO LIMEELEWEKA', 20, '2025-10-07 08:22:45', '2025-10-07 08:24:22', 'submitted', NULL, '2025-10-07 08:24:22'),
+(6, '2025-10-11', 'Benjamini Lugendo James', 'Welding', 'Upakaji wa Rangi katika vitanda vilivyochomelewa', 'Wanapendelea uchomeleaji wa tenda zote zinazopatikana katika ofisi ya Uchomeleaji', 'Vifaa viongezeke katika fani ya Uchomeleaji', 'Kuongezeka Vitendea kazi kama sare zinazohitajika katika Welding', 8, '2025-10-11 11:17:34', '2025-10-11 11:17:34', 'submitted', NULL, '2025-10-11 11:17:34'),
+(7, '2026-01-24', 'YOHANA WILLIAM KELETA', 'CHELEHANI', 'KUKATA NA KUSHONA  SURUALI', 'KUJIFUNZA ZAIDI', 'TUNATAMANI KUJUA ZAIDI', 'NATAMANI KUONA WAKIWA WANAFUNZI WAZURI SANA', 8, '2025-10-11 11:17:55', '2026-01-24 13:22:08', 'approved', NULL, '2026-01-24 13:22:08'),
+(8, '2025-12-11', 'ELIWAZA KIULLA', 'USHONAJI', 'UKATAJI WA VITAMBAA VYA SKETI', 'Washiriki wanapendelea hasa staili tofautitofauti za ushonaji wa sketi za mabinti', 'Somo linaeleweka vizuri kutokana na mbinu anazotumia mwalimu', 'Wanafunzi wanafikia malengo ya somo na kuelewa kwa haraka kutokana na umakini wao', 25, '2025-11-18 06:13:11', '2025-11-18 06:13:11', 'submitted', NULL, '2025-11-18 06:13:11'),
+(9, '2025-12-11', 'ELIWAZA KIULLA', 'USHONAJI', 'UKATAJI WA VITAMBAA VYA SKETI', 'Washiriki wanapendelea hasa staili tofautitofauti za ushonaji wa sketi za mabinti', 'Somo linaeleweka vizuri kutokana na mbinu anazotumia mwalimu', 'Wanafunzi wanafikia malengo ya somo na kuelewa kwa haraka kutokana na umakini wao', 25, '2025-11-18 06:13:38', '2025-11-18 06:13:51', 'submitted', NULL, '2025-11-18 06:13:51'),
+(10, '2025-10-18', 'ELILUMBA SAMWEL', 'COMPUTER', 'MICROSOFT WORD', 'Wanapendelea kuandika na kuchora michoro mbalimbali kwenye computer', 'Wanafurahia mafunzo ya fani hii na wanapendekeza computer ziongezewe ili wasiwe wanasubiriana', 'Vijana wanaonyesha juhudi kubwa ya kujifunza na anatiwa moyo kuwafikisha kwenye malengo', 25, '2025-11-18 13:51:45', '2025-11-18 13:51:45', 'submitted', NULL, '2025-11-18 13:51:45'),
+(11, '2025-10-18', 'ELILUMBA SAMWEL', 'COMPUTER', 'MICROSOFT WORD', 'Wanapendelea kuandika na kuchora michoro mbalimbali kwenye computer', 'Wanafurahia mafunzo ya fani hii na wanapendekeza computer ziongezewe ili wasiwe wanasubiriana', 'Vijana wanaonyesha juhudi kubwa ya kujifunza na anatiwa moyo kuwafikisha kwenye malengo', 25, '2025-11-18 13:51:54', '2025-11-18 13:52:07', 'submitted', NULL, '2025-11-18 13:52:07'),
+(12, '2026-01-17', 'Luciana Mitti', 'Netball', 'Kudaka na kutua', 'Kujifunza Netball', 'Tumefurahia kujifunza kudaka na kutua mpira', 'Wanafunzi wameweza kujifunza kudaka na kutua', 12, '2026-01-24 08:39:55', '2026-01-24 08:39:55', 'approved', NULL, '2026-01-24 08:39:55'),
+(13, '2026-01-24', 'ISACK OSCAR HERMAN', 'COMPUTER', 'INTRODUCTION OF COMPUTER', 'WANAPENDA KUENDELEA ZAIDI KUJIFUNZA', 'TUNAPENDA KUENDELEA KUFAHAM ZAIDIWA', 'WANAPENDA SANA', 31, '2026-01-24 11:32:50', '2026-01-24 11:32:50', 'approved', NULL, '2026-01-24 11:32:50'),
+(14, '2026-01-24', 'EMMANUEL SELEMANI', 'VIDEO PRODUCTION & PHOTOGRAPHY', 'INTRODUCTION TO BACKGROUND REMOVAL AND REPLACEMENT IN PHOTOEDITING', 'KUJIFUNZA MARA KWA MARA', 'TUMEELEWA SANA', 'NITAENDELEA NA MADA INAYOFUATA', 31, '2026-01-24 11:36:49', '2026-01-24 11:36:49', 'approved', NULL, '2026-01-24 11:36:49'),
+(15, '2026-01-24', 'ALEX ABEL', 'MUSIC', 'MUSIC TECHNIQUES', 'WANAPENDELEA SANA MBINU ZA MUZIKI(MUSIC TECHNIQUES),UELEWA WA SAUTI,MPANGILIO WA MUZIKI NA MAZOEZI YA VITENDO', 'SOMO ZURI', 'WANAFUNZI WALIONESHA USHIRIKIANO MZURI,NIDHAMU NA HAMU YA KUJIFUNZA', 31, '2026-01-24 12:33:14', '2026-01-24 12:33:14', 'approved', NULL, '2026-01-24 12:33:14'),
+(16, '2026-01-24', 'ALEX ABEL', 'MUSIC', 'MUSIC TECHNIQUES', 'WAMEPENDA SANA MBINU ZA MUZIKI (MUSIC TECHNIQUES),UELEWA WA SAUTI,MPANGILIO WA MUZIKI NA MAZOEZI YA VITENDO', 'SOMO LILIKUWA ZURI NA LENYE KUELEWEKA', 'MWANAFUNZI AMEONESHA UELEWA MZURI WA MADA,USHILIKIANO WA KUTOSHAARASANI NA BIDI KATIKA MAZOEZI YA VITENDO', 31, '2026-01-24 12:43:21', '2026-01-24 12:43:21', 'approved', NULL, '2026-01-24 12:43:21'),
+(17, '2026-01-24', 'Mhoja John', 'Ujasiriamali', 'Kuandaa caustic soda', 'Kujifunza kutengeneza vitu kwa vitendo', 'Tunaelewa vizuri', 'Asilimia 90 ya watoto wanapenda kujifunza', 32, '2026-01-25 08:21:26', '2026-01-25 08:21:26', 'approved', NULL, '2026-01-25 08:21:26'),
+(18, '2026-01-31', 'EMMANUEL SELEMANI', 'VIDEO PRODUCTION & PHOTOGRAPHY', 'POSTERS DESIGN', 'KUJIFUNZA ZAIDI', 'TUMEELEWA SANA', 'NITAENDELEA NA MADA NYINGINE', 31, '2026-01-31 12:38:44', '2026-01-31 12:38:44', 'approved', NULL, '2026-01-31 12:38:44'),
+(19, '2026-02-14', 'ISACK OSCAR', 'COMPUTER', 'Short story of Computer', 'Uchoraji katika Computer', 'uwelewa sio mkubwa kwa Mwalimu', 'Inabidi kuongeza bidii', 8, '2026-02-14 13:54:03', '2026-02-14 13:54:03', 'approved', NULL, '2026-02-14 13:54:03'),
+(20, '2026-02-14', 'Benjamini Lugendo James', 'Welding', 'Granding of gate and windows', 'kushika grander', 'Kupewa ushirikiano na mwalimu kwa ukaribu', 'waongeze bidii katika eneo la usikivu wa ushikaji wa vifaa vya uchomeleaji', 8, '2026-02-14 13:57:01', '2026-02-14 13:57:01', 'approved', NULL, '2026-02-14 13:57:01'),
+(21, '2026-02-21', 'ISACK OSCAR HERMAN', 'COMPUTER', 'COMPUTER CLASSIFICATION AND HARD WARE AND SOFT WARE', 'WANAPENDELEA ZAIDI KUJIFUNZA KWA VITENDO ZAIDI', 'WANAPENDA KUENDELEA KUJIFUNZA ZAIDI', 'ASILIMIA 50% WANAENDELEA  VIZURI KWENYE UWELEWA NA UMAKINI KWENYE KUJIFUNZA ZAIDI', 31, '2026-02-21 12:09:20', '2026-02-21 12:09:20', 'approved', NULL, '2026-02-21 12:09:20'),
+(22, '2026-02-21', 'YOHANA WILLIUM', 'CHELEHANI', 'KUSHONA: SKETI NA GAUNI', 'WANAPENDELEA KUJIFUNZA ZAIDI', 'SOMO LIMEELEWEKA VIZURI', 'NAOMBA KUONGEZEWA VIFAA VYA USHONAJI IKIWA NI VITAMBAA NA NYUZI', 31, '2026-02-21 12:26:47', '2026-02-21 12:26:47', 'approved', NULL, '2026-02-21 12:26:47'),
+(23, '2026-03-24', 'iddy mwala', 'computer', 'computer hardware', 'fsffsf', 'fsfdfsd', 'ffdf', NULL, '2026-03-24 06:04:12', '2026-03-24 06:04:12', 'submitted', NULL, NULL),
+(24, '2026-03-28', 'Yohana Wiliam Kereta', 'CHELEHANI', 'USHONAJI WA NGUO', 'Wameelewa kwa 50% kwa ujumla hivyo wataendelea kuimarika', 'Wataongeza bidii katika kupokea wanachofundishwa', 'Waongeze bidii katika kuhudhuria na kupokea wanachofundishwa', 8, '2026-03-28 11:40:50', '2026-03-28 11:40:50', 'submitted', NULL, NULL),
+(25, '2026-03-28', 'ISACK O. HERMAN', 'HARD WARE', 'COMPUTER', 'TUNAENDELEA VIZURI SANA', 'TUNAPENDA KUJIFUNZA ZAIDI', 'WANAENDELEA KUSOMA', 31, '2026-03-28 13:28:16', '2026-03-28 13:28:16', 'draft', NULL, NULL),
+(26, '2026-03-28', 'ISACK O. HERMAN', 'HARD WARE', 'COMPUTER', 'TUNAENDELEA VIZURI SANA', 'TUNAPENDA KUJIFUNZA ZAIDI', 'WANAENDELEA KUSOMA', 31, '2026-04-11 11:18:16', '2026-04-11 11:18:16', 'draft', NULL, NULL),
+(27, '2026-03-28', 'ISACK O. HERMAN', 'HARD WARE', 'COMPUTER', 'TUNAENDELEA VIZURI SANA', 'TUNAPENDA KUJIFUNZA ZAIDI', 'WANAENDELEA KUSOMA', 31, '2026-04-11 11:19:53', '2026-04-11 11:19:53', 'draft', NULL, NULL),
+(28, '2026-03-28', 'ISACK O. HERMAN', 'HARD WARE', 'COMPUTER', 'TUNAENDELEA VIZURI SANA', 'TUNAPENDA KUJIFUNZA ZAIDI', 'WANAENDELEA KUSOMA', 31, '2026-04-11 11:19:54', '2026-04-11 11:19:54', 'draft', NULL, NULL),
+(29, '2026-03-28', 'ISACK O. HERMAN', 'HARD WARE', 'COMPUTER', 'TUNAENDELEA VIZURI SANA', 'TUNAPENDA KUJIFUNZA ZAIDI', 'WANAENDELEA KUSOMA', 31, '2026-04-11 11:19:55', '2026-04-11 11:19:55', 'draft', NULL, NULL),
+(30, '2026-04-11', 'ISACK O. HERMAN', 'HARD WARE', 'COMPUTER', 'TUNAENDELEA VIZURI SANA', 'TUNAPENDA KUJIFUNZA ZAIDI', 'WANAENDELEA KUSOMA', 31, '2026-04-11 13:02:26', '2026-04-11 13:02:26', 'submitted', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `masomo_ya_mtaala`
+--
+
+CREATE TABLE `masomo_ya_mtaala` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `status` varchar(50) NOT NULL DEFAULT 'draft',
+  `date` date NOT NULL,
+  `teacher` varchar(255) NOT NULL,
+  `subject_type` varchar(255) NOT NULL,
+  `age_group` varchar(255) NOT NULL,
+  `topic` varchar(255) NOT NULL,
+  `category` varchar(50) DEFAULT NULL,
+  `student_feedback` text DEFAULT NULL,
+  `teacher_feedback` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `masomo_ya_mtaala`
+--
+
+INSERT INTO `masomo_ya_mtaala` (`id`, `user_id`, `status`, `date`, `teacher`, `subject_type`, `age_group`, `topic`, `category`, `student_feedback`, `teacher_feedback`, `created_at`, `updated_at`) VALUES
+(6, 8, 'submitted', '2026-03-28', 'George Paschal', 'ALPHA', '4', 'Yesu ni nani kwako? -  Unafiri Yesu alifufuka', NULL, 'Tunaomba iongezewe Muda zaidi ili tujifunze zaidi', 'Vijana wapate kuanza kula vyema', '2026-03-28 10:42:15', '2026-03-28 10:42:15'),
+(7, 8, 'submitted', '2026-03-28', 'EFRAIM GASPAR', 'ALPHA', '4', 'UNAMUELEWA YESU KAMA NANI?', NULL, 'Wanafunzi wamefurahia maada na wamesema wamemuelewa YESU KUWA NI NANI.', 'maada imeeleweka vizuri sana,tuta endelea na kipengele kinacho fuata.', '2026-03-28 11:17:52', '2026-03-28 11:17:52'),
+(8, 31, 'submitted', '2026-04-04', 'EFRAIM GASPAR', 'ALFA', '4', 'KWANINI YESU ALIKUFA?', NULL, 'WANAFUNZI WAMEFULAHIA SOMO', 'SOMO LIMEELEWEKA, NITAENDELEA NA SOMO LINALO FUATA.', '2026-04-04 09:35:15', '2026-04-04 09:35:15'),
+(9, 31, 'submitted', '2026-04-04', 'MARTINI MAKOYE.', 'ALFA', '3', 'KWA NINI YESU ALIKUFA?', NULL, 'WANAFUNZI WAMEFULAHIA SOMO.', 'SOMO LIMEELEWEKA VIZURI, NITAENDELEA NA MAADA INAYO FUATA.', '2026-04-04 09:42:11', '2026-04-04 09:42:11'),
+(10, 12, 'submitted', '2026-04-11', 'Efraim Gaspar', 'ALFA', '2', 'MAOMBI', NULL, 'wanafunzi wamefurahiyasomo.', 'somo limeeleweka vizuri sana nitaendelea na maada inayo fuata.', '2026-04-11 09:18:37', '2026-04-11 09:18:37'),
+(11, 12, 'submitted', '2026-04-11', 'George paschal', 'alfa', '3', 'MAOMBI', NULL, 'wanafunzi wamefurahia sanaa na maada hii.', 'somo limeeleweka vizuri.', '2026-04-11 09:21:43', '2026-04-11 09:21:43'),
+(12, 12, 'submitted', '2026-04-11', 'Martini makoye', 'ALFA', '4', 'MAOMBI', NULL, 'watoto wamefurahia somo.', 'Somo limeeleweka vizuri.', '2026-04-11 09:25:17', '2026-04-11 09:25:17'),
+(13, 12, 'submitted', '2026-04-11', 'LESSA SAMWELI', 'ALFA', '4', 'MAOMBI.', NULL, 'watoto wamefurahia somo.', 'Somo limeeleweka vizuri.', '2026-04-11 09:27:24', '2026-04-11 09:27:24'),
+(14, 12, 'submitted', '2026-04-11', 'Nico samweli', 'ALFA', '5', 'MAOMBI.', NULL, 'wanafunzi wamefurahia na maada.', 'Somo limeeleweka vizuri.', '2026-04-11 09:30:19', '2026-04-11 09:30:19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '0001_01_01_000000_create_users_table', 1),
+(2, '0001_01_01_000001_create_cache_table', 1),
+(3, '0001_01_01_000002_create_jobs_table', 1),
+(4, '2025_08_26_071349_create_talents_information_table', 1),
+(5, '2025_08_26_071527_create_talent_attendance_table', 1),
+(6, '2025_08_26_071558_create_talent_absent_participants_table', 1),
+(7, '2025_08_26_072008_create_skills_information_table', 1),
+(8, '2025_08_26_072036_create_masomo_ya_mtaala_table', 1),
+(9, '2025_08_26_072140_create_base_leaders_table', 1),
+(10, '2025_08_26_072156_create_base_leader_details_table', 1),
+(11, '2025_08_26_072837_create_saving_groups_table', 1),
+(12, '2025_08_26_072907_create_group_members_table', 1),
+(13, '2025_08_26_080657_create_home_visitations_table', 1),
+(14, '2025_08_26_080744_create_skills_attendance_table', 1),
+(15, '2025_08_26_080745_create_absent_participants_table', 1),
+(16, '2025_08_26_081320_create_curriculum_attendance_table', 1),
+(17, '2025_08_26_081328_create_primary_students_table', 1),
+(18, '2025_08_26_081335_create_secondary_school_info_table', 1),
+(19, '2025_08_26_081342_create_alevel_students_table', 1),
+(20, '2025_08_26_081413_create_college_info_table', 1),
+(21, '2025_08_26_081421_create_university_info_table', 1),
+(22, '2025_08_26_081427_create_national_leaders_table', 1),
+(23, '2025_08_26_081433_create_national_leader_details_table', 1),
+(24, '2025_08_26_081440_create_cluster_leaders_table', 1),
+(25, '2025_08_26_081447_create_cluster_leader_details_table', 1),
+(26, '2025_08_26_081456_create_cydc_center_leaders_table', 1),
+(27, '2025_08_26_081503_create_cydc_leader_details_table', 1),
+(28, '2025_08_26_081510_create_out_of_ministry_leaders_table', 1),
+(29, '2025_08_26_081518_create_masomo_ya_fani_table', 1),
+(30, '2025_08_26_081524_create_vocational_training_table', 1),
+(31, '2025_08_26_081530_create_special_programs_table', 1),
+(32, '2025_08_26_081536_create_parents_information_table', 1),
+(33, '2025_08_26_083733_create_abscent_table', 1),
+(34, '2025_08_27_072311_modify_users_table_for_phone_registration', 1),
+(35, '2025_08_27_090533_add_role_to_users_table', 1),
+(36, '2025_09_02_120000_add_center_and_cluster_to_users_table', 1),
+(37, '2025_09_04_163412_add_status_to_parents_information_table', 1),
+(38, '2025_09_04_163846_add_status_to_base_leaders_table', 1),
+(40, '2025_09_04_205616_create_submissions_table', 2),
+(41, '2025_09_04_223315_add_status_to_masomo_ya_fani_table', 3),
+(42, '2025_09_08_063912_create_center_leadership_table', 3),
+(43, '2025_09_08_144601_add_status_to_users_table', 3),
+(44, '2025_09_09_200340_update_talents_information_table_data_types', 3),
+(45, '2025_09_11_060851_create_out_of_ministry_leader_details_table', 3),
+(46, '2025_09_11_065545_add_user_id_to_base_leaders_table', 4),
+(47, '2026_01_01_191210_add_profile_photo_to_users_table', 4),
+(48, 'add_status_to_masomo_ya_fani_table', 5),
+(49, '2026_01_02_141516_add_theme_to_users_table', 6),
+(50, '2026_03_24_070155_add_category_columns_to_masomo_ya_mtaala_table', 7),
+(51, '2026_03_24_084427_add_category_to_masomo_ya_mtaala_table', 8),
+(52, '2026_03_26_103332_create_announcements_table', 8),
+(53, '2026_03_31_085935_create_skill_videos_table', 9),
+(54, '2026_03_31_110223_add_is_active_to_skill_videos_table', 10),
+(55, '2026_04_10_115716_add_status_to_absent_participants_table', 11),
+(56, '2026_04_10_122255_add_status_to_absent_participants_table', 11),
+(57, '2026_04_10_124430_add_attendance_type_to_absent_participants_table', 12),
+(58, '2026_04_10_135538_create_curriculum_attendance_participants_table', 13),
+(59, '2026_04_14_080000_create_school_visitations_table', 14),
+(60, '2026_04_16_115900_create_school_information_records_table', 15),
+(61, '2026_04_16_120100_create_exam_results_table', 15),
+(62, '2026_04_16_160000_create_chat_messages_table', 15),
+(63, '2026_04_19_174343_add_form_data_to_school_information_records_table', 16),
+(64, '2026_04_19_194517_add_missing_fields_to_exam_results_table', 17);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `national_leaders`
+--
+
+CREATE TABLE `national_leaders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `center` varchar(255) NOT NULL,
+  `term_end` date NOT NULL,
+  `challenges` text DEFAULT NULL,
+  `comments` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `national_leader_details`
+--
+
+CREATE TABLE `national_leader_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `leader_id` bigint(20) UNSIGNED NOT NULL,
+  `leader_name` varchar(255) NOT NULL,
+  `participant_number` varchar(255) NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `gender` enum('male','female') NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `out_of_ministry_leaders`
+--
+
+CREATE TABLE `out_of_ministry_leaders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `leaders_count` int(11) NOT NULL,
+  `term_end` date NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `out_of_ministry_leader_details`
+--
+
+CREATE TABLE `out_of_ministry_leader_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `out_of_ministry_leader_id` bigint(20) UNSIGNED NOT NULL,
+  `leader_name` varchar(255) NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `gender` enum('male','female') NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `parents_information`
+--
+
+CREATE TABLE `parents_information` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `parent_name` varchar(255) NOT NULL,
+  `parent_of` varchar(255) NOT NULL,
+  `activity` varchar(255) NOT NULL,
+  `support_type` varchar(255) NOT NULL,
+  `address` text NOT NULL,
+  `parent_comments` text DEFAULT NULL,
+  `supervisor_comments` text DEFAULT NULL,
+  `submission_date` date NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `admin_comments` text DEFAULT NULL,
+  `approved_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `approved_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `parents_information`
+--
+
+INSERT INTO `parents_information` (`id`, `parent_name`, `parent_of`, `activity`, `support_type`, `address`, `parent_comments`, `supervisor_comments`, `submission_date`, `user_id`, `created_at`, `updated_at`, `status`, `admin_comments`, `approved_by`, `approved_at`) VALUES
+(17, 'Boniface Godfrey Eliackim', 'Godfrey Eliackim', 'Mkulima, Mfanyabiashara', 'Hapana', 'Block Q - Matanki mane', 'Anaifurahia huduma kwa uwezeshaji anaoupata kituoni kama vile Ada ya shule, pembejeo za kilimo n.k.', 'Mzazi anajitoa kituoni anapohitajika', '2026-01-22', 5, '2026-01-22 12:17:44', '2026-01-22 12:17:44', 'pending', NULL, NULL, NULL),
+(18, 'Theresia Venacy Kube', 'Samson Bukulu', 'Mkulima', 'HVC', 'Mwangaza', 'Anafurahia huduma', 'Mtoto wake anastahili uwezeshwaji kielimu uikiwezekana apelekwe shule ya bweni', '2026-01-22', 5, '2026-01-22 12:23:34', '2026-01-22 12:23:34', 'pending', NULL, NULL, NULL),
+(19, 'Fatuma Said Hassan', 'Hadija Said Hassan', 'Mjasiriamali', 'Hapana', 'Ntinginya', 'Tunamshukuru Mungu kwaajili ya hii huduma,watoto wanapata stahiki zao za maisha', 'Tunaomba muendelee kutupatia huduma naujuzi mbalimbali wa kuhudumia watoto wetu wa kituoni na kutuombea pia', '2026-03-10', 32, '2026-03-10 11:56:56', '2026-03-10 11:56:56', 'pending', NULL, NULL, NULL),
+(20, 'Christina Joseph Kamau', 'Victoria George Mashimi', 'Mkulima', 'Hapana', 'Ntinginya', 'Tunamshukuru Mungu kwaajili ya hii huduma,watoto wanapata stahiki zao za maisha', 'TUnaomba muendelee kuendeleza na kuiboresha huduma', '2026-03-10', 32, '2026-03-10 12:09:56', '2026-03-10 12:09:56', 'pending', NULL, NULL, NULL),
+(21, 'Agatha Epimack', 'Getruda Godfrey', 'Mfugaji', 'Hapana', 'Maporomoko', 'Tunamshukuru Mungu kwaajili ya hii huduma,watoto wanapata stahiki zao za maisha', 'Tunaomba Huduma iendelee kuboreshwa zaidi na zaidi', '2026-03-10', 32, '2026-03-10 12:12:35', '2026-03-10 12:12:35', 'pending', NULL, NULL, NULL),
+(22, 'Verediana Johanes', 'Maria Charles', 'Mjasiriamali', 'HVC', 'Maporomoko', 'Tunamshukuru Mungu kwaajili ya hii huduma,watoto wanapata stahiki zao za maisha', 'Tunashukuru kwa kuzidi kuhudumia wazazi na watoto', '2026-03-10', 32, '2026-03-10 12:15:47', '2026-03-10 12:15:47', 'pending', NULL, NULL, NULL),
+(23, 'Verediana Johanes', 'Neema Charles', 'Mjasiriamali', 'HVC', 'Maporomoko', 'Tunamshukuru Mungu kwaajili ya hii huduma,watoto wanapata stahiki zao za maisha', 'Mzazi anajitahidi pale anapohitajika', '2026-03-10', 32, '2026-03-10 12:19:09', '2026-03-10 12:19:09', 'pending', NULL, NULL, NULL),
+(26, 'Said Yusuph', 'Halima Saidi Yusuph', 'Fundi Baskeli', 'IGA', 'Urambo mjini', 'Anashukuru huduma kwa uwezeshaji', 'Mzazi wa kike wa mshiriki ana changamoto ya akili, nashauri kituo kimsaidie uchunguzi na matibabu', '2026-04-11', 5, '2026-04-11 09:47:10', '2026-04-11 09:47:10', 'approved', NULL, NULL, NULL),
+(27, 'Magreth Msingwa', 'Omary Shakulliwil', 'Mama Lishe', 'IGA', 'Majengo ya tabora', 'anafurahia sana huduma', 'Maendeleo yake yanaridhisha', '2026-04-11', 5, '2026-04-11 09:49:13', '2026-04-11 09:49:13', 'approved', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_reset_tokens`
+--
+
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
+('fkanjanja.tz0827@gmail.com', '$2y$12$vmCMoX6S3vIRSE5r8xMgm.Ae6YtyTFCMZiQrcxQoW2.v/ibkBMsu.', '2025-12-31 14:32:31'),
+('idrissmwala11@gmail.com', '$2y$12$zoO7fl0Zk4krvIWeSpAEeur49A.Ujt/WoZ50DSmru8neF2PYMNoNe', '2026-04-29 10:30:10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `primary_students`
+--
+
+CREATE TABLE `primary_students` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `jina` varchar(255) NOT NULL,
+  `shule` varchar(255) NOT NULL,
+  `darasa` varchar(255) NOT NULL,
+  `tarehe` date NOT NULL,
+  `ufaulu` varchar(255) NOT NULL,
+  `nafasi` varchar(255) NOT NULL,
+  `masomopenda` text DEFAULT NULL,
+  `maono` text DEFAULT NULL,
+  `changamoto` text DEFAULT NULL,
+  `kiswahili` varchar(255) DEFAULT NULL,
+  `hisabati` varchar(255) DEFAULT NULL,
+  `english` varchar(255) DEFAULT NULL,
+  `uraia` varchar(255) DEFAULT NULL,
+  `history` varchar(255) DEFAULT NULL,
+  `maarifa` varchar(255) DEFAULT NULL,
+  `stadi` varchar(255) DEFAULT NULL,
+  `sayansi` varchar(255) DEFAULT NULL,
+  `maoni` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saving_groups`
+--
+
+CREATE TABLE `saving_groups` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `group_name` varchar(255) NOT NULL,
+  `member_count` int(11) NOT NULL,
+  `group_mentor` varchar(255) NOT NULL,
+  `registration_status` varchar(255) NOT NULL,
+  `savings_level` varchar(255) NOT NULL,
+  `bank_account` varchar(255) NOT NULL,
+  `group_progress` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `school_information_records`
+--
+
+CREATE TABLE `school_information_records` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `student_name` varchar(255) DEFAULT NULL,
+  `school_name` varchar(255) DEFAULT NULL,
+  `education_level` varchar(255) DEFAULT NULL,
+  `form_data` longtext DEFAULT NULL,
+  `class_level` varchar(255) DEFAULT NULL,
+  `combination` varchar(255) DEFAULT NULL,
+  `course_name` varchar(255) DEFAULT NULL,
+  `school_location` varchar(255) DEFAULT NULL,
+  `school_type` varchar(255) DEFAULT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'Pending',
+  `admin_notes` text DEFAULT NULL,
+  `submitted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `school_information_records`
+--
+
+INSERT INTO `school_information_records` (`id`, `user_id`, `student_name`, `school_name`, `education_level`, `form_data`, `class_level`, `combination`, `course_name`, `school_location`, `school_type`, `status`, `admin_notes`, `submitted_at`, `created_at`, `updated_at`) VALUES
+(1, 35, NULL, NULL, 'primary', '{\"student_name\":\"JHDYDU\",\"school_name\":\"USJSKS\",\"class_level\":\"yhtgf\",\"graduation_year\":\"2027\",\"performance\":\"Nzuri\",\"best_subjects\":\"biology\",\"failed_subjects\":\"hisabati\",\"child_dream\":\"eng\",\"general_comments\":\"vvsv\"}', NULL, NULL, NULL, NULL, NULL, 'Pending', NULL, NULL, '2026-04-19 16:47:18', '2026-04-19 16:47:18'),
+(2, 35, NULL, NULL, 'a-level', '{\"student_name\":\"JHDYDU\",\"school_name\":\"ffgf\",\"school_address\":\"sfffsfc\",\"form_level\":\"Form 5\",\"completion_date\":\"2026-04-14\",\"performance\":\"Excellent\",\"division\":\"Division II\",\"points\":\"22\",\"subject_combination\":\"PCB (Physics, Chemistry, Biology)\"}', NULL, NULL, NULL, NULL, NULL, 'Pending', NULL, NULL, '2026-04-19 16:48:13', '2026-04-19 16:48:13'),
+(3, 5, NULL, NULL, 'primary', '{\"student_name\":\"Alfonce Jairos Gedion\",\"school_name\":\"Umoja PS\",\"class_level\":\"6\",\"graduation_year\":\"2027\",\"performance\":\"Wastani\",\"best_subjects\":\"Kiswahili, Uraia, Maarifa\",\"failed_subjects\":\"Hesabu, Kingereza, Sayansi\",\"child_dream\":\"Mwalimu\",\"general_comments\":\"Awezeshwe masomo ya ziada\"}', NULL, NULL, NULL, NULL, NULL, 'Pending', NULL, NULL, '2026-04-19 17:46:16', '2026-04-19 17:46:16'),
+(4, 5, NULL, NULL, 'primary', '{\"student_name\":\"Magreth Samwel Stephano\",\"school_name\":\"Samia PS\",\"class_level\":\"7\",\"graduation_year\":\"2026\",\"performance\":\"Nzuri\",\"best_subjects\":\"Kiswahili, Uraia, Maarifa,Hisabati\",\"failed_subjects\":\"English\",\"child_dream\":\"Mhasibu\",\"general_comments\":\"Awezeshwe masomo ya ziada kwa somo la kingereza\"}', NULL, NULL, NULL, NULL, NULL, 'Pending', NULL, NULL, '2026-04-19 17:49:30', '2026-04-19 17:49:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `school_visitations`
+--
+
+CREATE TABLE `school_visitations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `participant_name` varchar(255) NOT NULL,
+  `registration_number` varchar(255) NOT NULL,
+  `school_name` varchar(255) NOT NULL,
+  `class_level` varchar(255) NOT NULL,
+  `participant_presence` varchar(255) NOT NULL,
+  `academic_progress` varchar(255) NOT NULL,
+  `academic_challenges` text DEFAULT NULL,
+  `discipline_status` varchar(255) NOT NULL,
+  `bad_behaviors` text DEFAULT NULL,
+  `cleanliness_status` varchar(255) NOT NULL,
+  `teacher_comments` text DEFAULT NULL,
+  `visitor_comments` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `school_visitations`
+--
+
+INSERT INTO `school_visitations` (`id`, `participant_name`, `registration_number`, `school_name`, `class_level`, `participant_presence`, `academic_progress`, `academic_challenges`, `discipline_status`, `bad_behaviors`, `cleanliness_status`, `teacher_comments`, `visitor_comments`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'Magreth Samwel Stephano', 'TZ082700290', 'Shule ya msingi Samia', '7', 'Yupo', 'Yanaridhisha', NULL, 'Nzuri', NULL, 'Safi', 'Anaamini kuwa atafanya vizuri zaidi kwani uwezo anao', 'Mshiriki huyu awezeshwe masomo ya ziada', 5, '2026-04-17 19:19:05', '2026-04-17 19:19:05'),
+(2, 'Mariam Athuman Juma', 'TZ082700308', 'Shule ya msingi Samia', '7', 'Yupo', 'Yanaridhisha', NULL, 'Nzuri', NULL, 'Safi', 'Aongeze bidii', 'Awezeshwe masomo ya ziada', 5, '2026-04-17 19:20:57', '2026-04-17 19:20:57');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `secondary_school_info`
+--
+
+CREATE TABLE `secondary_school_info` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `jina` varchar(255) NOT NULL,
+  `shule` varchar(255) NOT NULL,
+  `kidato` varchar(255) NOT NULL,
+  `ufaulu` varchar(255) NOT NULL,
+  `division` varchar(255) NOT NULL,
+  `tarehe_kumaliza` date DEFAULT NULL,
+  `combination` varchar(255) DEFAULT NULL,
+  `kiswahili` varchar(255) DEFAULT NULL,
+  `mathematics` varchar(255) DEFAULT NULL,
+  `english` varchar(255) DEFAULT NULL,
+  `civics` varchar(255) DEFAULT NULL,
+  `history` varchar(255) DEFAULT NULL,
+  `biology` varchar(255) DEFAULT NULL,
+  `chemistry` varchar(255) DEFAULT NULL,
+  `bookkeeping` varchar(255) DEFAULT NULL,
+  `commerce` varchar(255) DEFAULT NULL,
+  `maoni` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` longtext NOT NULL,
+  `last_activity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('2T6ldCC6yA57JBgL2pgr2lK5m61X2CXgxnz4sdzA', 2, '197.186.3.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiRlpzS3lQemFBdjlqRUFaZEJXelZ6d2JLYlR5azMxdU56MjNHNUllMCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQ2OiJodHRwczovL2N5ZGNhY3Rpdml0aWVzZGIub3IudHovYWRtaW4vZGFzaGJvYXJkIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1777576244);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skills_attendance`
+--
+
+CREATE TABLE `skills_attendance` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `teacher_name` varchar(255) NOT NULL,
+  `lesson_topic` varchar(255) NOT NULL,
+  `present_count` int(11) NOT NULL,
+  `teacher_comments` text DEFAULT NULL,
+  `supervisor_comments` text DEFAULT NULL,
+  `lesson_topic_details` text NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `skills_attendance`
+--
+
+INSERT INTO `skills_attendance` (`id`, `date`, `teacher_name`, `lesson_topic`, `present_count`, `teacher_comments`, `supervisor_comments`, `lesson_topic_details`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, '2025-09-27', 'Lameck Fanuel', 'Playing Keyboard', 6, 'The lesson is well known to participants', 'The class is going well', 'Participants have to understand all ways of playing keyboard', 25, '2025-10-03 08:26:06', '2025-10-03 08:26:06'),
+(2, '2025-10-11', 'ELILUMBA SAMWEL', 'COMPUTER SKILLS', 18, NULL, NULL, 'MICROSOFT WORD', 25, '2025-11-18 14:39:38', '2025-11-18 14:39:38'),
+(3, '2026-01-17', 'Benjamini Lugendo James', 'GET DESIGN', 5, 'Wamejitahidi kuelewa kwa asilimia 50%', 'Ongeza Juhudi katika kufundisha vijana ili waelewe zaidi ya hiyo 50%', 'Wametengeneza namna ya kuweka maua, seti ya kufungia mlango(kuweka komea)', 8, '2026-01-17 11:35:49', '2026-01-17 11:35:49'),
+(4, '2026-01-17', 'Benjamini Lugendo James', 'GET DESIGN', 5, 'Wamejitahidi kuelewa kwa asilimia 50%', 'Ongeza Juhudi katika kufundisha vijana ili waelewe zaidi ya hiyo 50%', 'Wametengeneza namna ya kuweka maua, seti ya kufungia mlango(kuweka komea)', 8, '2026-01-17 11:36:24', '2026-01-17 11:36:24'),
+(5, '2026-01-17', 'YOHANA WILIAM KERETA', 'CHELEHANI', 8, 'Bado kuelewa sana hivyo tutaendelea kwa tarehe 24/01/2026', 'Inatakiwa kuongeza bidii katika kuwafundisha vijana', 'Ukataji wa nguo za mitindo ya kike na kiume', 8, '2026-01-17 12:40:19', '2026-01-17 12:40:19'),
+(6, '2026-01-20', 'STEVEN MAGANGA CORNERY', 'ALUMINIUM', 8, 'Wameelewa kwa asilimia 30% kwa darasa la awali', 'Mwalimu Aongeze bidii kuwafundisha na wanafunzi wapokee kwa uwelewa kile wanachofundishwa', '1.Utengenezaji wa Frame ya mlango wa Aluminium\r\n2. Utengenezaji wa Top ya Mlango wa Aluminium', 8, '2026-01-20 12:46:19', '2026-01-20 12:46:19'),
+(7, '2026-01-19', 'Benjamini Lugendo James', 'WELDING', 6, 'Wameelewa kwa asilimia 50%', 'Mwalimu aendelee kuwapa uzoefu wa kutengeneza vitu', 'STARTING TO DESIGN WINDOWS', 8, '2026-01-24 11:31:39', '2026-01-24 11:31:39'),
+(8, '2026-01-31', 'Benjamini Lugendo James', 'WELDING', 6, 'Wameelewa kwa asilimia 40%', 'Waendelee kukuza ujuzi wao', 'DESIGNING FOR THE SPEEKER STAND', 8, '2026-01-24 11:34:23', '2026-01-24 11:34:23'),
+(9, '2026-01-24', 'EMMANUEL SELEMANI', 'PHOTOGRAPHY INTRODUCTION', 2, 'NITAENDELEA NA MADA NYINGINE', 'TUMEELEWA VIZURI', 'INTRUDUCTION TI BACKGROUND REMOVAL AND REPLACEMENT IN PHOTO EDITING', 31, '2026-01-24 12:33:26', '2026-01-24 12:33:26'),
+(10, '2026-01-24', 'ALEX ABEL', 'MUSIC TECHNIQUES', 16, 'SOMO LIMEFUNDISHWA VIZURI', 'MWANAFUNZI AMEONYESHA UELEWA MZURI WA SOMO', 'SOMO LILIHUSU UTANGULIZI WA MBINU ZA MUSIKI IKIWEMO MATUMIZI SAHIHI YA SAUTI,MPANGILIO WA MUZIKI NA MAZOEZI', 31, '2026-01-24 13:12:49', '2026-01-24 13:12:49'),
+(11, '2026-01-24', 'ALEX ABEL', 'MUSIC TECHNIQUES', 16, 'SOMO LIMEFUNDISHWA VIZURI', 'MWANAFUNZI AMEONYESHA UELEWA MZURI WA SOMO', 'SOMO LILIHUSU UTANGULIZI WA MBINU ZA MUSIKI IKIWEMO MATUMIZI SAHIHI YA SAUTI,MPANGILIO WA MUZIKI NA MAZOEZI', 31, '2026-01-24 13:12:52', '2026-01-24 13:12:52'),
+(12, '2026-01-24', 'ISACK OSCAR HERMAN', 'COMPUTER', 21, 'WANAPENDA KUENDELEA KUJIFUNZA', 'TUNAPEZWA NA PIA TUNAPENDA KUENDELEA KUJIFUNZA ZAIDI', 'INTRODUCTION OF COMPUTER', 8, '2026-01-24 13:13:18', '2026-01-24 13:13:18'),
+(13, '2026-01-24', 'YOHANA WILIAM KERETA', 'CHELEHANI', 30, 'WAMEELEWA KWA ASILIMIA 50', 'MWALIMU AENDELEE VIZURI KUTUFUNDISHA', 'KUKATA NA KUSHONA SURUALI', 8, '2026-01-24 13:26:51', '2026-01-24 13:26:51'),
+(14, '2026-01-24', 'ALEX ABEL', 'MUSIC TECHNIQUES', 7, 'SOMO LIMEFUNDISHWA VIZURI', 'MWANAFUNZI AMEONYESHA UELEWA MZURI WA SOMO', 'SOMO LILIHUSU UTANGULIZI WA MBINU ZA MUSIKI IKIWEMO MATUMIZI SAHIHI YA SAUTI,MPANGILIO WA MUZIKI NA MAZOEZI', 31, '2026-01-24 13:29:04', '2026-01-24 13:29:04'),
+(17, '2026-01-31', 'EMMANUEL SELEMANI', 'POSTERS DESIGN', 4, 'NITAENDELEA NA MADA NYINGINE', 'TUMEELEWA VIZURI', 'GRAPHICS DESIGN', 31, '2026-01-31 12:45:10', '2026-01-31 12:45:10'),
+(18, '2026-02-21', 'Benjamini Lugendo James', 'WELDING', 4, 'Wameelewa vyema', 'Wapewe muda zaidi  kwa ajili ya kufanya idadi kubwa ya kazi', 'Granding get and windows', 8, '2026-02-14 11:35:29', '2026-02-14 11:35:29'),
+(19, '2026-02-21', 'Benjamini Lugendo James', 'WELDING', 6, 'Wameelewa vyema', 'Wapewe muda zaidi  kwa ajili ya kufanya idadi kubwa ya kazi', 'Granding get and windows', 8, '2026-02-14 11:36:40', '2026-02-14 11:36:40'),
+(20, '2026-02-14', 'ISACK OSCAR HERMAN', 'COMPUTER', 22, 'Wamelewa kwa asilimia 10%', 'Mwalimu aongeze bidii katika ufundishaji', 'Short story of computers', 8, '2026-02-14 13:51:22', '2026-02-14 13:51:22'),
+(21, '2026-02-21', 'ALEX ABEL', 'CHORD PROGRESSIONS', 4, 'Wanafunzi wameelewa somo vizuri na wameonyesha ushirikiano mzuri.wanahitaji kuendelea kufanya mazoezi ya  vitendo zaidi', 'darasa limeendeshwa vizuri kwa mpangilio mizuri na usimamizi wa muda umezingatiwa.', 'CHORDS PROGRESSIONS (Mfuatano wa Akipozi)', 31, '2026-02-21 11:16:18', '2026-02-21 11:16:18'),
+(22, '2026-01-24', 'GLORY', 'JINSI YA KUPANGILIA NYWELE KWA MKONO', 12, 'Watoto wameweza kugawa mistari vizuri ya nywele', 'Tunahitaji fani hii kuendelezwa kwa kina zaidi kwa kuongezewa vifaa', 'Nywele tano ni nywele ya mafungu ambayo unagawa mara mbili', 32, '2026-03-16 07:42:33', '2026-03-16 07:42:33'),
+(23, '2026-02-07', 'HANIFA', 'KUCHORA MCHORO WA MAUWA', 18, 'Watoto wamelielewa somo', 'Watoto wameelewa vizuri', 'Kutengeneza maua ya kudarizi kwenye kitambaa unatakiwa uwe na vifaa kama kitambaa, uzi na gundi ya nguo', 32, '2026-03-16 07:48:02', '2026-03-16 07:48:02'),
+(25, '2026-03-28', 'YOHANA WILIAM KERETA', 'CHELEHANI', 12, 'Wameelewa kwa asilimia 50', 'Waongeze bidii katika kuelewa vitu wanavyofundishwa', 'Kufundisha ukaataji wa nguo za kike na kiume', 8, '2026-03-28 11:49:30', '2026-03-28 12:56:32'),
+(26, '2026-03-28', 'Benjamini Lugendo James', 'WELDING', 3, 'Wameelewa kwa 70% Hivyo waongeze bidii', 'Wanasitahili kuongeza ubora katika ufanisi wa kujifunza zaidi', 'Design Gate', 8, '2026-03-28 12:10:42', '2026-03-28 12:11:26'),
+(27, '2026-03-28', 'Alex Abel', 'Utangulizi wa Muziki na Midundo (Basic Music & Rhythm)', 5, 'Wanafunzi walikuwa wachangamfu na walishiriki vizuri katika kipindi. Hata hivyo, baadhi yao wanahitaji kuhamasishwa zaidi ili kujiamini wanapozungumza mbele ya wengine.', 'Kipindi kimeendeshwa vizuri.', 'Somo lilihusu utangulizi wa muziki kwa wanafunzi, likijikita katika kuelewa midundo (rhythm), tempo, na matumizi ya sauti. Wanafunzi walijifunza kupiga makofi kufuata midundo tofauti, kuimba kwa pamoja, na kutambua aina mbalimbali za muziki. Pia walifanya mazoezi ya vitendo ili kuongeza uelewa wao wa muziki.', 31, '2026-03-28 12:44:04', '2026-03-28 12:44:04'),
+(28, '2026-03-07', 'LILIAN LYATUU', 'ALPHA', 13, 'Wameelewa na kufurahia somo', 'Wameelewa', 'Kuna cha zaidi maishani zaidi ya hivi', 23, '2026-04-11 10:01:05', '2026-04-11 10:01:05'),
+(29, '2026-03-07', 'RAYMOND MNOHI', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa na kufurahia mfumo mpya wa ufundishaji', 'Wameelewa', 'KUNA CHA ZAIDI MAISHANI ZAIDI YA HIVI', 23, '2026-04-11 11:12:49', '2026-04-11 11:12:49'),
+(30, '2026-03-07', 'DAINES ANTONY', 'ALPH PROGRAM', 12, 'Washiriki wameelewa', 'Wameelewa', 'JE KUNA CHA ZAIDI MAISHANI', 23, '2026-04-11 11:17:00', '2026-04-11 11:17:00'),
+(31, '2026-03-07', 'YOHANA KIDUGALO', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa', 'Wameelewa', 'JE KUNA CHA ZAIDI MAISHANI', 23, '2026-04-11 11:18:27', '2026-04-11 11:18:27'),
+(32, '2026-03-07', 'FARAJA COSMAS', 'ALPH PROGRAM', 12, 'Wameelewa', 'Wameelewa', 'JE KUNA CHA ZAIDI MAISHANI', 23, '2026-04-11 11:19:21', '2026-04-11 11:19:21'),
+(33, '2026-03-14', 'LILIAN LYATUU', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa', 'Washiriki wameelewa', 'YESU NI NANI', 23, '2026-04-11 11:32:56', '2026-04-11 11:32:56'),
+(34, '2026-03-14', 'RAYMOND MNOHI', 'ALPH PROGRAM', 12, 'Washiriki wameelewa na kufurahia somo', 'washiriki wameelewa', 'YESU NI NANI', 23, '2026-04-11 11:34:32', '2026-04-11 11:34:32'),
+(35, '2026-03-14', 'YOHANA KIDUGALO', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa somo na kukuza uwezo wao kuhusu YESU', 'Wameelewa', 'YESU NI NANI', 23, '2026-04-11 11:36:07', '2026-04-11 11:36:07'),
+(36, '2026-03-14', 'DAINES ANTONY', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa', 'Wameelewa vizuri', 'YESU NI NANI', 23, '2026-04-11 11:41:20', '2026-04-11 11:41:20'),
+(37, '2026-03-14', 'FARAJA COSMAS', 'ALPH PROGRAM', 12, 'Wameelewa', 'Wameelewa', 'YESU NI NANI', 23, '2026-04-11 11:42:32', '2026-04-11 11:42:32'),
+(38, '2026-03-28', 'LILIAN LYATUU', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa kuwa Yesu  alikufa kwaajili yao na somo limebadilisha mtazamo wao juu ya wokovu', 'Wameelewa', 'KWANINI YESU ALIKUFA', 23, '2026-04-11 11:48:19', '2026-04-11 11:48:19'),
+(39, '2026-03-07', 'FAITH ALLY', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa mambo muhimu katika maisha na kufurahia mfumo mpya wa kujifunza', 'Wanafunzi wameelewa', 'JE KUNA CHA ZAIDI MAISHANI', 23, '2026-04-11 11:53:36', '2026-04-11 11:53:36'),
+(40, '2026-03-14', 'FAITH ALLY', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa', 'Wameelewa', 'YESU NI NANI', 23, '2026-04-11 11:57:27', '2026-04-11 11:57:27'),
+(41, '2026-03-28', 'RAYMOND MNOHI', 'ALPH PROGRAM', 13, 'Wanafunzi wameelewa', 'Wameelewa vizuri.', 'KWANINI YESU ALIKUFA', 23, '2026-04-11 11:59:55', '2026-04-11 11:59:55'),
+(42, '2026-03-28', 'DAINES ANTONY', 'ALPH PROGRAM', 14, 'Wanafunzi wameelewa na somo limebadilisha mtazamo wao juu ya YESU na kifo chake', 'wameelewa', 'KWANINI YESU ALIKUFA', 23, '2026-04-11 12:01:30', '2026-04-11 12:01:30'),
+(43, '2026-03-28', 'YOHANA KIDUGALO', 'ALPH PROGRAM', 10, 'Wanafunzi wameelewa', 'wameelewa', 'KWANINI YESU ALIKUFA', 23, '2026-04-11 12:03:09', '2026-04-11 12:03:09'),
+(44, '2026-03-28', 'FARAJA COSMAS', 'ALPH PROGRAM', 17, 'Wameelewa', 'Wameelewa', 'KWANINI YESU ALIKUFA', 23, '2026-04-11 12:14:56', '2026-04-11 12:14:56'),
+(45, '2026-04-11', 'Alex Abel', 'Practical Music', 5, 'Wanafunzi walishiriki katika mazoezi ya muziki kwa vitendo ikiwemo mafunzo ya sauti, mazoezi ya midundo, na mbinu za msingi za kurekodi. Walifanya mazoezi ya kudhibiti sauti, kufuata muda (timing), na kushirikiana katika uimbaji wa vikundi.', 'Kipindi kimeendeshwa vizuri. Mwalimu ameonesha uelewa mzuri na ushirikiano na wanafunzi. Inashauriwa kuongeza mazoezi ya mtu mmoja mmoja.', 'Wanafunzi walishiriki katika mazoezi ya muziki kwa vitendo ikiwemo mafunzo ya sauti, mazoezi ya midundo, na mbinu za msingi Walifanya mazoezi ya kudhibiti sauti, kufuata muda (timing), na kushirikiana katika uimbaji wa vikundi.', 31, '2026-04-11 12:30:08', '2026-04-11 12:30:08'),
+(46, '2026-03-28', 'FAITH ALLY', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa', 'Wameelewa', 'KWANINI YESU ALIKUFA', 23, '2026-04-11 12:30:48', '2026-04-11 12:30:48'),
+(47, '2026-04-11', 'LILIAN LYATUU', 'ALPH PROGRAM', 12, 'Wanafunzi wameelewa somo', 'Wameelewa', 'NINAWEZAJE KUWA NA IMANI', 23, '2026-04-11 12:32:53', '2026-04-11 12:32:53'),
+(48, '2026-04-11', 'RAYMOND MNOHI', 'ALPH PROGRAM', 7, 'Wanafunzi wameelewa', 'Wameelewa', 'NINAWEZAJE KUWA NA IMANI', 23, '2026-04-11 12:34:04', '2026-04-11 12:34:04'),
+(49, '2026-04-11', 'DAINES ANTONY', 'ALPHA PROGRAM', 12, 'Wanafunzi wameelewa', 'Wameelewa', 'NINAWEZAJE KUWA NA IMANI', 23, '2026-04-11 12:41:23', '2026-04-11 12:41:23'),
+(50, '2026-04-11', 'YOHANA KIDUGALO', 'ALPHA PROGRAM', 10, 'Wanafunzi wameelewa', 'Wameelewa', 'NINAWEZAJE KUWA NA IMANI', 23, '2026-04-11 12:44:26', '2026-04-11 12:44:26'),
+(51, '2026-04-11', 'FAITH ALLY', 'ALPHA PROGRAM', 1, 'Idadi ya wanafunzi imekuwa ndogo kwasababu wanafunzi wengi wameripoti shule na wameanza  utaratibu wa kuwa na masomo siku ya jumamosi mpaka mchana hivyo idadi yao imepungua.', 'Idadi ya wanafunzi imekuwa ndogo kwasababu wanafunzi wengi wameripoti shule na wameanza  utaratibu wa kuwa na masomo siku ya jumamosi mpaka mchana hivyo idadi yao imepungua.', 'NINAWEZAJE KUWA NA IMANI', 23, '2026-04-11 12:51:01', '2026-04-11 12:51:01'),
+(52, '2026-04-11', 'ISACK O. HERMAN', 'COMPUTER', 2, '80% za kuendelea na mafunzo ya program kwa uzuri asanteni.', NULL, 'PROCESSOR', 31, '2026-04-11 12:59:05', '2026-04-11 13:00:24'),
+(53, '2026-04-18', 'LILIAN LYATUU', 'ALPHA PROGRAM', 12, 'SOMO LIMEELEWEKA', 'WAMEELEWA', 'KWANI NA NI VIPI NAWEZAJE KUOMBA', 23, '2026-04-18 09:11:44', '2026-04-18 09:11:44'),
+(54, '2026-04-18', 'RAYMOND MNOHI', 'ALPHA PROGRAM', 11, 'VIJANA WAMEFURAHIA SOMO', 'WAMEELEWA', 'KWANI NA NI VIPI NAWEZA KUOMBA', 23, '2026-04-18 09:16:25', '2026-04-18 09:16:25'),
+(55, '2026-04-18', 'DAINES ANTONY', 'ALPHA PROGRAM', 12, 'SOMO LIMEELEWEKA', 'WAMEELEWA SOMO', 'KWANI NA NI VIPI NAWEZA KUOMBA', 23, '2026-04-18 09:18:46', '2026-04-18 09:18:46'),
+(56, '2026-04-18', 'YOHANA KIDUGALO', 'ALPHA PROGRAM', 6, 'SOMO LIMEELEWEKA', 'VIJANA WAMEELEWA', 'KWANI NA NI VIPI NAWEZA KUOMBA', 23, '2026-04-18 09:20:57', '2026-04-18 09:20:57'),
+(57, '2026-04-18', 'FAITH ALLY', 'ALPHA PROGRAM', 11, 'VIJANA WAMEELEWA SOMO', 'SOMO LIMEELEWEKA', 'KWANI NA NI VIPI NAWEZA KUOMBA', 23, '2026-04-18 09:22:52', '2026-04-18 09:22:52'),
+(58, '2026-04-18', 'FARAJA COSMAS', 'ALPHA PROGRAM', 10, 'SOMO LIMEELEWEKA', 'VIJANA WAMEELEWA SOMO', 'KWANI NA NI VIPI NAWEZA KUOMBA', 23, '2026-04-18 09:25:27', '2026-04-18 09:25:27');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skills_information`
+--
+
+CREATE TABLE `skills_information` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_name` varchar(255) NOT NULL,
+  `gender` enum('Male','Female') NOT NULL,
+  `student_id` varchar(255) NOT NULL,
+  `skill_category` varchar(255) NOT NULL,
+  `specific_skills` text NOT NULL,
+  `skills_type` varchar(255) NOT NULL,
+  `group_skills_details` text DEFAULT NULL,
+  `skill_level` varchar(255) NOT NULL,
+  `has_certification` varchar(255) DEFAULT NULL,
+  `certification_details` text DEFAULT NULL,
+  `mentor` varchar(255) DEFAULT NULL,
+  `challenges` text DEFAULT NULL,
+  `support_received` text DEFAULT NULL,
+  `comments` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `skills_information`
+--
+
+INSERT INTO `skills_information` (`id`, `student_name`, `gender`, `student_id`, `skill_category`, `specific_skills`, `skills_type`, `group_skills_details`, `skill_level`, `has_certification`, `certification_details`, `mentor`, `challenges`, `support_received`, `comments`, `user_id`, `created_at`, `updated_at`) VALUES
+(4, 'John Meshack', 'Male', 'Tz067900006', 'Music', 'Kuimba,Kurekodi Vocals Studio', 'Group', 'Hushiriki Kwenye Kikudi Cha Muziki,hufanya mazoezi ya sauti', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosefu wa Vifaa', 'Apewa mafunzo ya kuimba', 'anaonyesha juhudi kubwa', 31, '2026-02-14 09:26:28', '2026-02-14 09:26:28'),
+(5, 'Shalom Nelson', 'Male', 'Tz0679000179', 'Music', 'Drammer,kurekidi sauti studio (vocal Recording)', 'Group', 'hushiliki kwenye kikundi cha muziki', 'Intermediate', 'No', NULL, 'Alex Abel', 'ukosefu wa vifaa vya studio', 'ukosefu wa vifaa vya stAmepewa mafunzo ya vocal,msaada wa kurekodi studio,na ushauri wa kitaalamuu', 'anaonyesha juhudi kubwa na maendeleo mazuri', 31, '2026-02-14 09:37:27', '2026-02-14 09:37:27'),
+(6, 'Atukuzwe Peter', 'Male', 'Tz067903003', 'Music', 'Drammer,kurekodi ,vocal studio', 'Group', 'hushiliki kwenye kikundi cha muziki hufanya mazoezi ya muziki', 'Beginner', 'No', NULL, 'Alex Abel', 'ukosefu wa vifaavya kutosha', 'anapewa mafunzo ya muziki na ushauri wa kitaalamu', 'anaonyesha juhudi kubwa', 31, '2026-02-14 09:48:58', '2026-02-14 09:48:58'),
+(7, 'Asheli Benadicto', 'Male', 'Tz067900187', 'Music', 'drammer,kurekodi,vocal studio', 'Group', 'hushiliki kwenye kikundi cha music', 'Beginner', 'No', NULL, 'Alex Abel', 'ukosefu wa vifaa vya kutosha', 'anapewa mafunzo na utaalamu', 'anaonyesha juhudi', 31, '2026-02-14 09:53:53', '2026-02-14 09:53:53'),
+(8, 'Grory Paschal', 'Female', 'Tz067900143', 'Music', 'kuimba (Singing)', 'Group', 'hushiliki kwenye kikundi', 'Beginner', 'No', NULL, 'Alex Abel', 'ukosefu wa vifaa', 'anapewa mafunzo ya music', 'Anaonyesha juhudi', 31, '2026-02-14 09:59:12', '2026-02-14 09:59:12'),
+(9, 'Charesi Godfrey', 'Male', 'Tz067800161', 'Music', 'kuimba,kulekodi vocal studio', 'Group', 'hushiliki kwenye kikundi cha music', 'Beginner', 'No', NULL, 'Alex Abel', 'ukosefu wa vifaa vya', 'Amepewa mafunzo ya vocal,msaada wa kurekodi studio,na ushauri wa kitaalamuu', 'Anaonyesha juhudi', 31, '2026-02-14 10:11:01', '2026-02-14 10:11:01'),
+(10, 'Kurwa Yohana', 'Male', 'Tz067900240', 'Music', 'Kuimba kulekodi Voise Studio', 'Group', 'Hushiliki kwenye kikundi cha music', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosekanaji wa vifaa', 'anapewa mafunzo ya Vocal ,msaada wa kulekodi Studio', 'Anaonyesha Juhudi', 31, '2026-02-14 10:20:51', '2026-02-14 10:20:51'),
+(11, 'Eliki Chacha', 'Male', 'Tz067900226', 'Music', 'Drammer', 'Group', 'Hushiliki kwenye kikundi cha muziki', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosefu wa Vifaa', 'Anapewa mafunzo ya muziki', 'Anaonyesha Juhudi', 31, '2026-02-14 10:26:17', '2026-02-14 10:26:17'),
+(12, 'Braiton John', 'Male', 'Tz067900001', 'Music', 'pianist,kulekodi voise studio', 'Group', 'Hushiliki kwenye kikundi cha muziki', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosefu wa vifaa vya muziki', 'Anapewa mafunzo', 'Anaonyesha juhudi', 31, '2026-02-14 10:37:00', '2026-02-14 10:37:00'),
+(14, 'Nezia Obadia', 'Female', 'Tz067900118', 'Music', 'Kuimba', 'Group', 'Hushiliki kwenye kikundi cha muziki', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosefu wa Vifaa', 'Anapewa mafunzo', 'Anaonyesha Juhudi', 31, '2026-02-14 10:54:02', '2026-02-14 10:54:02'),
+(15, 'Israel Katabanya', 'Male', 'Tz067900036', 'Music', 'Huimba,Kulekodi Voise Studio', 'Group', 'Hushiliki kwenye kikundi', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosefu wa vifaa', 'Anapewa Mafunzo', 'Anaonyesha Juhudi', 31, '2026-02-14 10:58:41', '2026-02-14 10:58:41'),
+(16, 'Jemsi Baraka', 'Male', 'Tz067900018', 'Music', 'pianist,kulekodi Voise Studio', 'Group', 'Hushiliki kwenye kikundi', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosefu wa Vifaa', 'Anapewa Mafunzo', 'Anaonyesha juhudi', 31, '2026-02-14 11:01:16', '2026-02-14 11:01:16'),
+(17, 'Jemsi Baraka', 'Male', 'Tz067900018', 'Music', 'pianist,kulekodi Voise Studio', 'Group', 'Hushiliki kwenye kikundi', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosefu wa Vifaa', 'Anapewa Mafunzo', 'Anaonyesha juhudi', 31, '2026-02-14 11:01:17', '2026-02-14 11:01:17'),
+(18, 'Sofia Peter', 'Female', 'Tz067900269', 'Music', 'kuimba', 'Group', 'Hushiliki Kwenye Kikundi cha Muziki', 'Beginner', 'No', NULL, 'Alex Abel', 'Ukosefu wa Vifaa', 'Anapewa Mafunzo', 'Anaonyesha juhudi', 31, '2026-02-14 11:07:22', '2026-02-14 11:07:22'),
+(19, 'BARAKA FADHILI KIBANGA', 'Male', 'TZ067900163', 'VIDEO PRODUCTION', 'Video editing using POWER DIRECTOR / PREMIERE', 'VIDEO EDITING', 'He collaborated well with his colleagues in making videos.', 'Beginner', 'No', NULL, 'EMMANUEL SELEMANI', 'Our biggest challenge is the camera card slot problem', 'He has been given additional training in using Adobe Premiere Pro', 'The child is showing great progress in video production and continues to gain confidence every week if he continues this hard work, he will go far.', 31, '2026-02-14 12:28:12', '2026-02-14 12:28:12'),
+(20, 'DERICK MESHACK EMMANUEL', 'Male', 'TZ067900221', 'VIDEO PRODUCTION', 'Video editing using POWER DIRECTOR / PREMIERE PRO', 'VIDEO EDITING', 'He collaborated well with his colleagues in making videos.', 'Beginner', 'No', NULL, 'EMMANUEL SELEMANI', NULL, 'He has been given additional training in using Premiere Pro', 'The child is showing great progress in video production and continues to gain confidence every week if he continues this hard work, he will go far.', 31, '2026-02-14 12:34:42', '2026-02-14 12:34:42'),
+(21, 'KHARID ISSA ADAM', 'Male', 'TZ067900248', 'VIDEO PRODUCTION', 'Video editing using POWER DIRECTOR / PREMIERE PRO', 'VIDEO EDITING', 'He collaborated well with his collaborated in making videos.', 'Intermediate', 'No', NULL, 'EMMANUEL SELEMANI', NULL, 'He has been given additional training in using Adobe premiere Pro', 'The child is showing great progress in video production and continues to gain confidence every week if he continues this hard work, he will go far', 31, '2026-02-14 12:38:51', '2026-02-14 12:38:51'),
+(22, 'YALED PETER MPAMBA', 'Male', 'TZ067900199', 'VIDEO PRODUCTION', 'Video editing using Premiere Pro', 'VIDEO EDITING', 'He has in School', 'Beginner', 'No', NULL, 'EMMANUEL SELEMANI', NULL, NULL, NULL, 31, '2026-02-14 12:42:18', '2026-02-14 12:42:18'),
+(23, 'STARLOARD MAPAMBANO JUMA', 'Male', 'TZ067900148', 'VIDEO PRODUCTION', 'Video editing using Power Director / Premiere Pro', 'VIDEO EDITING', 'He collaborated well with his colleagues in making videos', 'Intermediate', 'No', NULL, 'EMMANUEL SELEMANI', NULL, 'He has been given additional training in using Adobe Premiere Pro', 'The child is showing great progress in video production and continues to gain confidence every week if he continues this hard work, he will go far', 31, '2026-02-14 12:49:19', '2026-02-14 12:49:19'),
+(24, 'GODFREY OSCAR ANDERSON', 'Male', '0047', 'CHELEHANI', 'ANAJIFUNZA NGUO ZA KIKE NA KIUME NA MITINDO YA KISASA YA UBUNIFU WA MAVAZI', 'GROUP', '-', 'Beginner', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'CHELEHANI 15', 'ANAENDELEA VIZURI NA ANAONESHA BIDII KWENYE FANI HUSIKA', 31, '2026-02-14 13:00:43', '2026-02-14 13:00:43'),
+(25, 'AISHA  NASSORO', 'Female', '00025', 'CHELEHANI', 'ANAJIFUNZA KUSHONA NGUO ZA KIKE PEKEE', 'GROUP', '-', 'Intermediate', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'CHELEHANI 15', 'ANAONESHA BIDII KWENYE FANI HII', 31, '2026-02-14 13:02:11', '2026-02-14 13:02:11'),
+(26, 'MWAJUMA NASSIBU', 'Female', '0015', 'CHELEHANI', '-', 'GROUP', '-', 'Advanced', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'CHELEHANI 15 KWA AJILI YA DARASA LA CHELEHANI', 'ANAJITAHIDI SANA KWENYE UBUNIFU JAPO CHANGAMOTO ZA RATIBA ZA MASOMO YAKE YA SEKONDARI WAKATI MWINGINE ZINAMZUIA KUHUDHURIA PROGRAM YA USHONAJI', 31, '2026-02-14 13:03:37', '2026-02-14 13:03:37'),
+(27, 'KULWA BONIPHACE', 'Female', '00177', 'CHELEHANI', '-', 'GROUP', '-', 'Advanced', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'CHELEHANI 15', 'ANAUWEZA MZURI WA USHONAJI NA HATA KWA TENDA NDOGO NDOGO ANAWEZA KUFANYA VIZURI', 31, '2026-02-14 13:04:56', '2026-02-14 13:04:56'),
+(28, 'SARAPHINA NASHONI', 'Female', '00168', 'CHELEHANI', '-', 'GROUP', '-', 'Intermediate', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'CHELEHANI 15', 'ANAONESHA BIDII KWENYE FANI HII', 31, '2026-02-14 13:05:53', '2026-02-14 13:05:53'),
+(29, 'JANETH ERASTO', 'Female', '00253', 'CHELEHANI', '-', 'GROUP', '-', 'Intermediate', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'CHELEHANI 15', 'ANAONESHA UWEZO MKUBWA KWENYE FANI', 31, '2026-02-14 13:06:51', '2026-02-14 13:06:51'),
+(30, 'PRISCA JULIUS', 'Female', '00050', 'CHELEHANI', '-', 'GROUP', '-', 'Expert', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'AMEWEZESHWA MRADI WAKE', 'KWA SASA ANAJITEGEMEA NA FANI INAMUINGIZIA KIPATO', 31, '2026-02-14 13:07:56', '2026-02-14 13:07:56'),
+(31, 'JAMES BARAKA', 'Male', '00018', 'CHELEHANI', 'NGUO ZA KIKE NA KIUME', 'GROUP', '-', 'Beginner', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'CHELEHANI 15', 'ANAONESHA BIDII RICHA MAJUKUM,U YA MASOMO PIA YANAMZUIA KUTOKANA NA UHABA WA MUDA', 31, '2026-02-14 13:09:14', '2026-02-14 13:09:14'),
+(32, 'SOPHIA NASSORO', 'Female', '0038', 'CHELEHANI', 'NGUO ZA KIKE', 'GROUP', '-', 'Expert', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'ANAANDALIWA KUONDOLEWA KWENYE PROGRAM KWA KUWEZESHWA VIFAA KAZI KUTOKANA NA FANI YAKE', 'NI FUNDI MZURI NA ANAPAMBANA NA ENEO LA MASOKO NA KUTANGAZA JINA LAKE LA BIASHARA', 31, '2026-02-14 13:10:46', '2026-02-14 13:10:46'),
+(33, 'MARY JAMES', 'Female', '00150', 'CHELEHANI', 'USHONAJI WA NGUO ZA KIKE NA ZA MAHARUSI', 'GROUP', '-', 'Advanced', 'NO', '-', 'YOHANA WILLIAM', 'UHABA WA VIFAA VYA KUJIFUNZIA HASA VITAMBAA AMBAVYO HUWA VINAISHA MARA KWA MARA KUTOKANA NA MAHITAJI YA DARASA NA MASHINE YA KUDARIZI', 'ANAPELEKWA KWENYE CHUO MAARUMU CHA UBUNIFU WA MAVAZI YA NGUO ZA HARUSI JIJINI MWANZA', 'ANAONESHA BIDII KUBWA KWENYE FANI YAKE', 31, '2026-02-14 13:12:06', '2026-02-14 13:12:06'),
+(34, 'chiku shabani malala', 'Female', 'TZo679000009', 'COMPUTER', 'SHORT HISTORY  OF COMPUTER', 'individual', 'Wanapenda kuendelea kujifunza mda mwingine', 'Beginner', NULL, NULL, 'ISACK OSCAR HERMAN', 'Kuna computer 17 na mouse 10 pia computer zingine hazina mouse na kishikizo cha pazia kimeharibika na watermark kalamu ya kuandikia mwaklimu pia wanafunzi kutozingatia mda wa darasani hawafiki kwa wakati naomba sana yafanyiwe kazi asante.', 'kila kifaa ninachotumia vipo sawa na wanafunzi wanaelewa vizuri', 'wapo makini kwa kila jambo ambalo unafundaisha na nidhamu pia', 8, '2026-02-14 14:43:04', '2026-02-14 14:43:04'),
+(35, 'Rahel ngasa kulwa', 'Female', 'TZ 0679244', 'COMPUTER', 'wanaendelea vizuri', 'individual', 'wamefanya kwa kuelewa', 'Beginner', NULL, NULL, 'ISACK OSCAR HERMAN', 'Mouse 18 za hakiba sina', 'KWA UZURI NA NIDHAMU', 'WANAPENDA KUJIFUNZA', 8, '2026-02-14 14:48:48', '2026-02-14 14:48:48'),
+(36, 'Baraka bonifas yusuph', 'Male', 'TZ 0679244', 'COMPUTER', 'wanaomba vifaa viongozwe', 'individual', 'kwa pamoja zaidi', 'Beginner', NULL, NULL, 'ISACK OSCAR HERMAN', 'mouse za hakiba sina nahitaji', 'wamepokea kwa uzuri', 'wanapenda kujifunza', 8, '2026-02-14 14:55:07', '2026-02-14 14:55:07'),
+(37, 'Pili sospeter kizwalo', 'Female', 'TZ 0679244', 'COMPUTER', 'wanaomba vifaa viongozwe', 'individual', 'wanapenda sana', 'Beginner', NULL, NULL, 'ISACK OSCAR HERMAN', 'mouse za zihada sina nahitaji', 'wananipa ushirikiano kwa pamoja waalimu na wanafunzi', 'wanaomba vifaa  viongozwe', 8, '2026-02-14 14:59:57', '2026-02-14 14:59:57'),
+(38, 'Baraka bonifas yusuph', 'Male', 'TZ 0679244', 'COMPUTER', 'wanaomba vifaa viongozwe', 'individual', 'kwa pamoja zaidi', 'Beginner', NULL, NULL, 'ISACK OSCAR HERMAN', 'mouse za hakiba sina nahitaji', 'wamepokea kwa uzuri', 'wanapenda kujifunza', 8, '2026-02-14 15:03:20', '2026-02-14 15:03:20'),
+(41, 'CHIKU SHABANI MALALA', 'Female', 'TZ067900009', 'COMPUTER', 'Kompyuta zinahitaji kila baada ya wiki kuzifanyia ukarabati kwa umakini na kuanzia sasa na hata baadae', 'COMPUTER HARD WARE', 'Tunahitaji vifaa kwenye kikundi chetu ili tuweze kujifunza vizuri pia tunaomba kupatiwa mouse ziwe (20) tumepungukiwa vifaa ivyo tafadhalini sana tunaomba.', 'Beginner', NULL, NULL, NULL, 'Pia tunahuhitaji wa vifaa viongozwe katika fani yetu kama mouse zinahitajika sana.', 'Tunashirikiana sana na waalimun piaF', 'Fani yangu naomba sana tushirokiane katika  fani pia tunaomba komputa za kisasa ambazo zipo zinatusumbua sana tunaomba tufikie malengo tafadhari sana tupo chini ya miguu yenu tunashindwa kufanya mambo mazuri.', 31, '2026-03-28 13:23:47', '2026-03-28 13:23:47'),
+(42, 'LUCY P. MSANGALI', 'Female', 'TZ06790000210', 'COMPUTER', 'Kompyuta  zinahitajika sana kufanyiwa malekebisho', 'COMPUTER HARD WARE', 'Pia lakini kompyuta zinahitajika Kila baada wiki kuzifanyia ukarabati', 'Beginner', NULL, NULL, NULL, 'Tunahitaji sana mouse na kompyuta za kisasa hizi ambazo zinasumbua sana , mouse (20).', 'Pia tunalinda sana vifaa ambavyo tunatumia', 'Tunamshukuru Mungu tunaweza kujumuisha', 31, '2026-03-28 13:40:51', '2026-03-28 13:40:51'),
+(43, 'LUCY P. MSANGALI', 'Female', 'TZ06790000210', 'COMPUTER', 'Kompyuta  zinahitajika sana kufanyiwa malekebisho', 'COMPUTER HARD WARE', 'Pia lakini kompyuta zinahitajika Kila baada wiki kuzifanyia ukarabati', 'Beginner', NULL, NULL, NULL, 'Tunahitaji sana mouse na kompyuta za kisasa hizi ambazo zinasumbua sana , mouse (20).', 'Pia tunalinda sana vifaa ambavyo tunatumia', 'Tunamshukuru Mungu tunaweza kujumuisha', 31, '2026-03-28 13:40:54', '2026-03-28 13:40:54'),
+(44, 'TEDY E. ALBERTO', 'Female', 'TZ06790000141', 'COMPUTER', 'Pia fani yetu katika kufundisha tunaomba vifaa vya kufundishia lakini tunaomba na wale ambao wapo kwenye kituo hiki ambao hawasomi kabisa tuwajumishe katika fani yetu.', 'COMPUTER HARD WARE', 'Tunaomba tuongezewe vifaa kama fani yetu ili tuwekujifunza vizuri .', 'Beginner', NULL, NULL, NULL, 'Tunawaombeni sana wakuu katika fani yetu tunashindwa kujifunza katika fani hii.', 'Tunashirikiana sana na waalim katika fani husika.', 'Tunaomba sana vifaa katika kazi yetu ya kompyuta katika mafunzo yetu ya kila jumamosi pia na muda tunaomba uongezwe katika fani yetu hata.', 31, '2026-03-28 13:58:57', '2026-03-28 13:58:57'),
+(45, 'BERTHA B. JUMA', 'Female', 'TZ06790000256', 'COMPUTER', 'Tunalinda vifaa vyetu kwa usahihi.', 'COMPUTER HARD WARE', 'Tunaomba siku ziongezwe hata ziwe mbili kama jumamosi na siku yeyote tu  .', 'Beginner', NULL, NULL, NULL, 'Tunaomba mouse.', 'Tunaenda vizuri sana.', 'Tunamshukuru Mungu sana katika fani yetu pia tunahutaji sana mouse (20) na tuboreshewe kompyuta kama kuna uwezekano wa kabadilishwa kompyuta sawa tunawasikiliza nyTuie.', 31, '2026-03-28 14:08:48', '2026-03-28 14:08:48'),
+(46, 'CHIKU SHABANI MALALA', 'Female', 'TZ06700009', 'COMPUTER', 'Tunaomba tuwezeshwe katika kituo chetu cha compassion ambacho kinawanafunzi ambao wanasoma kompyuta wengi lakini  wanakuja wachache kulingana na maaodhurio yao .', 'PROCESSOR OR CPU', 'Tunaomba tuongengezewe vifaa vya kufundishia kama mouse au kipanya tumepungukiwa kwa wingi sana tunaomba sana mtuwezeshe kulingana na vifaa husika.', 'Intermediate', 'No', NULL, 'ISACK OSCAR HERMAN', 'Tunaomba vifaa kama mouse au kipanya tumepungukiwa kwa mda mrefu Asante.', 'Tunashukuru mungu tunashirikia na waalim kwa kila jambo lolote ambalo tunaendesha program zetu kulingana watoto na vijana wetu.', 'Tunashukuru mungu kwa kila jambo.', 31, '2026-04-11 12:13:39', '2026-04-11 12:13:39'),
+(47, 'LUCY PASCHAL MSANGAI', 'Female', 'TZ06790210', 'COMPUTER', 'Komp Yuta zinahitajika kila baada mwezi tunazifanyia installation.', 'PROCESSOR OR CPU', 'Ili kujifunza zaidi tunahitaji mda wa nyongeza tuweze kufanikisha mafunzo yetu.', 'Beginner', 'No', NULL, 'ISACK OSCAR HERMAN', 'Bado tuna upungufu  wa vifaa kama mouse tunaomba tuwezeshwe vifaa hivyo asante.', 'Tupo pia tunawajali hawa vijana na watoto wetu wa kituo cha compassion kiroho , kiakili , pia kijamii.', 'Tunaomba sana maombi yetu myafanyie kazi tunasunbuka sana katika kila mafunzo yetu ya compassion na kituo chetu. asanteni .', 31, '2026-04-11 12:37:23', '2026-04-11 12:37:23'),
+(48, 'Shalom Nelson', 'Male', 'Tz067900179', 'Music', 'Musical', 'Performance', 'Kushiliki kwenye makundi mbalimbali', 'Beginner', 'No', NULL, NULL, 'Vifaa vya kujifundishia', 'Msaada kutoka kwa mwalimu', 'Ana passion kubwa ya music', 31, '2026-04-11 12:46:10', '2026-04-11 12:46:10'),
+(49, 'Maneno mohamed Kafuvi', 'Male', 'Tz056000012', 'Uchomeleaji', 'Uchomeleaji', 'Uchomeleaji', NULL, 'Intermediate', 'Yes', NULL, 'Benjamini', 'Bado hajawezeshwa', 'No', 'No', 15, '2026-04-16 18:17:00', '2026-04-16 18:17:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skill_videos`
+--
+
+CREATE TABLE `skill_videos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `special_programs`
+--
+
+CREATE TABLE `special_programs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `teacher` varchar(255) NOT NULL,
+  `topic` varchar(255) NOT NULL,
+  `age_range` varchar(255) NOT NULL,
+  `teacher_feedback` text NOT NULL,
+  `supervisor_feedback` text NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `submissions`
+--
+
+CREATE TABLE `submissions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `program_type` varchar(255) NOT NULL,
+  `section_type` varchar(255) NOT NULL,
+  `form_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`form_data`)),
+  `status` enum('draft','submitted','approved','rejected') NOT NULL DEFAULT 'draft',
+  `admin_notes` text DEFAULT NULL,
+  `submitted_at` timestamp NULL DEFAULT NULL,
+  `reviewed_at` timestamp NULL DEFAULT NULL,
+  `reviewed_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `submissions`
+--
+
+INSERT INTO `submissions` (`id`, `user_id`, `program_type`, `section_type`, `form_data`, `status`, `admin_notes`, `submitted_at`, `reviewed_at`, `reviewed_by`, `created_at`, `updated_at`) VALUES
+(6, 11, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"TUPENDANE GROUP\",\"idadi_ya_wanachama\":\"17\",\"miezi_wa_kikundi\":\"PAULO SIBU\",\"kimesajiliwa\":\"hakijasajiliwa\",\"kiwango_cha_pesa\":\"6160000\",\"wana_akaunti_ya_benki\":\"hapana\",\"maendeleo_ya_kikundi\":\"Tunamshukuru Mungu kwakuwa kikundi cha Tupendane kimeendelea kuwa imara sana. Kimefanyika msaada kwa familia za washiriki kwani zimewawezesha kuanzisha shughuli za ujasiriamali zinazowasadia kupata mahitaji ya familia.\",\"members\":[{\"name\":\"Jamila Omary\",\"phone\":\"0693305136\"},{\"name\":\"Theresia Joseph\",\"phone\":\"0688640710\"},{\"name\":\"Adaima Hemedy\",\"phone\":\"0655625180\"},{\"name\":\"Maria Jonathan\",\"phone\":\"0766950081\"},{\"name\":\"Pili Ruben\",\"phone\":\"0716027531\"},{\"name\":\"Neema Kitundu\",\"phone\":\"0688430826\"},{\"name\":\"Martha Juma\",\"phone\":\"0789585015\"},{\"name\":\"Elizabeth Michael\",\"phone\":\"0686243948\"},{\"name\":\"Modester Joseph\",\"phone\":\"0784186502\"},{\"name\":\"Edith Petro\",\"phone\":\"0656305690\"},{\"name\":\"Evarine Samwel\",\"phone\":\"0688917745\"},{\"name\":\"Edda Donald\",\"phone\":\"0757610573\"},{\"name\":\"Neema Hamis\",\"phone\":\"0752585165\"},{\"name\":\"Pili Ally\",\"phone\":\"0688198686\"},{\"name\":\"Sara Elias\",\"phone\":\"0699644197\"},{\"name\":\"Salma Shabani\",\"phone\":\"0684284519\"}]}', 'approved', NULL, '2025-10-01 12:29:21', '2025-10-01 16:20:02', 2, '2025-10-01 12:29:21', '2025-10-01 16:20:02'),
+(7, 17, 'program_day', 'school_vocational_training', '{\"student_name\":\"Ashrafu Musa\",\"school_name\":\"Nzega FDC\",\"skill_category\":\"Electrical\",\"training_level\":\"Beginner\"}', 'approved', NULL, '2025-11-10 11:09:23', '2025-11-11 14:43:16', 2, '2025-11-10 11:09:23', '2025-11-11 14:43:16'),
+(8, 25, 'program_day', 'special_program', '{\"date\":\"2025-12-09\",\"teacher\":\"Daniel Musa\",\"topic\":\"ULINZI WA MTOTO MADA: Kuonyesha mwitikio wa ukusanyaji: Kutoa taarifa\",\"age_range\":\"18 .............\",\"teacher_feedback\":\"Wazazi wameelewa somo la kuitikia kwa kusikiliza shida za watoto na vijana na namna ya kutolea taarifa matukio ya unyanyasaji\",\"supervisor_feedback\":\"Masomo haya yamekuwa na tija kubwa sana kwa wazazi na walezi wa walengwa. yaendelee kutolewa mara kwa mara\"}', 'approved', NULL, '2025-11-18 08:12:39', '2025-11-23 09:50:52', 2, '2025-11-18 08:12:39', '2025-11-23 09:50:52'),
+(9, 25, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"UTULIVU\",\"idadi_ya_wanachama\":\"18\",\"miezi_wa_kikundi\":\"12\",\"kimesajiliwa\":\"hakijasajiliwa\",\"kiwango_cha_pesa\":\"4546000\",\"wana_akaunti_ya_benki\":\"hapana\",\"maendeleo_ya_kikundi\":\"Wamwvunja mzunguko wao wa kwanza terehe 30\\/10\\/2025 kwa ajili ya kutekeleza malengo yao waliyojiwekea. pia wameazimia kuanza mzunguko wao wa pili tarehe 02\\/11\\/2025.\",\"members\":[{\"name\":\"Eliwaza kiula\",\"phone\":null},{\"name\":\"Monica Jackson\",\"phone\":null},{\"name\":\"Isaya Simiyu\",\"phone\":null},{\"name\":\"Pendo Lameck\",\"phone\":null},{\"name\":\"Wampumblya Aron\",\"phone\":null},{\"name\":\"Mericiana Kaditu\",\"phone\":null},{\"name\":\"Zanura Jumanne\",\"phone\":null},{\"name\":\"Mary Jeremiah\",\"phone\":null},{\"name\":\"Matrida Kaditu\",\"phone\":null},{\"name\":\"Mariam Gandi\",\"phone\":null},{\"name\":\"Leah Kimaro\",\"phone\":null},{\"name\":\"Mariam Shaban\",\"phone\":null},{\"name\":\"Faibe Shango\",\"phone\":null},{\"name\":\"Donatus Mathias\",\"phone\":null},{\"name\":\"Gunda Robert\",\"phone\":null},{\"name\":\"Joyce Upina\",\"phone\":null},{\"name\":\"Avina Anderson\",\"phone\":null},{\"name\":\"Naomi Jacob\",\"phone\":null}]}', 'approved', NULL, '2025-11-18 13:45:02', '2025-11-23 09:56:06', 2, '2025-11-18 13:45:02', '2025-11-23 09:56:06'),
+(10, 25, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"UTULIVU\",\"idadi_ya_wanachama\":\"18\",\"miezi_wa_kikundi\":\"12\",\"kimesajiliwa\":\"hakijasajiliwa\",\"kiwango_cha_pesa\":\"4546000\",\"wana_akaunti_ya_benki\":\"hapana\",\"maendeleo_ya_kikundi\":\"Wamwvunja mzunguko wao wa kwanza terehe 30\\/10\\/2025 kwa ajili ya kutekeleza malengo yao waliyojiwekea. pia wameazimia kuanza mzunguko wao wa pili tarehe 02\\/11\\/2025.\",\"members\":[{\"name\":\"Eliwaza kiula\",\"phone\":null},{\"name\":\"Monica Jackson\",\"phone\":null},{\"name\":\"Isaya Simiyu\",\"phone\":null},{\"name\":\"Pendo Lameck\",\"phone\":null},{\"name\":\"Wampumblya Aron\",\"phone\":null},{\"name\":\"Mericiana Kaditu\",\"phone\":null},{\"name\":\"Zanura Jumanne\",\"phone\":null},{\"name\":\"Mary Jeremiah\",\"phone\":null},{\"name\":\"Matrida Kaditu\",\"phone\":null},{\"name\":\"Mariam Gandi\",\"phone\":null},{\"name\":\"Leah Kimaro\",\"phone\":null},{\"name\":\"Mariam Shaban\",\"phone\":null},{\"name\":\"Faibe Shango\",\"phone\":null},{\"name\":\"Donatus Mathias\",\"phone\":null},{\"name\":\"Gunda Robert\",\"phone\":null},{\"name\":\"Joyce Upina\",\"phone\":null},{\"name\":\"Avina Anderson\",\"phone\":null},{\"name\":\"Naomi Jacob\",\"phone\":null}]}', 'draft', NULL, NULL, NULL, NULL, '2025-11-18 13:45:16', '2025-11-18 13:45:16'),
+(13, 28, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"FARAJA\",\"idadi_ya_wanachama\":\"2\",\"miezi_wa_kikundi\":\"2\",\"kimesajiliwa\":\"hakijasajiliwa\",\"kiwango_cha_pesa\":\"20000\",\"wana_akaunti_ya_benki\":\"hapana\",\"maendeleo_ya_kikundi\":\"Kikundi kinaendelea vyema na wanaendelea kushiriki vizuri\",\"members\":[{\"name\":\"MAMA SAMWELI\",\"phone\":\"0795794575\"},{\"name\":\"MAMA ANGEL\",\"phone\":\"0672124039\"}]}', 'draft', NULL, NULL, NULL, NULL, '2025-12-04 08:16:02', '2025-12-04 08:16:02'),
+(15, 5, 'program_day', 'school_a_level', '{\"student_name\":\"EMMANUEL TUMAIN NABOTH\",\"school_name\":\"MIRAMBO HIGH SCHOOL\",\"school_address\":\"TABORA MANISPAL\",\"form_level\":\"Form 5\",\"completion_date\":\"2027-05-20\",\"performance\":\"Excellent\",\"division\":\"Division I\",\"points\":\"15\",\"subject_combination\":\"PCB (Physics, Chemistry, Biology)\"}', 'approved', NULL, '2025-12-25 20:13:30', NULL, NULL, '2025-12-25 20:13:30', '2025-12-25 20:13:30'),
+(16, 5, 'program_day', 'school_a_level', '{\"student_name\":\"JOSEPH YOHANA MAFISI\",\"school_name\":\"KATE HIGH SCHOOL\",\"school_address\":\"RUKWA\",\"form_level\":\"Form 6\",\"completion_date\":\"2026-05-20\",\"performance\":\"Excellent\",\"division\":\"Division I\",\"points\":\"14\",\"subject_combination\":\"Other (Specify below)\"}', 'approved', NULL, '2025-12-25 20:15:37', '2025-12-29 09:43:53', 2, '2025-12-25 20:15:37', '2025-12-29 09:43:53'),
+(17, 5, 'program_day', 'school_a_level', '{\"student_name\":\"MTAMBO LEONCE SINTAMBULE\",\"school_name\":\"ZIBA HIGH SCHOOL\",\"school_address\":\"NZEGA TABORA\",\"form_level\":\"Form 5\",\"completion_date\":\"2027-05-20\",\"performance\":\"Excellent\",\"division\":\"Division III\",\"points\":\"23\",\"subject_combination\":\"HGK (History, Geography, Kiswahili)\"}', 'approved', NULL, '2025-12-25 20:17:09', '2025-12-29 09:46:43', 2, '2025-12-25 20:17:09', '2025-12-29 09:46:43'),
+(18, 5, 'program_day', 'school_a_level', '{\"student_name\":\"ALEX SALUM MSALINGA\",\"school_name\":\"USEVYA HIGH SCHOOL\",\"school_address\":\"KATAVI\",\"form_level\":\"Form 5\",\"completion_date\":\"2027-05-20\",\"performance\":\"Excellent\",\"division\":\"Division II\",\"points\":\"20\",\"subject_combination\":\"HKL (History, Kiswahili, Literature)\"}', 'approved', NULL, '2025-12-25 20:19:09', '2025-12-29 09:45:13', 2, '2025-12-25 20:19:09', '2025-12-29 09:45:13'),
+(19, 5, 'program_day', 'school_a_level', '{\"student_name\":\"MONICA PHABIAN KASONZO\",\"school_name\":\"KAKONKO HIGH SCHOOL\",\"school_address\":\"KASULU KIGOMA\",\"form_level\":\"Form 5\",\"completion_date\":\"2027-05-20\",\"performance\":\"Excellent\",\"division\":\"Division III\",\"points\":\"23\",\"subject_combination\":\"HGK (History, Geography, Kiswahili)\"}', 'approved', NULL, '2025-12-25 20:20:34', '2025-12-29 09:46:14', 2, '2025-12-25 20:20:34', '2025-12-29 09:46:14'),
+(20, 5, 'program_day', 'school_a_level', '{\"student_name\":\"REGINA YOHANA MAFISI\",\"school_name\":\"MACHAME GIRLS HIGH SCHOOL\",\"school_address\":\"MACHAME MOSHI\",\"form_level\":\"Form 6\",\"completion_date\":\"2027-05-20\",\"performance\":\"Excellent\",\"division\":\"Division III\",\"points\":\"24\",\"subject_combination\":\"HKL (History, Kiswahili, Literature)\"}', 'approved', NULL, '2025-12-25 20:21:52', '2025-12-29 09:45:38', 2, '2025-12-25 20:21:52', '2025-12-29 09:45:38'),
+(21, 32, 'program_day', 'school_secondary', '{\"student_name\":\"Elizaberth Joseph Manyanga\",\"school_name\":\"Bulunde Secondary School\",\"form_level\":\"Form 3\",\"performance\":\"Wastani\",\"education_level\":\"O-Level\",\"completion_date\":\"2027-11-30\",\"combination\":\"Bussiness\",\"kiswahili\":\"A\",\"hisabati\":\"F\",\"english\":\"C\",\"uraia\":\"F\",\"historia\":\"C\",\"biology\":\"D\",\"chemistry\":\"F\",\"physics\":\"F\",\"commerce\":\"F\",\"teacher_comments\":\"Aongeze Bidii\"}', 'approved', NULL, '2026-01-21 08:16:32', NULL, NULL, '2026-01-21 08:16:32', '2026-01-21 08:16:32'),
+(22, 32, 'program_day', 'school_secondary', '{\"student_name\":\"Rebecca Peter Jonas\",\"school_name\":\"Ziba Secondary School\",\"form_level\":\"Form 3\",\"performance\":\"Wastani\",\"education_level\":\"O-Level\",\"completion_date\":\"2027-11-30\",\"combination\":\"Science\",\"kiswahili\":\"B\",\"hisabati\":\"F\",\"english\":\"C\",\"uraia\":\"D\",\"historia\":\"C\",\"biology\":\"C\",\"chemistry\":\"D\",\"physics\":\"F\",\"commerce\":null,\"teacher_comments\":\"Aongeze Bidii\"}', 'approved', NULL, '2026-01-21 08:21:57', NULL, NULL, '2026-01-21 08:21:57', '2026-01-21 08:21:57'),
+(23, 32, 'program_day', 'school_secondary', '{\"student_name\":\"Reines Mathew Itungulu\",\"school_name\":\"Chief Ntinginya Secondary School\",\"form_level\":\"Form 3\",\"performance\":\"Wastani\",\"education_level\":\"O-Level\",\"completion_date\":\"2027-11-30\",\"combination\":\"Science\",\"kiswahili\":\"A\",\"hisabati\":\"C\",\"english\":\"C\",\"uraia\":\"D\",\"historia\":\"C\",\"biology\":\"D\",\"chemistry\":\"F\",\"physics\":\"C\",\"commerce\":null,\"teacher_comments\":\"Aongeze Bidii\"}', 'approved', NULL, '2026-01-21 08:24:52', NULL, NULL, '2026-01-21 08:24:52', '2026-01-21 08:24:52'),
+(24, 32, 'program_day', 'school_secondary', '{\"student_name\":\"Swaumu kiwele William\",\"school_name\":\"Hussein Bashe\",\"form_level\":\"Form 3\",\"performance\":\"Duni\",\"education_level\":\"O-Level\",\"completion_date\":\"2027-11-30\",\"combination\":\"Art\",\"kiswahili\":\"D\",\"hisabati\":\"F\",\"english\":\"D\",\"uraia\":\"F\",\"historia\":\"F\",\"biology\":\"F\",\"chemistry\":\"F\",\"physics\":\"F\",\"commerce\":null,\"teacher_comments\":\"Aongeze Bidii\"}', 'approved', NULL, '2026-01-21 08:27:24', NULL, NULL, '2026-01-21 08:27:24', '2026-01-21 08:27:24'),
+(25, 5, 'program_day', 'school_a_level', '{\"student_name\":\"EMMANUEL TUMAIN NABOTH\",\"school_name\":\"MIRAMBO HIGH SCHOOL\",\"school_address\":\"TABORA\",\"form_level\":\"Form 5\",\"completion_date\":\"2027-03-10\",\"performance\":\"Excellent\",\"division\":\"Division I\",\"points\":\"15\",\"subject_combination\":\"PCB (Physics, Chemistry, Biology)\"}', 'approved', NULL, '2026-01-22 11:51:33', NULL, NULL, '2026-01-22 11:51:33', '2026-01-22 11:51:33'),
+(26, 32, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"MWANAMKEJEMBE\",\"idadi_ya_wanachama\":\"8\",\"miezi_wa_kikundi\":\"12\",\"kimesajiliwa\":\"kimesajiliwa\",\"kiwango_cha_pesa\":\"4053000\",\"wana_akaunti_ya_benki\":\"ndiyo\",\"maendeleo_ya_kikundi\":\"Wanaendelea vizuri\",\"members\":[{\"name\":\"Christina Mabula\",\"phone\":\"0683417599\"},{\"name\":\"Angela kulwa\",\"phone\":\"0758042999\"},{\"name\":\"Elizaberth Edward\",\"phone\":\"0786811238\"},{\"name\":\"Jenifa Stivin\",\"phone\":\"0686380081\"},{\"name\":\"Mwajuma Hamisi\",\"phone\":\"0759543957\"},{\"name\":\"Jacqueline Friday\",\"phone\":\"0689768221\"},{\"name\":\"Grace Juma\",\"phone\":\"0755520376\"},{\"name\":\"Naomi Maganga\",\"phone\":\"0764718403\"}]}', 'approved', NULL, '2026-01-24 16:03:07', NULL, NULL, '2026-01-24 16:03:07', '2026-01-24 16:03:07'),
+(27, 32, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"BETHANIA\",\"idadi_ya_wanachama\":\"14\",\"miezi_wa_kikundi\":\"12\",\"kimesajiliwa\":\"kimesajiliwa\",\"kiwango_cha_pesa\":\"8396000\",\"wana_akaunti_ya_benki\":\"ndiyo\",\"maendeleo_ya_kikundi\":\"Wanaendelea Vizuri\",\"members\":[{\"name\":\"Zuena Shabani\",\"phone\":\"0692547876\"},{\"name\":\"Bethar Joseph\",\"phone\":\"0743651831\"},{\"name\":\"Rebecca Kinuma\",\"phone\":\"0684949801\"},{\"name\":\"Hadija Issa\",\"phone\":\"0684949801\"},{\"name\":\"Andrea Mabula\",\"phone\":\"0785898864\"},{\"name\":\"Anna Charles\",\"phone\":\"0689564900\"},{\"name\":\"Martha Enock\",\"phone\":\"0693216272\"},{\"name\":\"Leah Shija\",\"phone\":\"0792795509\"},{\"name\":\"Felister Mipawa\",\"phone\":\"0768094286\"},{\"name\":\"Mwamini Amini\",\"phone\":\"0685392823\"},{\"name\":\"Rebeca Mihambo\",\"phone\":\"0692273233\"},{\"name\":\"Joyce Martini\",\"phone\":\"06944355975\"},{\"name\":\"Sophia Charles\",\"phone\":\"0748033807\"},{\"name\":\"Fatuma Mussa\",\"phone\":\"0698634957\"}]}', 'approved', NULL, '2026-01-24 16:16:41', NULL, NULL, '2026-01-24 16:16:41', '2026-01-24 16:16:41'),
+(28, 32, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"HEKIMA\",\"idadi_ya_wanachama\":\"13\",\"miezi_wa_kikundi\":\"12\",\"kimesajiliwa\":\"kimesajiliwa\",\"kiwango_cha_pesa\":\"14636000\",\"wana_akaunti_ya_benki\":\"ndiyo\",\"maendeleo_ya_kikundi\":\"Wanaendelea Vizuri\",\"members\":[{\"name\":\"Pili Jumanne\",\"phone\":\"0687392711\"},{\"name\":\"Mwasiti Hamisi\",\"phone\":\"0785585181\"},{\"name\":\"Ester Capten\",\"phone\":\"06886887518\"},{\"name\":\"Ester Sabode\",\"phone\":\"0685914411\"},{\"name\":\"Eva John\",\"phone\":\"0657239163\"},{\"name\":\"Lucia Shija\",\"phone\":\"0687622608\"},{\"name\":\"Edina Juma\",\"phone\":\"0682190788\"},{\"name\":\"Judith Elias\",\"phone\":\"0687448942\"},{\"name\":\"Ester Andrea\",\"phone\":\"068317816\"},{\"name\":\"Salima Saidi\",\"phone\":\"0683088041\"},{\"name\":\"Regina Nkwabi\",\"phone\":\"0683917941\"},{\"name\":\"Veronica Kavansi\",\"phone\":\"0687448942\"},{\"name\":\"Happyness Kapaya\",\"phone\":\"0713405089\"}]}', 'approved', NULL, '2026-01-24 16:24:35', NULL, NULL, '2026-01-24 16:24:35', '2026-01-24 16:24:35'),
+(29, 32, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"UPENDO\",\"idadi_ya_wanachama\":\"13\",\"miezi_wa_kikundi\":\"12\",\"kimesajiliwa\":\"kimesajiliwa\",\"kiwango_cha_pesa\":\"8414000\",\"wana_akaunti_ya_benki\":\"ndiyo\",\"maendeleo_ya_kikundi\":\"Wanaendelea Vizuri\",\"members\":[{\"name\":\"Halima Selemani\",\"phone\":\"0699282896\"},{\"name\":\"Stella Petro\",\"phone\":\"0786317895\"},{\"name\":\"Editha Deus\",\"phone\":\"0795454370\"},{\"name\":\"Ester Pius\",\"phone\":\"0682844370\"},{\"name\":\"Emmaculatha Michael\",\"phone\":\"0685016453\"},{\"name\":\"Rebisia Shija\",\"phone\":\"0610907909\"},{\"name\":\"Anna Mwininga\",\"phone\":\"0783704750\"},{\"name\":\"Mary Tungu\",\"phone\":\"0779770206\"},{\"name\":\"Elizaberth Daud\",\"phone\":\"0685072119\"},{\"name\":\"Theresia Bundala\",\"phone\":\"0743834724\"},{\"name\":\"Mary Maige\",\"phone\":\"0684211387\"}]}', 'approved', NULL, '2026-01-24 16:34:12', NULL, NULL, '2026-01-24 16:34:12', '2026-01-24 16:34:12'),
+(30, 32, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"TEGEMEO\",\"idadi_ya_wanachama\":\"11\",\"miezi_wa_kikundi\":\"12\",\"kimesajiliwa\":\"kimesajiliwa\",\"kiwango_cha_pesa\":\"10664000\",\"wana_akaunti_ya_benki\":\"ndiyo\",\"maendeleo_ya_kikundi\":\"Wanaendelea vizuri\",\"members\":[{\"name\":\"Agatha epimack\",\"phone\":\"0759068961\"},{\"name\":\"Asha Kunzenza\",\"phone\":\"0695625237\"},{\"name\":\"Maria Shija\",\"phone\":\"0785453153\"},{\"name\":\"Verodiana Johanes\",\"phone\":\"0789910179\"},{\"name\":\"Elizaberth Mussa\",\"phone\":\"0686730828\"},{\"name\":\"Getruda deo\",\"phone\":\"0689839092\"},{\"name\":\"Ester Baraka\",\"phone\":\"0787035369\"},{\"name\":\"Sauma Shaban\",\"phone\":\"+255760115743\"},{\"name\":\"Agness Robert\",\"phone\":\"0782663040\"},{\"name\":\"Agness Masanja\",\"phone\":\"0782055239\"},{\"name\":\"Vaileth John\",\"phone\":\"+255692290639\"}]}', 'approved', NULL, '2026-01-25 08:00:23', NULL, NULL, '2026-01-25 08:00:23', '2026-01-25 08:00:23'),
+(31, 32, 'program_day', 'vikoba', '{\"jina_la_kikundi\":\"AMANI\",\"idadi_ya_wanachama\":\"12\",\"miezi_wa_kikundi\":\"12\",\"kimesajiliwa\":\"kimesajiliwa\",\"kiwango_cha_pesa\":\"19521000\",\"wana_akaunti_ya_benki\":\"ndiyo\",\"maendeleo_ya_kikundi\":\"Wanaendelea vizuri\",\"members\":[{\"name\":\"Rucia Stephano\",\"phone\":\"0782567664\"},{\"name\":\"Jenifa Lameck\",\"phone\":\"0762246080\"},{\"name\":\"Rehema Mcheka\",\"phone\":\"0692838980\"},{\"name\":\"Mwadawa Milamba\",\"phone\":\"0784842102\"},{\"name\":\"Modester Eneriko\",\"phone\":\"0766718333\"},{\"name\":\"Monica Pius\",\"phone\":\"0782913654\"},{\"name\":\"Elizaberth Maiko\",\"phone\":\"0688284791\"},{\"name\":\"Verediana Nshimba\",\"phone\":\"+255754720425\"},{\"name\":\"Habiba Kafuku\",\"phone\":\"0752585355\"},{\"name\":\"Maria Paulo\",\"phone\":\"0744833234\"},{\"name\":\"James Mwele\",\"phone\":\"0694772829\"},{\"name\":\"Ester kilabeba\",\"phone\":\"0762246080\"}]}', 'approved', NULL, '2026-01-25 08:10:37', NULL, NULL, '2026-01-25 08:10:37', '2026-01-25 08:10:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `talents_information`
+--
+
+CREATE TABLE `talents_information` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_name` varchar(255) NOT NULL,
+  `participant_number` varchar(255) NOT NULL,
+  `age` int(11) NOT NULL,
+  `gender` varchar(255) NOT NULL,
+  `mentor` varchar(255) DEFAULT NULL,
+  `talent_type` varchar(255) NOT NULL,
+  `talent_description` text NOT NULL,
+  `talent_duration` varchar(255) NOT NULL,
+  `has_competed` tinyint(1) NOT NULL DEFAULT 0,
+  `competition_details` text DEFAULT NULL,
+  `achievements` text DEFAULT NULL,
+  `needs_training` tinyint(1) NOT NULL DEFAULT 0,
+  `training_details` text DEFAULT NULL,
+  `comments` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `talents_information`
+--
+
+INSERT INTO `talents_information` (`id`, `student_name`, `participant_number`, `age`, `gender`, `mentor`, `talent_type`, `talent_description`, `talent_duration`, `has_competed`, `competition_details`, `achievements`, `needs_training`, `training_details`, `comments`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'Silas Gershon Silas', 'TZ056500038', 13, 'Male', 'Sir Robert', 'Music', 'He plays keyboard very well', '9 years', 0, NULL, 'He has achieved to play many different tunes of music', 1, 'He is still learning more on how to play different sounds and music', 'He is so talented', 32, '2026-01-25 09:08:45', '2026-01-25 09:08:45'),
+(2, 'Charles Julius Samike', 'TZ056500108', 12, 'Male', 'Teacher Paul', 'Dance and Football', 'Dance is a talent which consists of playing by moving your body', '9 years', 0, NULL, 'The participants has achieved in learning different styles of dancing and playing football', 1, 'The training is still continuing to see more on the participants effort', 'The talents makes the participants to love more about the project centre.', 32, '2026-01-25 09:13:44', '2026-01-25 09:13:44'),
+(3, 'Grace Joseph James', 'TZ056500161', 12, 'Female', 'Teacher Robert', 'Music', 'Music heals the soul,it treats unseen wounds ,it brings participants to know God more', '1 year', 0, NULL, 'Thepaticipants has achieved in singing very well', 1, 'The training is enhancing more capabilities on the particints to know God in an advanced way.', 'We needs more instruments to motivate the participants more on music industry and the participants needs more cooperation to the other standards musician sovas to train herself more', 32, '2026-01-25 09:37:15', '2026-01-25 09:37:15'),
+(5, 'john meshack', '1', 18, 'Male', 'edward malechela', 'sport', 'maendeleo yake yapo vizuri', '2', 0, NULL, 'kudaka mpira', 1, 'catching', 'anahitaji juhudi zaidi', 31, '2026-02-14 08:29:37', '2026-02-14 08:29:37'),
+(6, 'juma nassibu', '2', 18, 'Male', 'edward malechela', 'sport', 'kuongeza nguvu', '2', 0, NULL, 'anajua kukaba', 1, 'crossing and power drills', 'maendeleo yapo vizuri', 31, '2026-02-14 08:31:34', '2026-02-14 08:31:34'),
+(7, 'erick marwa', '1', 17, 'Male', 'edward malechela', 'sport', 'mazoezi ya kuruka', '2', 0, NULL, 'sparpness', 1, 'diving', 'bado anahitaji kuongeza juhudi', 31, '2026-02-14 08:33:57', '2026-02-14 08:33:57'),
+(8, 'james peter', '5', 17, 'Male', 'edward malechela', 'sport', 'bado ni mvivu wa mazoezi', '2', 0, NULL, 'hakuna', 1, 'endurance', 'bado ana uvumilivu na anahitaji kuwa sio mvivu', 31, '2026-02-14 08:37:18', '2026-02-14 08:37:18'),
+(9, 'yassin said', '11', 16, 'Male', 'edward malechela', 'sport', 'ana kipaji kikubwa na uwezo wa kucheza mpira', '2', 0, NULL, 'dribbling', 1, 'finishing drills', 'maendeleo yako vizuri', 31, '2026-02-14 08:39:50', '2026-02-14 08:39:50'),
+(10, 'derick meshack', '8', 18, 'Male', 'edward malechela', 'sport', 'ana uwezo wa kupiga pasi vizuri', '2', 0, NULL, 'assist player', 1, 'pressing', 'inabidi aongeze kukaba', 31, '2026-02-14 08:42:02', '2026-02-14 08:42:02'),
+(11, 'yusuph william', '9', 18, 'Male', 'edward malechela', 'sport', 'mfungaji mzuri', '2', 0, NULL, 'scoring', 1, 'heading', 'yupo vizuri', 31, '2026-02-14 08:45:30', '2026-02-14 08:45:30'),
+(12, 'nicolaus nicodemas', '6', 16, 'Male', 'edward malechela', 'sport', 'ana uwezo mzuri wa kupora mipira', '2', 0, NULL, 'tackling', 1, 'possesion drills', 'anaendelea vizuri', 31, '2026-02-14 08:49:46', '2026-02-14 08:49:46'),
+(13, 'hamadi selemani', '3', 16, 'Male', 'edward malechela', 'sport', 'kuzima mpira', '2', 0, NULL, 'kukaba', 1, 'overlaping', 'bado yupo chini', 31, '2026-02-14 08:51:49', '2026-02-14 08:51:49'),
+(14, 'Acram Yasin Bakar', 'TZ056500213', 11, 'Male', 'Teacher Robert', 'Art', 'The talent is there to discover more upcoming artist.', '1 year', 0, NULL, 'The beneficiaries has learned to draw some of the things', 1, 'Learning to draw', NULL, 32, '2026-03-10 11:00:10', '2026-03-10 11:00:10'),
+(15, 'Omary Habibu Mariseli', 'TZ082700062', 17, 'Male', 'Sports Academy', 'Football', 'As a FCP we are so much proud for his talent, we are trying to find platforms for glomming his talent.', '3 years', 0, NULL, 'He is now Under sport Academy in Dar es salaam, we hope soon will be chosen for trial to the biggest clubs.', 1, 'According to sports academy authorities, for being in sport Academy his talent shining everyday.', 'We are keeping praying so that God may bless his carrier', 5, '2026-04-10 20:59:04', '2026-04-10 20:59:04'),
+(16, 'Yahimana Eliud Aron', 'TZ082700188', 18, 'Male', 'Sports Academy', 'Football', 'He has amazing talent which need platforms', '3 years', 0, NULL, 'He has managed to join sports academy', 1, 'He is doing well', 'Investment is needed to him especially to expose him to sports stakeholders', 5, '2026-04-10 21:03:37', '2026-04-10 21:03:37'),
+(20, 'Mariamu Ramadhani Musa', 'Tz056000045', 20, 'Female', 'John Pamba', 'Singing', 'Knows how to sing', '10', 0, NULL, 'Receved cluster awards in two terms', 1, 'Needs meet people who have succes', 'No comment', 15, '2026-04-16 15:28:02', '2026-04-16 15:28:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `talent_absent_participants`
+--
+
+CREATE TABLE `talent_absent_participants` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `attendance_id` bigint(20) UNSIGNED NOT NULL,
+  `participant_name` varchar(255) NOT NULL,
+  `participant_number` varchar(255) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'absent',
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `talent_absent_participants`
+--
+
+INSERT INTO `talent_absent_participants` (`id`, `attendance_id`, `participant_name`, `participant_number`, `status`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Pili Mohamed(mzazi survival )', 'Tz056010031', 'absent', NULL, '2025-10-01 07:11:30', '2025-10-01 07:11:30'),
+(2, 2, 'John Meshack Simwanza', 'TZ067900006', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(3, 2, 'Yusuph Levocatus', 'TZ067900048', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(4, 2, 'Lucia Paskali Msangai', 'TZ067900210', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(5, 2, 'Akon Anderson', 'TZ067900133', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(6, 2, 'James Baraka Nswanzi', 'TZ067900018', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(7, 2, 'Atukuzwe Petro', 'TZ067903003', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(8, 2, 'Rahel Ngasa', 'TZ067900244', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(9, 2, 'Mary James', 'TZ067900150', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(10, 2, 'Agape Festo', 'TZ067900048', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(11, 2, 'Godfrey Oscar', 'TZ067900087', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(12, 2, 'Erick Marwa Chacha', 'TZ067900226', 'absent', NULL, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(13, 3, 'Juliana Clement', 'TZ067900003', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(14, 3, 'Agatha Rashid', 'TZ067900052', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(15, 3, 'Lucia Baraka', 'TZ067900049', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(16, 3, 'Mwajuma Nasibu', 'TZ067900015', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(17, 3, 'Elesia Kasanga', 'TZ067900172', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(18, 3, 'Janety Iddi', 'TZ67900026', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(19, 3, 'Regina Wilson', 'TZ067900166', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(20, 3, 'Mercy Paul', 'TZ067900147', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(21, 3, 'Magreth Abel', 'TZ067900139', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(22, 3, 'Neema Mbunda', 'TZ067900131', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(23, 3, 'Mwanaidi kassim', 'TZ067900107', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(24, 3, 'Leticia Boaz', 'TZ067900097', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(25, 3, 'Catherine James', 'TZ067900097', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(26, 3, 'Merina Sulemani', 'TZ067900077', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(27, 3, 'Neema said Mitu', 'TZ067900064', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(28, 3, 'Prisca Julius', 'TZ067900050', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(29, 3, 'Agape Festo', 'TZ06790043', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(30, 3, 'Mariam Asheri', 'TZ067900040', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(31, 3, 'Upendo Charles', 'TZ067900039', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(32, 3, 'Farida Selemani', 'TZ0679000027', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(33, 3, 'Sabina Nyamaliba', 'TZ067900004', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(34, 3, 'Lucy Paschal', 'TZ067900210', 'absent', NULL, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(36, 6, 'Braiton John Kadelema', 'TZ067900001', 'absent', NULL, '2026-02-17 05:40:30', '2026-02-17 05:40:30'),
+(37, 6, 'Elias Jumanne Pinyel', 'TZ067900141', 'absent', NULL, '2026-02-17 05:40:30', '2026-02-17 05:40:30'),
+(38, 7, 'Braiton John Kadelema', 'TZ067900001', 'absent', NULL, '2026-02-17 05:41:12', '2026-02-17 05:41:12'),
+(39, 7, 'Elias Jumanne Pinyel', 'TZ067900141', 'absent', NULL, '2026-02-17 05:41:12', '2026-02-17 05:41:12'),
+(43, 8, 'Juliana Clement Kajoro', 'TZ067900003', 'absent', NULL, '2026-03-28 12:39:31', '2026-03-28 12:39:31'),
+(44, 8, 'Atukuzwe Petro', 'TZ067903003', 'absent', NULL, '2026-03-28 12:39:31', '2026-03-28 12:39:31'),
+(45, 8, 'Shalom Nelson Enock', 'TZ067900079', 'absent', NULL, '2026-03-28 12:39:31', '2026-03-28 12:39:31'),
+(67, 14, 'JUMA KASSIM', 'TZ0827OO162', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(68, 14, 'ADAMU MUHAMED MBOGO', 'TZ082700072', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(69, 14, 'FEISAL MRISHO KAYEKI', 'TZ082700135', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(70, 14, 'ROSA ZAHORO', 'TZ082700176', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(71, 14, 'KWIZERA HARON', 'TZ082700187', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(72, 14, 'EMANUEL PETRO', 'TZ082700297', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(73, 14, 'ALPHONCE JAIROS', 'TZ082700310', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(74, 14, 'HEZRON DAGLAS', 'TZ082700307', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(75, 14, 'DICKSON SHABAN', 'TZ082700271', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(76, 14, 'PAULO KALANGU', 'TZ082700251', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(77, 14, 'ELISHA ELIAS', 'TZ082700313', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(78, 14, 'SAIMON BONIFACE', 'TZ082700309', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(79, 14, 'REBUNI FRANK', 'TZ082700294', 'present', 23, '2026-04-18 10:22:23', '2026-04-18 10:22:23'),
+(80, 15, 'PAULO KALANGU', 'TZ082700', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(81, 15, 'REUBEN FRANCE', 'TZ082700294', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(82, 15, 'ISMAIL ALLY', 'TZ082700289', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(83, 15, 'ABDULL ALLY', 'TZ082700051', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(84, 15, 'MAJALIWA TANU', 'TZ082700069', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(85, 15, 'ALFRED ROBERT', 'TZ082700163', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(86, 15, 'ALOYCE PAUL', 'TZ082700070', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(87, 15, 'THABITI ALFAN', 'TZ082700120', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(88, 15, 'YORAM UWEZO', 'TZ082700097', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(89, 15, 'STEVEN SEBASTIAN', 'TZ082700288', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(90, 15, 'RAMADHAN HUSSEIN', 'TZ082700096', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(91, 15, 'SELEMAN ALOYCE', 'TZ0827000116', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(92, 15, 'MIKAEL MAGESA', 'TZ082700226', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(93, 15, 'RICHARD MASANJA', 'TZ082700103', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(94, 15, 'YAHMANA HARON', 'TZ082700109', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(95, 15, 'JAMES YOTHAM NTEGEYE', 'TZ082700244', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(96, 15, 'RAMADHANI YAHAYA', 'TZ082700071', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(97, 15, 'KWIZERA HAROM', 'TZ082700187', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(98, 15, 'EZEKIEL STEPHANO', 'TZ082700141', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(99, 15, 'OMARY HABIBU', 'TZ082700062', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(100, 15, 'DAUDI PETRO', 'TZ082700082', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(101, 15, 'MASOUD HARUNA', 'TZ082700177', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(102, 15, 'MATHIAS YARED', 'TZ082700281', 'present', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(111, 16, 'NELEA ARON', 'TZ. 082700255', 'present', 23, '2026-04-18 11:32:48', '2026-04-18 11:32:48'),
+(112, 16, 'PRINCE MIGERA', 'TZ. 02800201', 'present', 23, '2026-04-18 11:32:48', '2026-04-18 11:32:48'),
+(113, 16, 'EZEKIEL ENOSH', 'TZ. 082700101', 'present', 23, '2026-04-18 11:32:48', '2026-04-18 11:32:48'),
+(114, 16, 'EZEKIEL EMMANUEL', 'TZ082700043', 'present', 23, '2026-04-18 11:32:48', '2026-04-18 11:32:48'),
+(115, 16, 'ADROPH DANFORD', 'TZ082700046', 'present', 23, '2026-04-18 11:32:48', '2026-04-18 11:32:48'),
+(116, 16, 'MAJALIWA TANU', 'TZ082700069', 'present', 23, '2026-04-18 11:32:48', '2026-04-18 11:32:48'),
+(117, 16, 'EMMANUEL PETRO', 'TZ082700279', 'present', 23, '2026-04-18 11:32:48', '2026-04-18 11:32:48'),
+(118, 16, 'MARTHA YONA', 'TZ082700311', 'present', 23, '2026-04-18 11:32:48', '2026-04-18 11:32:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `talent_attendance`
+--
+
+CREATE TABLE `talent_attendance` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `instructor_name` varchar(255) NOT NULL,
+  `talent_taught` varchar(255) NOT NULL,
+  `attendance_count` int(11) NOT NULL,
+  `instructor_comments` text DEFAULT NULL,
+  `supervisor_comments` text DEFAULT NULL,
+  `lesson_topic` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `talent_attendance`
+--
+
+INSERT INTO `talent_attendance` (`id`, `date`, `instructor_name`, `talent_taught`, `attendance_count`, `instructor_comments`, `supervisor_comments`, `lesson_topic`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, '2025-10-01', 'Frank Edson', 'Tailoring', 12, NULL, NULL, 'Kukata na kushona mifuko ya suruali za kiume', 15, '2025-10-01 07:11:30', '2025-10-01 07:11:30'),
+(2, '2026-01-17', 'SUZANA AOCHI', 'Kwaya', 11, 'Wameelewa na kufanya kwa uzuri zaidi', 'Waongeze bidii katika maudhurio, mwalimu hamasisha watoto na vijana waje katika mazoezi ya kwaya.', 'Professional CD kwaya', 8, '2026-01-17 12:22:05', '2026-01-17 12:22:05'),
+(3, '2026-01-17', 'Luciana Mitti', 'Netball', 22, 'Wanafunzi wamehudhuria kwa wingi', 'Mahudhurio yanaridhisha waongeze bidii zaidi', 'Kudaka na kutua', 12, '2026-01-24 09:36:29', '2026-01-24 09:36:29'),
+(5, '2026-01-14', 'edward deogratius malechela', 'sport', 9, 'maendeleo mazuri tu', NULL, 'ball control', 31, '2026-02-14 08:26:15', '2026-02-14 08:26:15'),
+(6, '2026-02-17', 'SUZANA AOCHI', 'Kufundisha Step katika nyimbo mpya', 20, 'Bado kuelewa na wameelewa kwa asilimia 20%', 'Mwalimu Aongeze bidii katika ufundishaji', 'Professional CD kwaya', 8, '2026-02-17 05:40:30', '2026-02-17 05:40:30'),
+(7, '2026-02-17', 'SUZANA AOCHI', 'Kwaya', 20, 'Bado kuelewa na wameelewa kwa asilimia 20%', 'Mwalimu Aongeze bidii katika ufundishaji', 'Professional CD kwaya', 8, '2026-02-17 05:41:12', '2026-02-17 05:41:12'),
+(8, '2026-03-28', 'SUZANA AOCHI', 'KWAYA', 15, 'Bado kuelewa Step vizuri', 'Waendelee kufuatilia na kusikiliza wakati mwalimu afundishapo', 'Professional CD kwaya', 8, '2026-03-28 12:38:40', '2026-03-28 12:39:31'),
+(14, '2026-03-07', 'NASSORO H. KANIJO', 'UNYOAJI (SALOON YA KIUME)', 13, 'WANAELEWA VIZURI', 'WANAELEWA', 'JINSI YA KUMNYOA MTU KIPARA', 23, '2026-04-18 10:20:14', '2026-04-18 10:20:14'),
+(15, '2026-03-07', 'NASSORO H. KANIJO', 'MPIRA WA MIGUU', 23, 'WANAELEWA VIZURI', 'WANAELEWA', 'JINSI YA KUU KONTRO MPIRA NA KUUTOA KWA HARAKA', 23, '2026-04-18 11:02:34', '2026-04-18 11:02:34'),
+(16, '2026-03-07', 'BOAZ SIMON NYAKUBUSA', 'KWAYA (UIMBAJI)', 8, 'ZOEZI LINAENDELEA', NULL, 'KUPANDA NA KUSHUKA KWA SAUTI', 23, '2026-04-18 11:27:44', '2026-04-18 11:27:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `university_info`
+--
+
+CREATE TABLE `university_info` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_name` varchar(255) NOT NULL,
+  `university_name` varchar(255) NOT NULL,
+  `course` varchar(255) NOT NULL,
+  `program_level` varchar(255) NOT NULL,
+  `year_of_study` int(11) NOT NULL,
+  `completion_date` date NOT NULL,
+  `graduation_status` varchar(255) NOT NULL,
+  `physical_address` text NOT NULL,
+  `challenges` text DEFAULT NULL,
+  `support_needed` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `profile_photo` varchar(255) DEFAULT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'user',
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `theme_mode` varchar(20) NOT NULL DEFAULT 'light',
+  `future_feature` tinyint(1) NOT NULL DEFAULT 0,
+  `profile_picture` varchar(255) DEFAULT NULL,
+  `approved_at` timestamp NULL DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `center_id` varchar(255) DEFAULT NULL,
+  `cluster_name` varchar(255) DEFAULT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `theme` varchar(255) NOT NULL DEFAULT 'light',
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `approved_by` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `profile_photo`, `role`, `status`, `theme_mode`, `future_feature`, `profile_picture`, `approved_at`, `phone`, `center_id`, `cluster_name`, `email_verified_at`, `password`, `theme`, `remember_token`, `created_at`, `updated_at`, `approved_by`) VALUES
+(2, 'idrissmwala11@gmail.com', '1776625493_WhatsApp Image 2026-03-14 at 07.57.32.jpeg', 'admin', 'approved', 'light', 0, NULL, NULL, NULL, NULL, NULL, '2025-09-11 05:03:17', '$2y$12$zv4FgkRNJtTnjV0x5ODiyu0NBdeIaMT7qEWfu3y/AImbV1lH3r1/O', 'light', 'dmhcy7KRhB7yDWKbBKr2ERaLkC0Nj3SvKDXIDuRcZzXuodEvFK0bbbKmgilq', '2025-09-11 04:55:30', '2026-04-19 18:04:53', NULL),
+(5, 'snashon.tz0827@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0625147817', 'TZ0827', 'Urambo', NULL, '$2y$12$9e4tElYzH2gF7YQmtgt8u.GFLkVIM6AotjYrmDThrQCvMvtSLKM.W', 'light', 'JoWBlkpjylc1nSfdLDYJXbRICYpAvZR71gVUVHy0uprd9wnR4xD7cpCI9aIE', '2025-09-11 07:36:21', '2025-09-11 07:37:47', NULL),
+(7, 'mpeter.tz0563@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0626846079', 'TZ0563', 'Igunga Cluster', NULL, '$2y$12$QcKTHKDWZpKqvGnylsEXkO5kigFeXOzdVyv0LBeE0PDXemXa3PWpK', 'light', NULL, '2025-09-11 08:32:04', '2025-09-11 08:34:36', NULL),
+(8, 'msostenes.tz0679@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0763552484', 'TZ0679', 'URAMBO', NULL, '$2y$12$FpM190f.buh58QL7uHn8SuHVFylSV3QI7Szv1hGpcV5uP1TJ0WjeK', 'light', 'Gwu4PE04QNsTwXadRSGReSR2OlfMMzJuQauGNDH5RSVnAc8mxeVB2AMwKQgi', '2025-09-11 09:01:48', '2025-09-11 09:02:31', NULL),
+(9, 'amasele.tz0844@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0784072551', 'TZ0844', 'Nzega', NULL, '$2y$12$PA8OUOXKwmrcAYkXhLIALezQhj2sgjE6FrXUeeopzSYK1vnIh.JvG', 'light', '9sjnlShLbfkLLdmKgoFANZe3VSmyewuEGye6BOoLy4vnZvYfCLaq2mToEqUV', '2025-09-12 00:58:56', '2025-09-29 16:08:18', NULL),
+(11, 'gngamanja.tz0563@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0763973802', 'TZ0563', 'IGUNGA', NULL, '$2y$12$zZPcfvVWLuwaK2kXfPCFY.0MRxDauXGu5XAj/Mhj5WgNBMG6mJgOm', 'light', NULL, '2025-10-01 02:34:14', '2025-10-01 04:22:54', NULL),
+(12, 'filomo.tz0679@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0715675241', 'TZ0679', 'URAMBO', NULL, '$2y$12$lDim/jvBGUsLRDqHk8rYxeQXRjTCoI8VrOufYUVIufs3kZG0e9ENy', 'light', 'SO5OVsUYGAIqNCMkMJc7MzjQsku5AU5mN9dnWRSd8UxPy3sfCFhPoYMdYx8X', '2025-10-01 05:11:31', '2025-10-01 06:47:04', NULL),
+(14, 'bsambali.tz560@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0767478877', 'Tz0560', 'Urambo', NULL, '$2y$12$xd/vZFjQiKRzg0FPloV8EuRNSFwWiBSqCBzygQyj9MPMhpKN/Op4.', 'light', NULL, '2025-10-01 06:00:36', '2025-10-01 06:08:42', NULL),
+(15, 'tkapinga.tz0560@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0769536750', '0560', 'Urambo', NULL, '$2y$12$Ldf5H4tazLfpw.4ca9rai.mWaavxM5VgUL16IJg/BfHQvUr2NlH5a', 'light', NULL, '2025-10-01 06:03:39', '2025-10-01 06:08:21', NULL),
+(16, 'gcharles.tz0560@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0689743133', 'TZ0560', 'Urambo', NULL, '$2y$12$rRCi/LFeo5sAueS6dPrzUuwxH677WtCoKQqA3.DIOyCoksuRKxsr2', 'light', NULL, '2025-10-01 06:13:34', '2025-10-01 06:46:56', NULL),
+(17, 'mmalela.tz0565@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '+255788844851', 'TZ0565', 'NZEGA', NULL, '$2y$12$iGIJXU7ecrryQ8qz9DcEGuD/YAj0mhvEFBJNpk4q99KWzstyefM1e', 'light', 'v57qdjCDvHZRJm44CxvXl0rcWjJiVLtz6OZWbZ1x7CALQgiCrZtwE7gAQKAQ', '2025-10-01 06:31:31', '2025-10-01 06:48:08', NULL),
+(19, 'henrymo.tz0167@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0687752210', 'TZ0167', 'Nzega', NULL, '$2y$12$EpFG7UcumR79Dxx6Sw2KIOYSwEy1M.EP.O3JkMN655Bi6VfFUClr.', 'light', NULL, '2025-10-01 08:29:33', '2025-10-01 09:23:43', NULL),
+(20, 'nkizengi.tz0166@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0788996931', 'TZ0166', 'NZEGA', NULL, '$2y$12$v1ZEY.A311gQOm/7JNNEVeqgi9X8dTtZkxBvLbQzLZ3qm7txeFR6.', 'light', '6P5rp1gnLsGeqdWdRUkMqoIGqlGS0wyyhq7uLPWHlpdY6YH0dOuCICRaptFu', '2025-10-01 11:03:03', '2025-10-01 16:16:27', NULL),
+(21, 'kkalabo.tz0560@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0684904162', '0560', 'Urambo', NULL, '$2y$12$75ix/nIs7wgkvVL3n3.5h.Vce1D0wKQolHiSZ6kWmB.pll3Kbrx2i', 'light', NULL, '2025-10-01 12:04:28', '2025-10-01 16:15:56', NULL),
+(22, 'smanase.tz0848@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '+255765611149', 'TZ0848', 'Igunga', NULL, '$2y$12$K3.vLJN6Sx11cMGv1zvLGeYrMTO74ko6XE9gvMy7xH7WkFpt6Jkqq', 'light', NULL, '2025-10-01 14:50:42', '2025-10-01 16:16:08', NULL),
+(23, 'fkanjanja.tz0827@gmail.com', '1775879849_1000312465.jpg', 'user', 'approved', 'light', 0, NULL, NULL, '0775878912', 'TZ0827', 'URAMBO', NULL, '$2y$12$VKzccekjevf0lMMgcghnpu1SigVhIFm7aRBcXA2l5y05BQsKc.YzC', 'light', 'MgwmJpWDNXGSLEftpi1Kjljqrgly49DYPHtqvmEr5NY1iB2ZNLGG5rBf0cSm', '2025-10-01 20:33:52', '2026-04-11 02:57:29', NULL),
+(24, 'lkishiwa.tz0849@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0747746838', 'TZ0849', 'Igunga', NULL, '$2y$12$ib384vEjB4QfdEYcPzYzquYQycJ61.reHHSnmOO3PgW5OHZWkaw/O', 'light', NULL, '2025-10-02 05:40:08', '2025-10-02 08:44:58', NULL),
+(25, 'dmusa.tz0692@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0686983228', 'TZ0692', 'IGUNGA', NULL, '$2y$12$lAvCf3MxXVmW9xn9Fdrm2uyHESRVdnudlRakomr3.j0IlCuMnj0pG', 'light', 'DnuIB56z2SPLiTbwTJB7IA55KaFtxbCKlJ9w6imr7qync1AMXBPntUY3BtL5', '2025-10-02 06:12:59', '2025-11-18 07:59:47', NULL),
+(26, 'adamson.tz0564@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '+255753825788', 'TZ0564', 'Nzega', NULL, '$2y$12$b5F8mO1mxq89YNz3dV1s.uhb/7uGn3PRCFluu6haNthBzt.ZZ4NtG', 'light', NULL, '2025-10-02 08:49:37', '2025-10-02 09:22:36', NULL),
+(27, 'ekawira@tz.ci.org', NULL, 'admin', 'approved', 'light', 0, NULL, NULL, '+255 763385679', 'TZ0679', 'Urambo', NULL, '$2y$12$zMIBKzu46dOWwlWwKoV4oeA1Rx.mtgoqdi8IrDbik8/dtKLmuyGda', 'light', 'RP6cSFjHpx0Ndsfvhp3JGJ6qWXCrshjnDztwuYAT5I1gSjGRamTg0e8h0QG3', '2025-10-04 08:17:18', '2026-04-29 10:29:41', NULL),
+(28, 'tz0166@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0788996931', 'TZ0166', 'NZEGA', NULL, '$2y$12$R4dBlbDIvALAxw1WHiQ.Cu2dUmrGY3xhnS8Yhb6yTyyrqRRSB0SzW', 'light', NULL, '2025-12-04 07:00:13', '2025-12-04 07:12:00', NULL),
+(31, 'mgaspar.tz0679@gmail.com', '1768032595_Pst Manase RESIZED.png', 'user', 'approved', 'light', 0, NULL, NULL, '0623260990', 'TZ0679', 'URAMBO', NULL, '$2y$12$3ZITVPkCj3sMblU9fWsQAuYIWMbdXspWQeBs1yxHWvhh8KOZN4Kqa', 'light', 'd7AwyapOMCvIvW29s3GXLQ8HNFvG2sm14JUlSYDilLcDIqbNFfniU9Ptrhza', '2026-01-10 06:26:38', '2026-01-10 08:09:55', NULL),
+(32, 'jaroko.tz0565@gmail.com', '1768309148_1747140936560.jpg', 'user', 'approved', 'light', 0, NULL, NULL, '0743955447', 'TZ0565', 'NZEGA CLUSTER', NULL, '$2y$12$skL/eJrXYkF8yV7.JiqYR.Ityv/ojJAubPjV/qitiQtLA4uqrfHry', 'light', 'oBwxVjSwufaWrRhi3YLLVWoVxdbR293i3zzzIaphunck0YgUacSQYl7ZcA6x', '2026-01-10 09:26:51', '2026-01-21 08:07:42', NULL),
+(33, 'mashaka1sostenes@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0719107890', 'TZ0679', 'Urambo', NULL, '$2y$12$B26R3hQxVAqx.KJkodMHu.6/GiiX9sP1SgyZbZiziMhTltgL1j9m.', 'light', 'ibwyOC9xdDxvkc5mLYETfERgp6QV75rSvDE5xArgCrs1lsd73BNkiuHgmaQg', '2026-01-17 10:30:12', '2026-01-17 10:43:01', NULL),
+(34, 'tz0166crt@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0625366392', 'tz0166', 'Nzega', NULL, '$2y$12$WpLqZ/Kuvkx7Vp8hS3cqJe7FXSqDQYp1YMUJCltKRH5B9Q1bKoPsO', 'light', 'cBRgi8LRZxuHaUvDgd0NAoNkZvhRxnQH9CNEDuVG3Nh5rGI9rFL8ZqJtAEam', '2026-02-05 06:43:45', '2026-02-05 06:47:17', NULL),
+(35, 'kausimbea@gmail.com', NULL, 'user', 'approved', 'light', 0, NULL, NULL, '0673746031', 'TZ0350', 'TABORA', NULL, '$2y$12$DWbmlIbFV7if9ixv.S73Ae8g3OZtBEabx8eqpygXi/ILthOetLEae', 'light', '2WhmtbXwH7WfTQ5QvlytkeHa3zPincKaVhiVoDFP4RZg9DZe47XKY0P0sEV8', '2026-04-11 19:59:37', '2026-04-11 20:00:23', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vocational_training`
+--
+
+CREATE TABLE `vocational_training` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_name` varchar(255) NOT NULL,
+  `school_name` varchar(255) NOT NULL,
+  `skill_category` varchar(255) NOT NULL,
+  `training_level` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `abscent`
+--
+ALTER TABLE `abscent`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `abscent_attendance_id_foreign` (`attendance_id`);
+
+--
+-- Indexes for table `absent_participants`
+--
+ALTER TABLE `absent_participants`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `absent_participants_attendance_id_foreign` (`attendance_id`),
+  ADD KEY `absent_participants_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `alevel_students`
+--
+ALTER TABLE `alevel_students`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `alevel_students_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `announcements`
+--
+ALTER TABLE `announcements`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `announcements_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `base_leaders`
+--
+ALTER TABLE `base_leaders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `base_leaders_user_id_foreign` (`user_id`),
+  ADD KEY `base_leaders_approved_by_foreign` (`approved_by`);
+
+--
+-- Indexes for table `base_leader_details`
+--
+ALTER TABLE `base_leader_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `base_leader_details_base_leader_id_foreign` (`base_leader_id`);
+
+--
+-- Indexes for table `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indexes for table `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indexes for table `center_leadership`
+--
+ALTER TABLE `center_leadership`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `center_leadership_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `chat_messages_sender_id_recipient_id_index` (`sender_id`,`recipient_id`),
+  ADD KEY `chat_messages_recipient_id_read_at_index` (`recipient_id`,`read_at`);
+
+--
+-- Indexes for table `cluster_leaders`
+--
+ALTER TABLE `cluster_leaders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cluster_leaders_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `cluster_leader_details`
+--
+ALTER TABLE `cluster_leader_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cluster_leader_details_cluster_leader_id_foreign` (`cluster_leader_id`);
+
+--
+-- Indexes for table `college_info`
+--
+ALTER TABLE `college_info`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `college_info_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `curriculum_attendance`
+--
+ALTER TABLE `curriculum_attendance`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `curriculum_attendance_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `curriculum_attendance_participants`
+--
+ALTER TABLE `curriculum_attendance_participants`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cap_curr_att_fk` (`curriculum_attendance_id`),
+  ADD KEY `cap_user_fk` (`user_id`);
+
+--
+-- Indexes for table `cydc_center_leaders`
+--
+ALTER TABLE `cydc_center_leaders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cydc_center_leaders_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `cydc_leader_details`
+--
+ALTER TABLE `cydc_leader_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cydc_leader_details_submission_id_foreign` (`submission_id`),
+  ADD KEY `cydc_leader_details_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `exam_results`
+--
+ALTER TABLE `exam_results`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `exam_results_user_id_foreign` (`user_id`),
+  ADD KEY `exam_results_school_information_record_id_foreign` (`school_information_record_id`);
+
+--
+-- Indexes for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indexes for table `home_visitations`
+--
+ALTER TABLE `home_visitations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `home_visitations_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_index` (`queue`);
+
+--
+-- Indexes for table `job_batches`
+--
+ALTER TABLE `job_batches`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `masomo_ya_fani`
+--
+ALTER TABLE `masomo_ya_fani`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `masomo_ya_fani_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `masomo_ya_mtaala`
+--
+ALTER TABLE `masomo_ya_mtaala`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `national_leaders`
+--
+ALTER TABLE `national_leaders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `national_leaders_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `national_leader_details`
+--
+ALTER TABLE `national_leader_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `national_leader_details_leader_id_foreign` (`leader_id`);
+
+--
+-- Indexes for table `out_of_ministry_leaders`
+--
+ALTER TABLE `out_of_ministry_leaders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `out_of_ministry_leaders_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `out_of_ministry_leader_details`
+--
+ALTER TABLE `out_of_ministry_leader_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `out_of_ministry_leader_details_out_of_ministry_leader_id_foreign` (`out_of_ministry_leader_id`);
+
+--
+-- Indexes for table `parents_information`
+--
+ALTER TABLE `parents_information`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parents_information_user_id_foreign` (`user_id`),
+  ADD KEY `parents_information_approved_by_foreign` (`approved_by`);
+
+--
+-- Indexes for table `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Indexes for table `primary_students`
+--
+ALTER TABLE `primary_students`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `primary_students_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `saving_groups`
+--
+ALTER TABLE `saving_groups`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `saving_groups_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `school_information_records`
+--
+ALTER TABLE `school_information_records`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `school_information_records_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `school_visitations`
+--
+ALTER TABLE `school_visitations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `school_visitations_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `secondary_school_info`
+--
+ALTER TABLE `secondary_school_info`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `secondary_school_info_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
+-- Indexes for table `skills_attendance`
+--
+ALTER TABLE `skills_attendance`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `skills_attendance_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `skills_information`
+--
+ALTER TABLE `skills_information`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `skills_information_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `skill_videos`
+--
+ALTER TABLE `skill_videos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `special_programs`
+--
+ALTER TABLE `special_programs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `special_programs_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `submissions`
+--
+ALTER TABLE `submissions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `submissions_user_id_foreign` (`user_id`),
+  ADD KEY `submissions_reviewed_by_foreign` (`reviewed_by`);
+
+--
+-- Indexes for table `talents_information`
+--
+ALTER TABLE `talents_information`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `talents_information_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `talent_absent_participants`
+--
+ALTER TABLE `talent_absent_participants`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `talent_absent_participants_attendance_id_foreign` (`attendance_id`);
+
+--
+-- Indexes for table `talent_attendance`
+--
+ALTER TABLE `talent_attendance`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `talent_attendance_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `university_info`
+--
+ALTER TABLE `university_info`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `university_info_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD KEY `users_approved_by_foreign` (`approved_by`);
+
+--
+-- Indexes for table `vocational_training`
+--
+ALTER TABLE `vocational_training`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `vocational_training_user_id_foreign` (`user_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `abscent`
+--
+ALTER TABLE `abscent`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `absent_participants`
+--
+ALTER TABLE `absent_participants`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
+
+--
+-- AUTO_INCREMENT for table `alevel_students`
+--
+ALTER TABLE `alevel_students`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `announcements`
+--
+ALTER TABLE `announcements`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `base_leaders`
+--
+ALTER TABLE `base_leaders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `base_leader_details`
+--
+ALTER TABLE `base_leader_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `center_leadership`
+--
+ALTER TABLE `center_leadership`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `cluster_leaders`
+--
+ALTER TABLE `cluster_leaders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cluster_leader_details`
+--
+ALTER TABLE `cluster_leader_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `college_info`
+--
+ALTER TABLE `college_info`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `curriculum_attendance`
+--
+ALTER TABLE `curriculum_attendance`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `curriculum_attendance_participants`
+--
+ALTER TABLE `curriculum_attendance_participants`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `cydc_center_leaders`
+--
+ALTER TABLE `cydc_center_leaders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cydc_leader_details`
+--
+ALTER TABLE `cydc_leader_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `exam_results`
+--
+ALTER TABLE `exam_results`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `home_visitations`
+--
+ALTER TABLE `home_visitations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `masomo_ya_fani`
+--
+ALTER TABLE `masomo_ya_fani`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `masomo_ya_mtaala`
+--
+ALTER TABLE `masomo_ya_mtaala`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+
+--
+-- AUTO_INCREMENT for table `national_leaders`
+--
+ALTER TABLE `national_leaders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `national_leader_details`
+--
+ALTER TABLE `national_leader_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `out_of_ministry_leaders`
+--
+ALTER TABLE `out_of_ministry_leaders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `out_of_ministry_leader_details`
+--
+ALTER TABLE `out_of_ministry_leader_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `parents_information`
+--
+ALTER TABLE `parents_information`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `primary_students`
+--
+ALTER TABLE `primary_students`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `saving_groups`
+--
+ALTER TABLE `saving_groups`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `school_information_records`
+--
+ALTER TABLE `school_information_records`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `school_visitations`
+--
+ALTER TABLE `school_visitations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `secondary_school_info`
+--
+ALTER TABLE `secondary_school_info`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `skills_attendance`
+--
+ALTER TABLE `skills_attendance`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+
+--
+-- AUTO_INCREMENT for table `skills_information`
+--
+ALTER TABLE `skills_information`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+
+--
+-- AUTO_INCREMENT for table `skill_videos`
+--
+ALTER TABLE `skill_videos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `special_programs`
+--
+ALTER TABLE `special_programs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `submissions`
+--
+ALTER TABLE `submissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT for table `talents_information`
+--
+ALTER TABLE `talents_information`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `talent_absent_participants`
+--
+ALTER TABLE `talent_absent_participants`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+
+--
+-- AUTO_INCREMENT for table `talent_attendance`
+--
+ALTER TABLE `talent_attendance`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `university_info`
+--
+ALTER TABLE `university_info`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `vocational_training`
+--
+ALTER TABLE `vocational_training`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `abscent`
+--
+ALTER TABLE `abscent`
+  ADD CONSTRAINT `abscent_attendance_id_foreign` FOREIGN KEY (`attendance_id`) REFERENCES `curriculum_attendance` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `absent_participants`
+--
+ALTER TABLE `absent_participants`
+  ADD CONSTRAINT `absent_participants_attendance_id_foreign` FOREIGN KEY (`attendance_id`) REFERENCES `skills_attendance` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `absent_participants_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `alevel_students`
+--
+ALTER TABLE `alevel_students`
+  ADD CONSTRAINT `alevel_students_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `announcements`
+--
+ALTER TABLE `announcements`
+  ADD CONSTRAINT `announcements_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `base_leaders`
+--
+ALTER TABLE `base_leaders`
+  ADD CONSTRAINT `base_leaders_approved_by_foreign` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `base_leaders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `base_leader_details`
+--
+ALTER TABLE `base_leader_details`
+  ADD CONSTRAINT `base_leader_details_base_leader_id_foreign` FOREIGN KEY (`base_leader_id`) REFERENCES `base_leaders` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `center_leadership`
+--
+ALTER TABLE `center_leadership`
+  ADD CONSTRAINT `center_leadership_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  ADD CONSTRAINT `chat_messages_recipient_id_foreign` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `chat_messages_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `cluster_leaders`
+--
+ALTER TABLE `cluster_leaders`
+  ADD CONSTRAINT `cluster_leaders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `cluster_leader_details`
+--
+ALTER TABLE `cluster_leader_details`
+  ADD CONSTRAINT `cluster_leader_details_cluster_leader_id_foreign` FOREIGN KEY (`cluster_leader_id`) REFERENCES `cluster_leaders` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `college_info`
+--
+ALTER TABLE `college_info`
+  ADD CONSTRAINT `college_info_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `curriculum_attendance`
+--
+ALTER TABLE `curriculum_attendance`
+  ADD CONSTRAINT `curriculum_attendance_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `curriculum_attendance_participants`
+--
+ALTER TABLE `curriculum_attendance_participants`
+  ADD CONSTRAINT `cap_curr_att_fk` FOREIGN KEY (`curriculum_attendance_id`) REFERENCES `curriculum_attendance` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cap_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `cydc_center_leaders`
+--
+ALTER TABLE `cydc_center_leaders`
+  ADD CONSTRAINT `cydc_center_leaders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `cydc_leader_details`
+--
+ALTER TABLE `cydc_leader_details`
+  ADD CONSTRAINT `cydc_leader_details_submission_id_foreign` FOREIGN KEY (`submission_id`) REFERENCES `cydc_center_leaders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cydc_leader_details_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `exam_results`
+--
+ALTER TABLE `exam_results`
+  ADD CONSTRAINT `exam_results_school_information_record_id_foreign` FOREIGN KEY (`school_information_record_id`) REFERENCES `school_information_records` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `exam_results_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `home_visitations`
+--
+ALTER TABLE `home_visitations`
+  ADD CONSTRAINT `home_visitations_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `masomo_ya_fani`
+--
+ALTER TABLE `masomo_ya_fani`
+  ADD CONSTRAINT `masomo_ya_fani_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `national_leaders`
+--
+ALTER TABLE `national_leaders`
+  ADD CONSTRAINT `national_leaders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `national_leader_details`
+--
+ALTER TABLE `national_leader_details`
+  ADD CONSTRAINT `national_leader_details_leader_id_foreign` FOREIGN KEY (`leader_id`) REFERENCES `national_leaders` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `out_of_ministry_leaders`
+--
+ALTER TABLE `out_of_ministry_leaders`
+  ADD CONSTRAINT `out_of_ministry_leaders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `out_of_ministry_leader_details`
+--
+ALTER TABLE `out_of_ministry_leader_details`
+  ADD CONSTRAINT `out_of_ministry_leader_details_out_of_ministry_leader_id_foreign` FOREIGN KEY (`out_of_ministry_leader_id`) REFERENCES `out_of_ministry_leaders` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `parents_information`
+--
+ALTER TABLE `parents_information`
+  ADD CONSTRAINT `parents_information_approved_by_foreign` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `parents_information_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `primary_students`
+--
+ALTER TABLE `primary_students`
+  ADD CONSTRAINT `primary_students_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `saving_groups`
+--
+ALTER TABLE `saving_groups`
+  ADD CONSTRAINT `saving_groups_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `school_information_records`
+--
+ALTER TABLE `school_information_records`
+  ADD CONSTRAINT `school_information_records_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `school_visitations`
+--
+ALTER TABLE `school_visitations`
+  ADD CONSTRAINT `school_visitations_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `secondary_school_info`
+--
+ALTER TABLE `secondary_school_info`
+  ADD CONSTRAINT `secondary_school_info_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `skills_attendance`
+--
+ALTER TABLE `skills_attendance`
+  ADD CONSTRAINT `skills_attendance_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `skills_information`
+--
+ALTER TABLE `skills_information`
+  ADD CONSTRAINT `skills_information_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `special_programs`
+--
+ALTER TABLE `special_programs`
+  ADD CONSTRAINT `special_programs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `submissions`
+--
+ALTER TABLE `submissions`
+  ADD CONSTRAINT `submissions_reviewed_by_foreign` FOREIGN KEY (`reviewed_by`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `submissions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `talents_information`
+--
+ALTER TABLE `talents_information`
+  ADD CONSTRAINT `talents_information_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `talent_absent_participants`
+--
+ALTER TABLE `talent_absent_participants`
+  ADD CONSTRAINT `talent_absent_participants_attendance_id_foreign` FOREIGN KEY (`attendance_id`) REFERENCES `talent_attendance` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `talent_attendance`
+--
+ALTER TABLE `talent_attendance`
+  ADD CONSTRAINT `talent_attendance_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `university_info`
+--
+ALTER TABLE `university_info`
+  ADD CONSTRAINT `university_info_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_approved_by_foreign` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `vocational_training`
+--
+ALTER TABLE `vocational_training`
+  ADD CONSTRAINT `vocational_training_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+-- ================= Added safe patch for latest system improvements =================
+
+-- Add missing tables introduced by later system improvements
+-- Safe to import after the phpMyAdmin base dump.
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+CREATE TABLE IF NOT EXISTS `announcement_reads` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `announcement_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `read_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `announcement_reads_announcement_id_user_id_unique` (`announcement_id`,`user_id`),
+  KEY `announcement_reads_user_id_foreign` (`user_id`),
+  CONSTRAINT `announcement_reads_announcement_id_foreign` FOREIGN KEY (`announcement_id`) REFERENCES `announcements` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `announcement_reads_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `announcement_reads` (`id`, `announcement_id`, `user_id`, `read_at`, `created_at`, `updated_at`) VALUES
+(1, 1, 35, '2026-04-30 06:47:28', '2026-04-30 06:47:17', '2026-04-30 06:47:28'),
+(2, 1, 2, '2026-04-30 10:49:30', '2026-04-30 10:49:30', '2026-04-30 10:49:30');
+
+CREATE TABLE IF NOT EXISTS `local_sponsorships` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `child_name` varchar(255) NOT NULL,
+  `child_age` int(10) unsigned NOT NULL,
+  `child_location` varchar(255) NOT NULL,
+  `sponsor_type` varchar(255) NOT NULL,
+  `sponsor_name` varchar(255) NOT NULL,
+  `local_number` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `local_sponsorships_user_id_foreign` (`user_id`),
+  CONSTRAINT `local_sponsorships_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `migrations` (`migration`, `batch`)
+SELECT '2026_04_30_090000_create_announcement_reads_table', 15
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM `migrations`
+    WHERE `migration` = '2026_04_30_090000_create_announcement_reads_table'
+);
+
+INSERT INTO `migrations` (`migration`, `batch`)
+SELECT '2026_04_30_150000_create_local_sponsorships_table', 16
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM `migrations`
+    WHERE `migration` = '2026_04_30_150000_create_local_sponsorships_table'
+);
+
+SET FOREIGN_KEY_CHECKS = 1;

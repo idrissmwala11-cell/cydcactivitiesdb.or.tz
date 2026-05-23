@@ -1,0 +1,72 @@
+{{-- Profile Photo --}}
+<div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700">Profile Photo</label>
+
+    {{-- Preview --}}
+    <div class="mt-2">
+        <img
+            id="photoPreview"
+            class="h-24 w-24 rounded-full object-cover border"
+            src="{{ $user->profile_photo 
+                ? asset('storage/profile_photos/' . $user->profile_photo) . '?t=' . time()
+                : asset('images/default-avatar.png') 
+            }}"
+            alt="Profile Photo"
+        >
+    </div>
+
+    {{-- File Input --}}
+    <input
+        type="file"
+        name="profile_photo"
+        accept="image/*"
+        class="mt-2 block w-full"
+        onchange="uploadPhoto(this)"
+    >
+    <p id="uploadStatus" class="text-green-600 text-sm mt-1 hidden">Uploading...</p>
+</div>
+
+{{-- JS for Auto Upload --}}
+<script>
+function uploadPhoto(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    // Preview instantly
+    const reader = new FileReader();
+    reader.onload = function () {
+        document.getElementById('photoPreview').src = reader.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Prepare AJAX upload
+    const formData = new FormData();
+    formData.append('profile_photo', file);
+    formData.append('_token', '{{ csrf_token() }}');
+
+    const status = document.getElementById('uploadStatus');
+    status.textContent = "Uploading...";
+    status.classList.remove('hidden');
+
+    fetch('{{ route("profile.photo.update") }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Add timestamp to bust cache
+            const photo = document.getElementById('photoPreview');
+            photo.src = '{{ asset("storage/profile_photos/") }}/' + data.filename + '?t=' + new Date().getTime();
+
+            status.textContent = "Profile photo updated!";
+        } else {
+            status.textContent = "Upload failed!";
+        }
+    })
+    .catch(() => {
+        status.textContent = "Upload failed!";
+    });
+}
+</script>
+

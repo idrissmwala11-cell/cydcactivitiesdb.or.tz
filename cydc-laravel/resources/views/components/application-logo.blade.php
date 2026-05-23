@@ -1,0 +1,1 @@
+<img src="{{ asset('public/logocydc.jpeg') }}" alt="CYDC Logo" {{ $attributes->merge(['class' => 'rounded-lg']) }} />

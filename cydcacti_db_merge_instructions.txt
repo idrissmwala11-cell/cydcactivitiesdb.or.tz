@@ -1,0 +1,12 @@
+Use either of these safe methods:
+
+1. Best method
+- Import `cydcacti_db.from-phpmyadmin.bak.sql`
+- Then import `cydcacti_db_patch.sql`
+
+2. One-file method
+- Import `cydcacti_db_cpanel_safe.sql`
+
+These methods preserve the phpMyAdmin dump data and only add the missing tables:
+- announcement_reads
+- local_sponsorships

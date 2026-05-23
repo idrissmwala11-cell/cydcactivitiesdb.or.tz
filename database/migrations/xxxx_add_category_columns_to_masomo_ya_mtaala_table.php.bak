@@ -1,0 +1,16 @@
+public function up()
+{
+    Schema::table('masomo_ya_mtaala', function (Blueprint $table) {
+        $table->string('kiroho')->nullable();
+        $table->string('kimwili')->nullable();
+        $table->string('kiakili')->nullable();
+        $table->string('kijamii')->nullable();
+    });
+}
+
+public function down()
+{
+    Schema::table('masomo_ya_mtaala', function (Blueprint $table) {
+        $table->dropColumn(['kiroho','kimwili','kiakili','kijamii']);
+    });
+}
