@@ -10,8 +10,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
+use Throwable;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,7 +33,24 @@ class AuthenticatedSessionController extends Controller
         $user = $request->authenticate();
 
         $request->session()->regenerate();
-        $this->sendLoginOtp($request, $user, $request->boolean('remember'));
+
+        try {
+            $this->sendLoginOtp($request, $user, $request->boolean('remember'));
+        } catch (Throwable $exception) {
+            $request->session()->forget('login_otp');
+
+            Log::error('Login OTP email failed.', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return back()
+                ->withInput($request->only('email', 'remember'))
+                ->withErrors([
+                    'email' => 'Tumeshindwa kutuma OTP kwenye email. Tafadhali hakikisha mail settings za server ziko sawa kisha jaribu tena.',
+                ]);
+        }
 
         return redirect()
             ->route('login.otp')
@@ -116,7 +135,20 @@ class AuthenticatedSessionController extends Controller
         }
 
         $user = User::findOrFail($otp['user_id']);
-        $this->sendLoginOtp($request, $user, (bool) ($otp['remember'] ?? false));
+
+        try {
+            $this->sendLoginOtp($request, $user, (bool) ($otp['remember'] ?? false));
+        } catch (Throwable $exception) {
+            Log::error('Login OTP resend email failed.', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return back()->withErrors([
+                'code' => 'Tumeshindwa kutuma OTP mpya. Tafadhali jaribu tena baada ya mail settings kurekebishwa.',
+            ]);
+        }
 
         return back()->with('status', 'Verification code mpya imetumwa kwenye email yako.');
     }

@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Mail\LoginOtpMail;
 use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -57,6 +58,31 @@ class AuthenticationTest extends TestCase
 
         $this->assertAuthenticatedAs($user);
         $verifyResponse->assertRedirect(route('dashboard', absolute: false));
+    }
+
+    public function test_login_shows_error_when_otp_email_cannot_be_sent(): void
+    {
+        Mail::shouldReceive('to')
+            ->once()
+            ->andThrow(new Exception('SMTP connection failed'));
+
+        $user = User::factory()->create([
+            'role' => 'user',
+            'status' => 'approved',
+        ]);
+
+        $response = $this
+            ->from('/login')
+            ->post('/login', [
+                'email' => $user->email,
+                'password' => 'password',
+            ]);
+
+        $this->assertGuest();
+        $response
+            ->assertRedirect('/login')
+            ->assertSessionHasErrors('email');
+        $this->assertFalse(session()->has('login_otp'));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
