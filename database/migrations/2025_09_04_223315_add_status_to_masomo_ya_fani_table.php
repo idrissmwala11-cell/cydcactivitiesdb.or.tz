@@ -11,10 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (! Schema::hasTable('masomo_ya_fani')) {
+            return;
+        }
+
         Schema::table('masomo_ya_fani', function (Blueprint $table) {
-            $table->enum('status', ['draft', 'submitted', 'approved', 'rejected'])->default('draft');
-            $table->text('admin_notes')->nullable();
-            $table->timestamp('submitted_at')->nullable();
+            if (! Schema::hasColumn('masomo_ya_fani', 'status')) {
+                $table->enum('status', ['draft', 'submitted', 'approved', 'rejected'])->default('draft');
+            }
+
+            if (! Schema::hasColumn('masomo_ya_fani', 'admin_notes')) {
+                $table->text('admin_notes')->nullable();
+            }
+
+            if (! Schema::hasColumn('masomo_ya_fani', 'submitted_at')) {
+                $table->timestamp('submitted_at')->nullable();
+            }
         });
     }
 
@@ -23,8 +35,18 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (! Schema::hasTable('masomo_ya_fani')) {
+            return;
+        }
+
         Schema::table('masomo_ya_fani', function (Blueprint $table) {
-            $table->dropColumn(['status', 'admin_notes', 'submitted_at']);
+            $columns = collect(['status', 'admin_notes', 'submitted_at'])
+                ->filter(fn (string $column) => Schema::hasColumn('masomo_ya_fani', $column))
+                ->all();
+
+            if ($columns !== []) {
+                $table->dropColumn($columns);
+            }
         });
     }
 };

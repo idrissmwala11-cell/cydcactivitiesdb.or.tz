@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (! Schema::hasTable('masomo_ya_mtaala')) {
+            return;
+        }
+
         Schema::table('masomo_ya_mtaala', function (Blueprint $table) {
             //
         });
@@ -21,6 +25,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (! Schema::hasTable('masomo_ya_mtaala')) {
+            return;
+        }
+
         Schema::table('masomo_ya_mtaala', function (Blueprint $table) {
             //
         });

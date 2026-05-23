@@ -8,15 +8,27 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (! Schema::hasTable('absent_participants')) {
+            return;
+        }
+
         Schema::table('absent_participants', function (Blueprint $table) {
-            $table->string('status')->default('absent')->after('participant_number');
+            if (! Schema::hasColumn('absent_participants', 'status')) {
+                $table->string('status')->default('absent')->after('participant_number');
+            }
         });
     }
 
     public function down(): void
     {
+        if (! Schema::hasTable('absent_participants')) {
+            return;
+        }
+
         Schema::table('absent_participants', function (Blueprint $table) {
-            $table->dropColumn('status');
+            if (Schema::hasColumn('absent_participants', 'status')) {
+                $table->dropColumn('status');
+            }
         });
     }
 };

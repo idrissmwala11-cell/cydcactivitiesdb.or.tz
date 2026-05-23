@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (! Schema::hasTable('masomo_ya_fani')) {
+            return;
+        }
+
         Schema::table('masomo_ya_fani', function (Blueprint $table) {
             // Only add 'status' if it doesn't exist yet
             if (!Schema::hasColumn('masomo_ya_fani', 'status')) {
@@ -26,6 +30,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (! Schema::hasTable('masomo_ya_fani')) {
+            return;
+        }
+
         Schema::table('masomo_ya_fani', function (Blueprint $table) {
             // Only drop 'status' if it exists
             if (Schema::hasColumn('masomo_ya_fani', 'status')) {
