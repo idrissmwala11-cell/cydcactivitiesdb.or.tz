@@ -280,7 +280,13 @@ class ReportController extends Controller
      */
     private function getModules(): array
     {
-        return array_merge(config('reports.modules', []), [
+        $modules = config('reports.modules', []);
+
+        if (! config('features.local_sponsorship_visible')) {
+            unset($modules['local_sponsorship']);
+        }
+
+        return array_merge($modules, [
             'centers_without_data' => [
                 'title' => 'Centers Without Data',
             ],
@@ -295,7 +301,6 @@ class ReportController extends Controller
             MasomoYaMtaala::class,
             HomeVisitation::class,
             SchoolVisitation::class,
-            LocalSponsorship::class,
             Submission::class,
             CenterLeadership::class,
             TalentsInformation::class,
@@ -307,6 +312,10 @@ class ReportController extends Controller
             SchoolInformationRecord::class,
             ExamResult::class,
         ];
+
+        if (config('features.local_sponsorship_visible')) {
+            $models[] = LocalSponsorship::class;
+        }
 
         $userIdsWithData = collect();
 

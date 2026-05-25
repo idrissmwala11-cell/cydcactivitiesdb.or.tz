@@ -943,15 +943,6 @@ class DashboardController extends Controller
                 'url' => fn ($item) => route('school-info.' . $item->education_level . '.show', $item),
             ],
             [
-                'model' => LocalSponsorship::class,
-                'type' => 'Local Sponsorship',
-                'fields' => ['child_name', 'location_found', 'sponsor_name', 'sponsor_type', 'child_local_number'],
-                'title' => fn ($item) => trim(($item->child_name ?? 'Child') . ' - ' . ($item->sponsor_name ?? 'Sponsor')),
-                'description' => fn ($item) => $item->location_found ?? $item->sponsor_type ?? 'Local sponsorship record',
-                'location' => 'Local Sponsorship',
-                'url' => fn ($item) => route('local-sponsorship.show', $item),
-            ],
-            [
                 'model' => BaseLeader::class,
                 'type' => 'Base Leader',
                 'fields' => ['leader_name', 'position', 'phone_number', 'comments'],
@@ -961,6 +952,18 @@ class DashboardController extends Controller
                 'url' => fn ($item) => route('base-leaders.show', $item),
             ],
         ];
+
+        if (config('features.local_sponsorship_visible')) {
+            $sources[] = [
+                'model' => LocalSponsorship::class,
+                'type' => 'Local Sponsorship',
+                'fields' => ['child_name', 'location_found', 'sponsor_name', 'sponsor_type', 'child_local_number'],
+                'title' => fn ($item) => trim(($item->child_name ?? 'Child') . ' - ' . ($item->sponsor_name ?? 'Sponsor')),
+                'description' => fn ($item) => $item->location_found ?? $item->sponsor_type ?? 'Local sponsorship record',
+                'location' => 'Local Sponsorship',
+                'url' => fn ($item) => route('local-sponsorship.show', $item),
+            ];
+        }
 
         $results = collect();
 

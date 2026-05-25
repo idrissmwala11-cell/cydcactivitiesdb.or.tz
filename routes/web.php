@@ -92,7 +92,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('curriculum-attendance', CurriculumAttendanceController::class);
     Route::resource('home-visitation', HomeVisitationController::class);
     Route::resource('school-visitation', SchoolVisitationController::class);
-    Route::resource('local-sponsorship', LocalSponsorshipController::class);
+    if (config('features.local_sponsorship_visible')) {
+        Route::resource('local-sponsorship', LocalSponsorshipController::class);
+    }
     Route::resource('parents-information', ParentsInformationController::class);
     Route::resource('vocational-training', VocationalTrainingController::class);
     Route::resource('saving-groups', SavingGroupController::class);

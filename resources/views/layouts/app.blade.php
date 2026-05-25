@@ -696,13 +696,15 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('local-sponsorship.*') ? 'active' : '' }}"
-                       href="{{ route('local-sponsorship.index') }}">
-                        <i class="bi bi-heart"></i>
-                        <span>{{ __('ui.local_sponsorship') }}</span>
-                    </a>
-                </li>
+                @if(config('features.local_sponsorship_visible'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('local-sponsorship.*') ? 'active' : '' }}"
+                           href="{{ route('local-sponsorship.index') }}">
+                            <i class="bi bi-heart"></i>
+                            <span>{{ __('ui.local_sponsorship') }}</span>
+                        </a>
+                    </li>
+                @endif
 
                 <li class="nav-item dropdown-nav">
                     <a class="nav-link dropdown-toggle {{ request()->routeIs('exam-results.*') ? 'active' : '' }}"
