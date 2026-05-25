@@ -778,7 +778,7 @@
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>info@cydcactivitiesdb.or.tz</span>
+                            <span>support@cydcactivitiesdb.or.tz</span>
                         </div>
                     </div>
                 </div>

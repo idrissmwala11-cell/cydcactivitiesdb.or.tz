@@ -68,7 +68,7 @@
                     <div class="mt-3">
                         <small class="text-muted">
                             Need help? Contact support at 
-                            <a href="mailto:info@cydcactivitiesdb.or.tz."> Cydc@Support</a>
+                            <a href="mailto:support@cydcactivitiesdb.or.tz">support@cydcactivitiesdb.or.tz</a>
                         </small>
                     </div>
                 </div>
