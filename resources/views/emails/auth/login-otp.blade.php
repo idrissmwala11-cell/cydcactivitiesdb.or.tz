@@ -2,21 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>CYDC Login Verification Code</title>
+    <title>CYDC Activities Database - Secure OTP Verification</title>
 </head>
-<body style="font-family: Arial, sans-serif; color: #111827; line-height: 1.6;">
-    <p>Hello {{ $user->center_id ?? $user->email }},</p>
+<body style="font-family: Arial, sans-serif; color: #111827; line-height: 1.6; background-color: #f3f4f6; margin: 0; padding: 24px;">
+    <div style="max-width: 620px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e5e7eb;">
+        <h1 style="font-size: 22px; color: #1d4ed8; margin: 0 0 4px;">CYDC Activities Database</h1>
+        <h2 style="font-size: 16px; color: #374151; margin: 0 0 24px;">Secure OTP Verification</h2>
 
-    <p>Use this verification code to complete your CYDC login:</p>
+        <p>Hello Dear User,</p>
 
-    <p style="font-size: 28px; font-weight: 700; letter-spacing: 6px; color: #1d4ed8;">
-        {{ $code }}
-    </p>
+        <p>
+            Thank you for using CYDC Activities Database. Please use the verification code below to continue accessing your account.
+            This OTP code will expire in 10 minutes for security purposes.
+        </p>
 
-    <p>This code will expire in 10 minutes.</p>
+        <div style="text-align: center; margin: 28px 0;">
+            <div style="display: inline-block; font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #1d4ed8; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 16px 24px;">
+                {{ $code }}
+            </div>
+        </div>
 
-    <p>If you did not try to login, please ignore this email.</p>
+        <p>If you did not request this code, please ignore this email.</p>
 
-    <p>CYDC Activities System</p>
+        <p style="margin-top: 28px;">
+            Best Regards,<br>
+            System Administrator<br>
+            Emmanuel Mwala<br>
+            Tel: +255 673 746 031
+        </p>
+    </div>
 </body>
 </html>
