@@ -8,11 +8,11 @@
             </svg>
         </div>
 
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Thibitisha OTP</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Verify OTP</h1>
         <p class="text-gray-600 leading-relaxed">
-            Tumetuma OTP ya tarakimu 6 kwenye email
+            We have sent a 6-digit OTP to
             <span class="font-semibold text-gray-800">{{ $email }}</span>.
-            Weka code hiyo ili kuingia kwenye dashboard.
+            Enter the code below to continue to your dashboard.
         </p>
     </div>
 
@@ -36,12 +36,12 @@
                 class="text-center text-2xl font-bold tracking-[0.45em]"
             />
             <x-input-error :messages="$errors->get('code')" class="mt-2" />
-            <p class="text-sm text-gray-500">Code ina-expire baada ya dakika 10.</p>
+            <p class="text-sm text-gray-500">This code expires after 10 minutes.</p>
         </div>
 
         <div class="mt-8">
             <x-primary-button class="w-full">
-                {{ __('Thibitisha na Endelea') }}
+                {{ __('Verify and Continue') }}
             </x-primary-button>
         </div>
     </form>
@@ -51,14 +51,14 @@
             @csrf
 
             <button type="submit" class="text-sm font-semibold text-blue-600 hover:text-blue-800 transition duration-200">
-                Tuma OTP mpya
+                Send a new OTP
             </button>
         </form>
 
         <span class="hidden text-gray-300 sm:inline">|</span>
 
         <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-800 transition duration-200">
-            Rudi login
+            Back to login
         </a>
     </div>
 </x-guest-layout>
