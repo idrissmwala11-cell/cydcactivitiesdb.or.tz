@@ -1,0 +1,69 @@
+@extends('layouts.app')
+
+@section('content')
+@include('form-two-results._styles')
+<div class="container-fluid f2-shell">
+    @php($isPrimary = $educationLevel === 'primary')
+    @include('form-two-results._nav')
+    @include('form-two-results._alerts')
+    <div class="f2-sheet">
+        <div class="f2-title d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div><h5>{{ $isPrimary ? 'MUHTASARI WA UFAULU' : 'PERFORMANCE SUMMARY' }}</h5><div class="small opacity-75">{{ $isPrimary ? 'Uchambuzi wa madaraja kwa alama 50 na jinsi kutoka kwenye matokeo yaliyochaguliwa.' : 'Division and gender analysis from the selected result sheet.' }}</div></div>
+            <form method="GET" class="f2-no-print d-flex flex-wrap gap-2">
+                <select class="form-select" name="education_level" onchange="this.form.querySelector('[name=class_level]').value=''; this.form.querySelector('[name=assessment_id]').value=''; this.form.submit()"><option value="primary" @selected($educationLevel === 'primary')>Msingi</option><option value="secondary" @selected($educationLevel === 'secondary')>Sekondari</option></select>
+                <select class="form-select" name="class_level" onchange="this.form.querySelector('[name=assessment_id]').value=''; this.form.submit()">@foreach($classOptions[$educationLevel] as $option)<option value="{{ $option }}" @selected($classLevel === $option)>{{ $option }}</option>@endforeach</select>
+                <select class="form-select" name="assessment_id" onchange="this.form.submit()">@foreach($assessments as $item)<option value="{{ $item->id }}" @selected($assessment?->is($item))>{{ $item->name }}</option>@endforeach</select>
+            </form>
+        </div>
+        <div class="f2-ribbon">{{ $isPrimary ? 'Msingi' : 'Secondary' }} / {{ $classLevel }} - {{ $assessment?->name ?? ($isPrimary ? 'Hakuna mtihani uliowekwa' : 'No assessment configured') }}</div>
+        <div class="table-responsive">
+            <table class="table table-bordered f2-table mb-0">
+                <thead><tr><th>{{ $isPrimary ? 'Kundi' : 'Group' }}</th><th>{{ $isPrimary ? 'Waliosajiliwa' : 'REG' }}</th><th>{{ $isPrimary ? 'Waliofanya' : 'SAT' }}</th><th>{{ $isPrimary ? 'Wasiokuwepo' : 'ABS' }}</th>@if($isPrimary)@foreach(['A','B','C','D','F'] as $grade)<th>DARAJA {{ $grade }}</th>@endforeach @else @foreach(['I','II','III','IV','0','INC'] as $division)<th>DIV {{ $division }}</th>@endforeach @endif<th>{{ $isPrimary ? 'Waliofaulu' : 'PASS' }}</th><th>{{ $isPrimary ? 'Ufaulu %' : 'PASS %' }}</th></tr></thead>
+                <tbody>
+                    @foreach(['F' => ($isPrimary ? 'Wasichana' : 'Girls'), 'M' => ($isPrimary ? 'Wavulana' : 'Boys'), 'ALL' => ($isPrimary ? 'Jumla' : 'Total')] as $key => $label)
+                        @php($group = $groups[$key])
+                        <tr><td class="fw-bold">{{ $label }}</td><td>{{ $group['registered'] }}</td><td>{{ $group['sat'] }}</td><td>{{ $group['absent'] }}</td>@if($isPrimary)@foreach(['A','B','C','D','F'] as $grade)<td>{{ $group['grades'][$grade] }}</td>@endforeach @else @foreach(['I','II','III','IV','0','INC'] as $division)<td>{{ $group['divisions'][$division] }}</td>@endforeach @endif<td>{{ $group['passed'] }}</td><td class="fw-bold">{{ number_format($group['pass_rate'], 1) }}%</td></tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="f2-sheet mt-4">
+        <div class="f2-title"><h5>{{ $isPrimary ? 'ORODHA YA MATOKEO' : 'RESULTS LIST' }}</h5></div>
+        <div class="f2-ribbon">{{ $isPrimary ? 'MATOKEO YA MSINGI' : strtoupper($educationLevel).' / '.strtoupper($classLevel).' RESULTS' }} - {{ strtoupper($classLevel) }}, {{ $assessment?->assessment_date?->format('F Y') ?? '2026' }}</div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover f2-table mb-0">
+                <thead><tr><th>Na.</th><th class="sticky-col">{{ $isPrimary ? 'Jina la Mwanafunzi' : "Candidate's Name" }}</th><th>FCP Name</th><th>{{ $isPrimary ? 'Jinsi' : 'Sex' }}</th>@foreach($subjects as $subject)<th title="{{ $subject->name }}">{{ $subject->abbreviation }}<span class="f2-code">{{ $subject->code }}</span></th>@endforeach<th>{{ $isPrimary ? 'Jumla' : 'Total' }}</th><th>{{ $isPrimary ? 'Wastani' : 'Average' }}</th><th>{{ $isPrimary ? 'Daraja' : 'Grade' }}</th>@unless($isPrimary)<th>Points</th><th>Division</th>@endunless<th>{{ $isPrimary ? 'Nafasi' : 'Position' }}</th><th>{{ $isPrimary ? 'Ripoti' : 'Report' }}</th></tr></thead>
+                <tbody>
+                @forelse($rows as $row)
+                    <tr>
+                        <td>{{ $row['student']->student_number }}</td><td class="sticky-col fw-bold">{{ $row['student']->candidate_name }}</td><td class="text-nowrap">{{ $row['student']->fcp_name ?: '-' }}</td><td class="text-center">{{ $row['student']->sex }}</td>
+                        @php($subjectRows = collect($row['subjects'])->keyBy(fn ($item) => $item['subject']->id))
+                        @foreach($subjects as $subject)
+                            @php($subjectResult = $subjectRows->get($subject->id))
+                            <td class="text-center fw-bold {{ $subjectResult && $subjectResult['grade'] ? 'f2-grade-'.$subjectResult['grade'] : '' }}">
+                                @if(! $subjectResult)
+                                    <span class="text-muted">N/R</span>
+                                @elseif($subjectResult['isAbsent'])
+                                    ABS
+                                @elseif($subjectResult['mark'] !== null)
+                                    {{ number_format($subjectResult['mark'], 2) }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        @endforeach
+                        <td class="text-end">{{ number_format($row['total'], 2) }}</td><td class="text-center">{{ $row['average'] !== null ? number_format($row['average'], 2) : 'ABS' }}</td>
+                        <td class="text-center f2-grade-{{ $row['overall_grade'] }}">{{ $row['overall_grade'] ?? 'ABS' }}</td>@unless($isPrimary)<td class="text-center">{{ $row['points'] ?? '-' }}</td><td class="text-center fw-bold">{{ $row['division'] }}</td>@endunless<td class="text-center">{{ $row['rank'] ?? '-' }}</td>
+                        <td class="text-center"><a class="btn btn-sm btn-outline-success" href="{{ route('form-two-results.reports.show', [$row['student'], 'assessment_id' => $assessment?->id]) }}"><i class="bi bi-file-earmark-person"></i></a></td>
+                    </tr>
+                @empty
+                    <tr><td colspan="{{ $subjects->count() + ($isPrimary ? 9 : 11) }}" class="f2-empty">{{ $isPrimary ? 'Hakuna wanafunzi katika jedwali hili la matokeo.' : 'No students are available for this result sheet.' }}</td></tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection
