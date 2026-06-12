@@ -30,36 +30,29 @@
     </div>
 
     <div class="f2-sheet mt-4">
-        <div class="f2-title"><h5>{{ $isPrimary ? 'ORODHA YA MATOKEO' : 'RESULTS LIST' }}</h5></div>
+        <div class="f2-title d-flex flex-wrap justify-content-between align-items-center gap-2"><h5>{{ $isPrimary ? 'ORODHA YA MATOKEO' : 'RESULTS LIST' }}</h5>@if($assessment)<a class="btn btn-light f2-no-print" href="{{ route('form-two-results.reports.index', ['education_level' => $educationLevel, 'class_level' => $classLevel, 'assessment_id' => $assessment->id]) }}"><i class="bi bi-printer me-1"></i>{{ $isPrimary ? 'Run Ripoti' : 'Run Reports' }}</a>@endif</div>
         <div class="f2-ribbon">{{ $isPrimary ? 'MATOKEO YA MSINGI' : strtoupper($educationLevel).' / '.strtoupper($classLevel).' RESULTS' }} - {{ strtoupper($classLevel) }}, {{ $assessment?->assessment_date?->format('F Y') ?? '2026' }}</div>
         <div class="table-responsive">
             <table class="table table-bordered table-hover f2-table mb-0">
-                <thead><tr><th>Na.</th><th class="sticky-col">{{ $isPrimary ? 'Jina la Mwanafunzi' : "Candidate's Name" }}</th><th>FCP Name</th><th>{{ $isPrimary ? 'Jinsi' : 'Sex' }}</th>@foreach($subjects as $subject)<th title="{{ $subject->name }}">{{ $subject->abbreviation }}<span class="f2-code">{{ $subject->code }}</span></th>@endforeach<th>{{ $isPrimary ? 'Jumla' : 'Total' }}</th><th>{{ $isPrimary ? 'Wastani' : 'Average' }}</th><th>{{ $isPrimary ? 'Daraja' : 'Grade' }}</th>@unless($isPrimary)<th>Points</th><th>Division</th>@endunless<th>{{ $isPrimary ? 'Nafasi' : 'Position' }}</th><th>{{ $isPrimary ? 'Ripoti' : 'Report' }}</th></tr></thead>
+                <thead><tr><th>Na.</th><th class="sticky-col">{{ $isPrimary ? 'Jina la Mwanafunzi' : "Candidate's Name" }}</th><th>FCP Name</th><th>{{ $isPrimary ? 'Jinsi' : 'Sex' }}</th><th style="min-width:420px">{{ $isPrimary ? 'Maelezo ya Masomo' : 'Subject Details' }}</th><th>{{ $isPrimary ? 'Jumla' : 'Total' }}</th><th>{{ $isPrimary ? 'Wastani' : 'Average' }}</th>@if($isPrimary)<th>Daraja</th>@else<th>Points</th><th>Division</th>@endif<th>{{ $isPrimary ? 'Nafasi' : 'Position' }}</th><th>{{ $isPrimary ? 'Ripoti' : 'Report' }}</th></tr></thead>
                 <tbody>
                 @forelse($rows as $row)
                     <tr>
                         <td>{{ $row['student']->student_number }}</td><td class="sticky-col fw-bold">{{ $row['student']->candidate_name }}</td><td class="text-nowrap">{{ $row['student']->fcp_name ?: '-' }}</td><td class="text-center">{{ $row['student']->sex }}</td>
-                        @php($subjectRows = collect($row['subjects'])->keyBy(fn ($item) => $item['subject']->id))
-                        @foreach($subjects as $subject)
-                            @php($subjectResult = $subjectRows->get($subject->id))
-                            <td class="text-center fw-bold {{ $subjectResult && $subjectResult['grade'] ? 'f2-grade-'.$subjectResult['grade'] : '' }}">
-                                @if(! $subjectResult)
-                                    <span class="text-muted">N/R</span>
-                                @elseif($subjectResult['isAbsent'])
-                                    ABS
-                                @elseif($subjectResult['mark'] !== null)
-                                    {{ number_format($subjectResult['mark'], 2) }}
-                                @else
-                                    -
-                                @endif
-                            </td>
-                        @endforeach
+                        <td class="small lh-lg">
+                            @forelse(collect($row['subjects'])->filter(fn ($item) => $item['mark'] !== null || $item['isAbsent']) as $subjectResult)
+                                @php($markText = $subjectResult['isAbsent'] ? 'ABS' : rtrim(rtrim(number_format($subjectResult['mark'], 2, '.', ''), '0'), '.'))
+                                <span class="d-inline-block text-nowrap me-2"><strong>{{ $subjectResult['subject']->abbreviation }}</strong> {{ $markText }}-{{ $subjectResult['grade'] }}</span>
+                            @empty
+                                <span class="text-muted">-</span>
+                            @endforelse
+                        </td>
                         <td class="text-end">{{ number_format($row['total'], 2) }}</td><td class="text-center">{{ $row['average'] !== null ? number_format($row['average'], 2) : 'ABS' }}</td>
-                        <td class="text-center f2-grade-{{ $row['overall_grade'] }}">{{ $row['overall_grade'] ?? 'ABS' }}</td>@unless($isPrimary)<td class="text-center">{{ $row['points'] ?? '-' }}</td><td class="text-center fw-bold">{{ $row['division'] }}</td>@endunless<td class="text-center">{{ $row['rank'] ?? '-' }}</td>
+                        @if($isPrimary)<td class="text-center f2-grade-{{ $row['overall_grade'] }}">{{ $row['overall_grade'] ?? 'ABS' }}</td>@else<td class="text-center">{{ $row['points'] ?? '-' }}</td><td class="text-center fw-bold">{{ $row['division'] }}</td>@endif<td class="text-center">{{ $row['rank'] ?? '-' }}</td>
                         <td class="text-center"><a class="btn btn-sm btn-outline-success" href="{{ route('form-two-results.reports.show', [$row['student'], 'assessment_id' => $assessment?->id]) }}"><i class="bi bi-file-earmark-person"></i></a></td>
                     </tr>
                 @empty
-                    <tr><td colspan="{{ $subjects->count() + ($isPrimary ? 9 : 11) }}" class="f2-empty">{{ $isPrimary ? 'Hakuna wanafunzi katika jedwali hili la matokeo.' : 'No students are available for this result sheet.' }}</td></tr>
+                    <tr><td colspan="{{ $isPrimary ? 10 : 11 }}" class="f2-empty">{{ $isPrimary ? 'Hakuna wanafunzi katika jedwali hili la matokeo.' : 'No students are available for this result sheet.' }}</td></tr>
                 @endforelse
                 </tbody>
             </table>

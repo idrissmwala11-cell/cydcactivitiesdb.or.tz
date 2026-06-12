@@ -92,6 +92,7 @@ Route::middleware(['auth', 'form-two-results.access'])
         Route::put('/marks/{assessment}', [FormTwoResultsController::class, 'storeMarks'])->name('marks.store');
         Route::get('/results', [FormTwoResultsController::class, 'results'])->name('results.index');
         Route::get('/analysis', [FormTwoResultsController::class, 'analysis'])->name('analysis.index');
+        Route::get('/reports', [FormTwoResultsController::class, 'reports'])->name('reports.index');
         Route::get('/reports/{student}', [FormTwoResultsController::class, 'report'])->name('reports.show');
     });
 

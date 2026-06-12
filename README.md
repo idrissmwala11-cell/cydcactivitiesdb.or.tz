@@ -46,4 +46,4 @@ php artisan test
 npm run build
 ```
 
-GitHub Actions hurudia ukaguzi huu kila push.
+Endesha ukaguzi huu kabla ya kila deployment.

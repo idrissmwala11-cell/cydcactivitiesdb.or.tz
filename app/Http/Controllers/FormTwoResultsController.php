@@ -298,21 +298,10 @@ class FormTwoResultsController extends Controller
         $assessment = $this->selectedAssessment($request);
         $selection = $this->selection($request, $assessment);
         $rows = $assessment ? $this->resultRows($assessment) : collect();
-        $subjectQuery = FormTwoSubject::where('education_level', $selection['education_level'])
-            ->where('is_active', true);
-
-        if ($selection['education_level'] === 'secondary') {
-            $registeredSubjectIds = $rows
-                ->flatMap(fn ($row) => collect($row['subjects'])->pluck('subject.id'))
-                ->unique()
-                ->values();
-            $subjectQuery->whereIn('id', $registeredSubjectIds);
-        }
 
         return view('form-two-results.results', [
             'assessments' => $this->assessmentQuery($selection)->orderBy('display_order')->get(),
             'assessment' => $assessment,
-            'subjects' => $subjectQuery->orderBy('display_order')->get(),
             'rows' => $rows,
             'groups' => $this->performanceGroups($rows, $selection['education_level'] === 'primary'),
             ...$selection,
@@ -390,6 +379,45 @@ class FormTwoResultsController extends Controller
         ]);
     }
 
+    public function reports(Request $request): View
+    {
+        $assessment = $this->selectedAssessment($request);
+        $selection = $this->selection($request, $assessment);
+        $fcpNames = $this->studentQuery($selection)
+            ->where('is_active', true)
+            ->whereNotNull('fcp_name')
+            ->where('fcp_name', '<>', '')
+            ->distinct()
+            ->orderBy('fcp_name')
+            ->pluck('fcp_name');
+        $selectedFcp = trim($request->string('fcp_name')->toString());
+
+        if ($selectedFcp !== '' && ! $fcpNames->contains($selectedFcp)) {
+            abort(422, 'FCP iliyochaguliwa haipo kwenye darasa hili.');
+        }
+
+        $rows = collect();
+        if ($assessment && $request->boolean('run')) {
+            $rows = $this->resultRows($assessment);
+
+            if ($selectedFcp !== '') {
+                $rows = $rows->filter(
+                    fn ($row) => $row['student']->fcp_name === $selectedFcp
+                )->values();
+            }
+        }
+
+        return view('form-two-results.reports', [
+            'assessments' => $this->assessmentQuery($selection)->orderBy('display_order')->get(),
+            'assessment' => $assessment,
+            'fcpNames' => $fcpNames,
+            'selectedFcp' => $selectedFcp,
+            'rows' => $rows,
+            'hasRun' => $request->boolean('run'),
+            ...$selection,
+        ]);
+    }
+
     private function validateStudent(Request $request, ?FormTwoStudent $student = null): array
     {
         $validated = $request->validate([
@@ -454,8 +482,11 @@ class FormTwoResultsController extends Controller
             $previousRank = $rank;
         }
 
-        return $rows->map(function ($row) use ($rankMap) {
+        $rankedCount = $rows->whereNotNull('average')->count();
+
+        return $rows->map(function ($row) use ($rankMap, $rankedCount) {
             $row['rank'] = $rankMap[$row['student']->id] ?? null;
+            $row['ranked_count'] = $rankedCount;
 
             return $row;
         });

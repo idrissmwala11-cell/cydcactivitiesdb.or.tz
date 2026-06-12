@@ -9,5 +9,6 @@
         <li class="nav-item"><a class="nav-link {{ request()->routeIs('form-two-results.marks.*') ? 'active' : '' }}" href="{{ route('form-two-results.marks.index', $scopeQuery) }}"><i class="bi bi-pencil-square me-1"></i>{{ $primaryNav ? 'Uingizaji wa Alama' : 'Marks Entry' }}</a></li>
         <li class="nav-item"><a class="nav-link {{ request()->routeIs('form-two-results.results.*') ? 'active' : '' }}" href="{{ route('form-two-results.results.index', $scopeQuery) }}"><i class="bi bi-table me-1"></i>{{ $primaryNav ? 'Matokeo' : 'Results' }}</a></li>
         <li class="nav-item"><a class="nav-link {{ request()->routeIs('form-two-results.analysis.*') ? 'active' : '' }}" href="{{ route('form-two-results.analysis.index', $scopeQuery) }}"><i class="bi bi-bar-chart-line me-1"></i>{{ $primaryNav ? 'Uchambuzi' : 'Analysis' }}</a></li>
+        <li class="nav-item"><a class="nav-link {{ request()->routeIs('form-two-results.reports.*') ? 'active' : '' }}" href="{{ route('form-two-results.reports.index', $scopeQuery) }}"><i class="bi bi-printer me-1"></i>{{ $primaryNav ? 'Ripoti' : 'Reports' }}</a></li>
     </ul>
 </div>
