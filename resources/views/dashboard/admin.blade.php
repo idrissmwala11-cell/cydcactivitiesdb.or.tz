@@ -24,6 +24,26 @@
         font-size: 0.82rem;
     }
 
+    .center-report-toggle {
+        user-select: none;
+        transition: filter .2s ease;
+    }
+
+    .center-report-toggle:hover,
+    .center-report-toggle:focus-visible {
+        filter: brightness(1.08);
+        outline: none;
+    }
+
+    .center-report-toggle__icon {
+        font-size: 1.25rem;
+        transition: transform .25s ease;
+    }
+
+    .center-report-toggle[aria-expanded="true"] .center-report-toggle__icon {
+        transform: rotate(180deg);
+    }
+
     @keyframes adminSearchCreditPulse {
         0%, 100% {
             opacity: 0.42;
@@ -60,16 +80,27 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                <div class="card-header border-0 p-4" style="background: linear-gradient(135deg, #172554, #2563eb); color: #fff;">
+                <div
+                    id="centerReportToggle"
+                    class="card-header border-0 p-4 center-report-toggle"
+                    role="button"
+                    tabindex="0"
+                    aria-controls="centerReportBody"
+                    aria-expanded="{{ $errors->has('caption') || $errors->has('delivery_mode') ? 'true' : 'false' }}"
+                    style="background: linear-gradient(135deg, #172554, #2563eb); color: #fff; cursor: pointer;"
+                >
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div>
                             <h5 class="mb-1"><i class="bi bi-envelope-paper-fill me-2"></i>Tuma Center Data Reports</h5>
                             <p class="mb-0 text-white-50">Caption moja itatumwa pamoja na report maalum ya Center ID ya kila user.</p>
                         </div>
-                        <span class="badge bg-light text-primary px-3 py-2">{{ number_format($centerReportRecipientCount ?? 0) }} recipients</span>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-light text-primary px-3 py-2">{{ number_format($centerReportRecipientCount ?? 0) }} recipients</span>
+                            <i class="bi bi-chevron-down center-report-toggle__icon" aria-hidden="true"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body p-4">
+                <div id="centerReportBody" class="card-body p-4" @if(! $errors->has('caption') && ! $errors->has('delivery_mode')) hidden @endif>
                     <form method="POST" action="{{ route('admin.center-data-reports.email') }}" onsubmit="return confirm('Unataka kutuma report kwa users wote wasiokuwa admins?')">
                         @csrf
                         <label for="centerReportCaption" class="form-label fw-semibold">Caption ya Email</label>
@@ -1152,6 +1183,29 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toggle = document.getElementById('centerReportToggle');
+    const body = document.getElementById('centerReportBody');
+
+    if (!toggle || !body) {
+        return;
+    }
+
+    const toggleCenterReport = function () {
+        const willOpen = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(willOpen));
+        body.hidden = !willOpen;
+    };
+
+    toggle.addEventListener('click', toggleCenterReport);
+    toggle.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleCenterReport();
+        }
+    });
+});
+
 function approveSubmission(type, id) {
     if (confirm('Are you sure you want to approve this ' + type + ' submission?')) {
         alert('Submission approved!');
