@@ -27,15 +27,20 @@ class FormTwoResultCalculatorTest extends TestCase
         ];
     }
 
-    public function test_primary_grade_boundaries_are_scaled_to_fifty_marks(): void
+    public function test_primary_grade_boundaries_use_the_fifty_mark_scale(): void
     {
         $calculator = new FormTwoResultCalculator;
 
-        $this->assertSame('A', $calculator->grade(37.25, 50));
-        $this->assertSame('B', $calculator->grade(32.25, 50));
-        $this->assertSame('C', $calculator->grade(22.25, 50));
-        $this->assertSame('D', $calculator->grade(14.75, 50));
-        $this->assertSame('F', $calculator->grade(14.74, 50));
+        $this->assertSame('A', $calculator->grade(50, 50, true));
+        $this->assertSame('A', $calculator->grade(41, 50, true));
+        $this->assertSame('B', $calculator->grade(40, 50, true));
+        $this->assertSame('B', $calculator->grade(31, 50, true));
+        $this->assertSame('C', $calculator->grade(30, 50, true));
+        $this->assertSame('C', $calculator->grade(21, 50, true));
+        $this->assertSame('D', $calculator->grade(20, 50, true));
+        $this->assertSame('D', $calculator->grade(11, 50, true));
+        $this->assertSame('E', $calculator->grade(10, 50, true));
+        $this->assertSame('E', $calculator->grade(0, 50, true));
     }
 
     public function test_it_uses_the_best_seven_subject_points_for_division(): void
@@ -65,7 +70,7 @@ class FormTwoResultCalculatorTest extends TestCase
             (new FormTwoMark)->forceFill([
                 'assessment_id' => 1,
                 'subject_id' => 1,
-                'mark' => 40,
+                'mark' => 41,
                 'is_absent' => false,
             ]),
         ]));

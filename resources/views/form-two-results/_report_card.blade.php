@@ -14,7 +14,7 @@
         </div>
         <div class="table-responsive"><table class="table table-bordered mb-0"><thead class="table-success"><tr><th>{{ $isPrimary ? 'Msimbo' : 'Code' }}</th><th>Somo</th><th>Alama</th><th>{{ $isPrimary ? 'Daraja' : 'Grade' }}</th><th>Maoni</th></tr></thead><tbody>
             @foreach(collect($summary['subjects'])->filter(fn ($row) => $row['mark'] !== null || $row['isAbsent']) as $row)
-                <tr><td>{{ $row['subject']->code }}</td><td>{{ $row['subject']->name }}</td><td class="text-center">{{ $row['isAbsent'] ? 'ABS' : rtrim(rtrim(number_format($row['mark'], 2, '.', ''), '0'), '.') }}</td><td class="text-center f2-grade-{{ $row['grade'] }}">{{ $row['grade'] ?? '-' }}</td><td>{{ match($row['grade']) {'A' => 'Vizuri sana', 'B' => 'Vizuri', 'C' => 'Wastani', 'D' => 'Dhaifu', 'F' => 'Dhaifu sana', 'ABS' => 'Hakufanya mtihani', default => '-'} }}</td></tr>
+                <tr><td>{{ $row['subject']->code }}</td><td>{{ $row['subject']->name }}</td><td class="text-center">{{ $row['isAbsent'] ? 'ABS' : rtrim(rtrim(number_format($row['mark'], 2, '.', ''), '0'), '.') }}</td><td class="text-center f2-grade-{{ $row['grade'] }}">{{ $row['grade'] ?? '-' }}</td><td>{{ match($row['grade']) {'A' => 'Vizuri sana', 'B' => 'Vizuri', 'C' => 'Wastani', 'D' => 'Dhaifu', 'E', 'F' => 'Dhaifu sana', 'ABS' => 'Hakufanya mtihani', default => '-'} }}</td></tr>
             @endforeach
         </tbody></table></div>
         <div class="report-footer">

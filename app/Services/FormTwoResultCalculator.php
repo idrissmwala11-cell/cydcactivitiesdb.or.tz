@@ -7,10 +7,22 @@ use App\Models\FormTwoStudent;
 
 class FormTwoResultCalculator
 {
-    public function grade(?float $mark, float $maxMarks = 100): ?string
+    public function grade(?float $mark, float $maxMarks = 100, bool $isPrimary = false): ?string
     {
         if ($mark === null || $maxMarks <= 0) {
             return null;
+        }
+
+        if ($isPrimary) {
+            $markOutOfFifty = ($mark / $maxMarks) * 50;
+
+            return match (true) {
+                $markOutOfFifty >= 41 => 'A',
+                $markOutOfFifty >= 31 => 'B',
+                $markOutOfFifty >= 21 => 'C',
+                $markOutOfFifty >= 11 => 'D',
+                default => 'E',
+            };
         }
 
         $percentage = ($mark / $maxMarks) * 100;
@@ -63,6 +75,7 @@ class FormTwoResultCalculator
 
     public function summary(FormTwoStudent $student, FormTwoAssessment $assessment): array
     {
+        $isPrimary = $student->education_level === 'primary';
         $marks = $student->marks->where('assessment_id', $assessment->id)->keyBy('subject_id');
         $subjectRows = [];
         $numericMarks = [];
@@ -72,7 +85,7 @@ class FormTwoResultCalculator
             $markRecord = $marks->get($subject->id);
             $isAbsent = (bool) ($markRecord?->is_absent);
             $mark = $isAbsent || $markRecord?->mark === null ? null : (float) $markRecord->mark;
-            $grade = $isAbsent ? 'ABS' : $this->grade($mark, (float) $assessment->max_marks);
+            $grade = $isAbsent ? 'ABS' : $this->grade($mark, (float) $assessment->max_marks, $isPrimary);
             $point = $this->gradePoint($grade);
 
             if ($mark !== null) {
@@ -87,7 +100,7 @@ class FormTwoResultCalculator
         }
 
         $average = count($numericMarks) ? round(array_sum($numericMarks) / count($numericMarks), 2) : null;
-        $division = $student->education_level === 'primary'
+        $division = $isPrimary
             ? ['division' => null, 'points' => null]
             : $this->division($points, count($numericMarks) > 0);
 
@@ -96,7 +109,7 @@ class FormTwoResultCalculator
             'subjects' => $subjectRows,
             'total' => round(array_sum($numericMarks), 2),
             'average' => $average,
-            'overall_grade' => $this->grade($average, (float) $assessment->max_marks),
+            'overall_grade' => $this->grade($average, (float) $assessment->max_marks, $isPrimary),
             'division' => $division['division'],
             'points' => $division['points'],
             'sat_subjects' => count($numericMarks),

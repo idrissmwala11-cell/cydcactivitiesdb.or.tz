@@ -318,10 +318,11 @@ class FormTwoResultsController extends Controller
 
         $subjectAnalysis = collect();
         if ($assessment) {
-            $subjectAnalysis = FormTwoSubject::where('is_active', true)->where('education_level', $selection['education_level'])->orderBy('display_order')->get()->map(function ($subject) use ($rows, $assessment) {
+            $isPrimary = $selection['education_level'] === 'primary';
+            $subjectAnalysis = FormTwoSubject::where('is_active', true)->where('education_level', $selection['education_level'])->orderBy('display_order')->get()->map(function ($subject) use ($rows, $assessment, $isPrimary) {
                 $entries = $rows->flatMap(fn ($row) => collect($row['subjects'])->where('subject.id', $subject->id));
                 $marks = $entries->pluck('mark')->filter(fn ($mark) => $mark !== null);
-                $passed = $marks->filter(fn ($mark) => in_array($this->calculator->grade((float) $mark, (float) $assessment->max_marks), ['A', 'B', 'C', 'D'], true))->count();
+                $passed = $marks->filter(fn ($mark) => in_array($this->calculator->grade((float) $mark, (float) $assessment->max_marks, $isPrimary), ['A', 'B', 'C', 'D'], true))->count();
 
                 return [
                     'subject' => $subject,
@@ -355,7 +356,7 @@ class FormTwoResultsController extends Controller
                 'divisions' => collect(['I', 'II', 'III', 'IV', '0', 'INC'])->mapWithKeys(
                     fn ($division) => [$division => $groupRows->where('division', $division)->count()]
                 ),
-                'grades' => collect(['A', 'B', 'C', 'D', 'F'])->mapWithKeys(
+                'grades' => collect($isPrimary ? ['A', 'B', 'C', 'D', 'E'] : ['A', 'B', 'C', 'D', 'F'])->mapWithKeys(
                     fn ($grade) => [$grade => $groupRows->where('overall_grade', $grade)->count()]
                 ),
                 'passed' => $passed,

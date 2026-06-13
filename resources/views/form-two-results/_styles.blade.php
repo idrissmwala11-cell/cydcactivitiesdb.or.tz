@@ -30,7 +30,7 @@
     .f2-grade-A { background: #d9f6e4 !important; color: #075c2e; font-weight: 800; }
     .f2-grade-B { background: #e6f3ff !important; color: #174f7a; font-weight: 800; }
     .f2-grade-C { background: #fff8d5 !important; color: #735d00; font-weight: 800; }
-    .f2-grade-D, .f2-grade-F { background: #ffe2e2 !important; color: #8a1515; font-weight: 800; }
+    .f2-grade-D, .f2-grade-E, .f2-grade-F { background: #ffe2e2 !important; color: #8a1515; font-weight: 800; }
     .f2-empty { padding: 3rem 1rem; text-align: center; color: #68766e; }
     .f2-logo { width: 76px; height: 76px; object-fit: contain; }
     @media print {
