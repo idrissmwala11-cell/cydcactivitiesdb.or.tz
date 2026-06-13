@@ -69,6 +69,15 @@
                             <div style="text-align:center;margin-top:24px;">
                                 <a href="{{ route('reports.index') }}" style="display:inline-block;background:#16834b;color:#ffffff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:700;font-size:14px;">Fungua Reports Kwenye Mfumo</a>
                             </div>
+
+                            <p style="margin:28px 0 0;line-height:1.65;font-size:14px;color:#334155;">
+                                Best Regards,<br>
+                                <strong>CYDC ACTIVITIES DATABASE</strong><br>
+                                System Administrator<br>
+                                Idriss Mwala<br>
+                                Tel: <a href="tel:+255673746031" style="color:#2563eb;text-decoration:none;">+255 673 746 031</a><br>
+                                Email: <a href="mailto:support@cydcactivitiesdb.or.tz" style="color:#2563eb;text-decoration:none;">support@cydcactivitiesdb.or.tz</a>
+                            </p>
                         </td>
                     </tr>
 

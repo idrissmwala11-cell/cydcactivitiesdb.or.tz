@@ -26,9 +26,11 @@
 
         <p style="margin-top: 28px;">
             Best Regards,<br>
+            <strong>CYDC ACTIVITIES DATABASE</strong><br>
             System Administrator<br>
-            Emmanuel Mwala<br>
-            Tel: +255 673 746 031
+            Idriss Mwala<br>
+            Tel: <a href="tel:+255673746031" style="color: #1d4ed8; text-decoration: none;">+255 673 746 031</a><br>
+            Email: <a href="mailto:support@cydcactivitiesdb.or.tz" style="color: #1d4ed8; text-decoration: none;">support@cydcactivitiesdb.or.tz</a>
         </p>
     </div>
 </body>
