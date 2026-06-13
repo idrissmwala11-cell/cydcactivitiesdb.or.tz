@@ -41,7 +41,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $group->registration_status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $group->bank_account }}</td>
                                     @if(auth()->user()->role === 'admin')
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $group->user->center_id ?? $group->user->email ?? $group->user->name ?? 'Legacy record' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><x-user-identity :user="$group->user" /></td>
                                     @endif
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                         <a href="{{ route('saving-groups.show', $group) }}" class="text-indigo-600 hover:text-indigo-900">View</a>

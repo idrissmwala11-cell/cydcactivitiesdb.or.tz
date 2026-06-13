@@ -34,10 +34,13 @@
                                     @endphp
                                     <a href="{{ route('chat.index', ['user' => $contact->id]) }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-start {{ optional($selectedContact)->id === $contact->id ? 'active' : '' }}">
-                                        <div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <x-user-avatar :user="$contact" :size="40" />
+                                            <div>
                                             <div class="fw-semibold">{{ $contact->center_id ?: $contact->email }}</div>
                                             <div class="small {{ optional($selectedContact)->id === $contact->id ? 'text-white-50' : 'text-muted' }}">
                                                 {{ $contact->email }}
+                                            </div>
                                             </div>
                                         </div>
                                         @if($unread > 0)
@@ -55,14 +58,16 @@
                         <div class="col-lg-8 d-flex flex-column">
                             @if($selectedContact)
                                 <div class="p-3 border-bottom bg-white">
-                                    <div class="fw-semibold">{{ $selectedContact->center_id ?: $selectedContact->email }}</div>
-                                    <div class="small text-muted">{{ $selectedContact->email }}</div>
+                                    <x-user-identity :user="$selectedContact" :size="44" :show-email="true" />
                                 </div>
 
                                 <div id="chatMessages" class="flex-grow-1 p-3" style="background: #f8fafc; overflow-y: auto; max-height: 52vh;">
                                     @forelse($messages as $message)
                                         @php $mine = $message->sender_id === auth()->id(); @endphp
                                         <div class="d-flex mb-3 {{ $mine ? 'justify-content-end' : 'justify-content-start' }}">
+                                            @unless($mine)
+                                                <x-user-avatar :user="$message->sender" :size="32" class="me-2 mt-1" />
+                                            @endunless
                                             <div class="px-3 py-2 rounded-4 shadow-sm {{ $mine ? 'bg-primary text-white' : 'bg-white border' }}" style="max-width: 78%;">
                                                 <div class="small {{ $mine ? 'text-white-50' : 'text-muted' }} mb-1">
                                                     {{ $mine ? 'You' : ($message->sender->center_id ?: $message->sender->email) }}
@@ -72,6 +77,9 @@
                                                     {{ $message->created_at?->format('d M Y H:i') }}
                                                 </div>
                                             </div>
+                                            @if($mine)
+                                                <x-user-avatar :user="auth()->user()" :size="32" class="ms-2 mt-1" />
+                                            @endif
                                         </div>
                                     @empty
                                         <div class="h-100 d-flex align-items-center justify-content-center text-muted">

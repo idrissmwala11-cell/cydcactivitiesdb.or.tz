@@ -482,7 +482,7 @@
 
                     <div class="record-subheader">
                         <div class="record-subheader-item">
-                            <strong>Submitted By:</strong> {{ $record->user->center_id ?? $record->user->email ?? $record->user->name ?? 'Legacy record' }}
+                            <strong>Submitted By:</strong> <x-user-identity :user="$record->user" :size="28" />
                         </div>
                         <div class="record-subheader-item">
                             <strong>Email:</strong> {{ $record->user->email ?? 'N/A' }}

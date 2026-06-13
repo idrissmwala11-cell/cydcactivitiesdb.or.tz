@@ -34,7 +34,7 @@
                     <div class="col-md-3">
                         <div class="border rounded-3 p-3 h-100">
                             <div class="text-muted small">Submitted By</div>
-                            <div class="fw-bold">{{ $baseLeader->user->center_id ?? $baseLeader->user->email ?? $baseLeader->user->name ?? 'Legacy record' }}</div>
+                            <x-user-identity :user="$baseLeader->user" :size="40" :show-email="true" />
                         </div>
                     </div>
                 </div>

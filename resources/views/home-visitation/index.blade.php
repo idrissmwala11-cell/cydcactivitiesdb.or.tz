@@ -100,10 +100,7 @@
                                 @if(Auth::user()->role === 'admin')
                                     <td>
                                         @if($submittedBy)
-                                            <div class="fw-semibold text-dark">{{ $submittedBy }}</div>
-                                            @if($visitation->user?->email && $visitation->user?->center_id)
-                                                <small class="text-muted">{{ $visitation->user->email }}</small>
-                                            @endif
+                                            <x-user-identity :user="$visitation->user" :show-email="true" />
                                         @else
                                             <span class="badge bg-warning-subtle text-warning">Legacy record</span>
                                         @endif

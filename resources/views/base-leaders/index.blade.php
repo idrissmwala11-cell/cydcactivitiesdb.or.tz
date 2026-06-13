@@ -35,7 +35,7 @@
                                     <td>{{ $baseLeader->leaders_count }}</td>
                                     <td>{{ $firstLeader?->leader_name ?? 'N/A' }}</td>
                                     <td>{{ $baseLeader->term_end?->format('d M Y') ?? 'N/A' }}</td>
-                                    <td>{{ $baseLeader->user->center_id ?? $baseLeader->user->email ?? $baseLeader->user->name ?? 'Legacy record' }}</td>
+                                    <td><x-user-identity :user="$baseLeader->user" /></td>
                                     <td>
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('base-leaders.show', $baseLeader) }}" class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></a>

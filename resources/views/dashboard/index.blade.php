@@ -10,7 +10,10 @@
             <div class="bg-gradient-primary text-dark rounded-4 p-4 shadow">
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <h1 class="h3 mb-2">Welcome back, {{ auth()->user()->center_id ?? 'No Center ID' }}! 👋</h1>
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <x-user-avatar :user="auth()->user()" :size="54" class="border border-white shadow" />
+                            <h1 class="h3 mb-0">Welcome back, {{ auth()->user()->center_id ?? 'No Center ID' }}! 👋</h1>
+                        </div>
                         <p class="mb-0 opacity-75">Here's what's happening at CYDC today</p>
                     </div>
                     <div class="col-md-4 text-end d-none d-md-block">

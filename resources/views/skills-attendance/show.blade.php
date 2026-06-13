@@ -41,7 +41,7 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Submitted By</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $skillsAttendance->user?->center_id ?? 'No Center ID' }}</p>
+                                <p class="mt-1 text-sm text-gray-900"><x-user-identity :user="$skillsAttendance->user" :show-email="true" /></p>
                             </div>
                         </div>
                     </div>

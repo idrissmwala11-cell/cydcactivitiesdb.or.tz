@@ -54,9 +54,7 @@
 
                                 <div class="mb-3">
                                     <small class="text-muted d-block">{{ __('Created By') }}</small>
-                                    <div class="fw-semibold">
-                                        {{ $attendance->user?->center_id ?? $attendance->user?->name ?? 'N/A' }}
-                                    </div>
+                                    <div class="fw-semibold"><x-user-identity :user="$attendance->user" :show-email="true" /></div>
                                 </div>
                             </div>
                         </div>
@@ -210,7 +208,7 @@
                                 <div class="border rounded-4 p-3 bg-light h-100">
                                     <small class="text-muted d-block">{{ __('Created By') }}</small>
                                     <div class="fw-semibold">
-                                        {{ $attendance->user?->center_id ?? $attendance->user?->name ?? 'N/A' }}
+                                        <x-user-identity :user="$attendance->user" :show-email="true" />
                                     </div>
                                 </div>
                             </div>

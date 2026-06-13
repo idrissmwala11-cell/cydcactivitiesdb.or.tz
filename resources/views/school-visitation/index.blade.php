@@ -60,7 +60,7 @@
                                             </span>
                                         </td>
                                         @if(Auth::user()->role === 'admin')
-                                            <td>{{ $visitation->user->center_id ?? $visitation->user->email ?? $visitation->user->name ?? 'Legacy record' }}</td>
+                                            <td><x-user-identity :user="$visitation->user" /></td>
                                         @endif
                                         <td>
                                             <div class="btn-group" role="group">

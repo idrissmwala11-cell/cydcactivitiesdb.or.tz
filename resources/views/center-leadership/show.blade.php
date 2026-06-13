@@ -71,7 +71,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Submitted By:</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $centerLeadership->user->center_id ?? $centerLeadership->user->email ?? $centerLeadership->user->name ?? 'Legacy record' }}</p>
+                                <p class="mt-1 text-sm text-gray-900"><x-user-identity :user="$centerLeadership->user" :show-email="true" /></p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Number of Leaders:</label>

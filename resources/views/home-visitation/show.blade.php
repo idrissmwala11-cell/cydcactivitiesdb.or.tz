@@ -203,7 +203,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <strong>Submitted by:</strong>
-                                    <p class="mb-0">{{ $homeVisitation->user->center_id ?? $homeVisitation->user->email ?? $homeVisitation->user->name ?? 'Legacy record' }}</p>
+                                    <p class="mb-0"><x-user-identity :user="$homeVisitation->user" :show-email="true" /></p>
                                 </div>
 
                                 <div class="col-md-6 mb-3">

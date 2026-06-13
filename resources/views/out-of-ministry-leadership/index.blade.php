@@ -48,7 +48,7 @@
                                             {{ $leader->created_at->format('d/m/Y H:i') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $leader->user->center_id ?? $leader->user->email ?? $leader->user->name ?? 'Legacy record' }}
+                                            <x-user-identity :user="$leader->user" />
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex space-x-2">

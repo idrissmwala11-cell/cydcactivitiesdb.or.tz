@@ -43,7 +43,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Submitted By:</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $outOfMinistryLeadership->user->center_id ?? $outOfMinistryLeadership->user->email ?? $outOfMinistryLeadership->user->name ?? 'Legacy record' }}</p>
+                            <p class="mt-1 text-sm text-gray-900"><x-user-identity :user="$outOfMinistryLeadership->user" :show-email="true" /></p>
                         </div>
                     </div>
                 </div>

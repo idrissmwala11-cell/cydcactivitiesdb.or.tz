@@ -45,7 +45,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-600">Submitted By:</label>
                                     <p class="text-gray-900">
-                                        {{ $curriculumAttendance->user->center_id ?? $curriculumAttendance->user->email ?? $curriculumAttendance->user->name ?? 'Legacy record' }}
+                                        <x-user-identity :user="$curriculumAttendance->user" :show-email="true" />
                                     </p>
                                 </div>
                             </div>

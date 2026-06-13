@@ -68,7 +68,7 @@
                                 </div>
                                 <div>
                                     <span class="font-medium text-gray-600">Submitted by:</span>
-                                    <span class="ml-2">{{ $skillsInformation->user->center_id ?? 'No Center ID' }}</span>
+                                    <span class="ml-2"><x-user-identity :user="$skillsInformation->user" :show-email="true" /></span>
                                 </div>
                             </div>
                         </div>

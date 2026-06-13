@@ -180,6 +180,25 @@ document.addEventListener('DOMContentLoaded', function () {
   let lastMessageId = 0;
   let isDrawerOpen = false;
 
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function chatAvatar(person, size = 34) {
+    const initials = escapeHtml(person.initials || person.sender_initials || 'U');
+    const avatarUrl = person.avatar_url || person.sender_avatar_url;
+    const image = avatarUrl
+      ? `<img src="${escapeHtml(avatarUrl)}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`
+      : '';
+
+    return `<span class="d-inline-flex align-items-center justify-content-center rounded-circle overflow-hidden flex-shrink-0" style="width:${size}px;height:${size}px;position:relative;background:linear-gradient(135deg,#0f766e,#2563eb);color:#fff;font-weight:700;font-size:${Math.max(10, Math.round(size * .34))}px"><span>${initials}</span>${image}</span>`;
+  }
+
   function playBeep() {
     try {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -228,9 +247,12 @@ document.addEventListener('DOMContentLoaded', function () {
       item.className = `btn btn-light border text-start w-100 chat-contact-item ${selectedContact && selectedContact.id === contact.id ? 'active' : ''}`;
       item.innerHTML = `
         <div class="d-flex justify-content-between align-items-start gap-2">
-          <div>
-            <div class="fw-semibold">${contact.name}</div>
-            <div class="small text-muted">${contact.email}</div>
+          <div class="d-flex align-items-center gap-2">
+            ${chatAvatar(contact, 38)}
+            <div>
+              <div class="fw-semibold">${escapeHtml(contact.name)}</div>
+              <div class="small text-muted">${escapeHtml(contact.email)}</div>
+            </div>
           </div>
           ${contact.unread_count > 0 ? `<span class="badge bg-danger rounded-pill">${contact.unread_count > 99 ? '99+' : contact.unread_count}</span>` : ''}
         </div>
@@ -251,6 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     messagesEl.innerHTML = messages.map(message => `
       <div class="d-flex mb-3 ${message.mine ? 'justify-content-end' : 'justify-content-start'}">
+        ${message.mine ? '' : `<span class="me-2 mt-1">${chatAvatar(message, 30)}</span>`}
         <div class="chat-message-bubble ${message.mine ? 'chat-message-mine' : 'chat-message-other'}">
           <div class="small ${message.mine ? 'text-white-50' : 'text-muted'} mb-1">${message.mine ? 'You' : message.sender_name}</div>
           <div style="white-space: pre-wrap;">${String(message.message)
@@ -260,6 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .replaceAll('"', '&quot;')}</div>
           <div class="small mt-2 ${message.mine ? 'text-white-50' : 'text-muted'}">${message.created_at || ''}</div>
         </div>
+        ${message.mine ? `<span class="ms-2 mt-1">${chatAvatar(message, 30)}</span>` : ''}
       </div>
     `).join('');
 
@@ -296,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.selected_contact) {
         selectedUserId = data.selected_contact.id;
         recipientIdEl.value = data.selected_contact.id;
-        selectedContactEl.innerHTML = `<div class="fw-semibold text-dark">${data.selected_contact.name}</div><div class="small text-muted">${data.selected_contact.email}</div>`;
+        selectedContactEl.innerHTML = `<div class="d-flex align-items-center gap-2">${chatAvatar(data.selected_contact, 38)}<div><div class="fw-semibold text-dark">${escapeHtml(data.selected_contact.name)}</div><div class="small text-muted">${escapeHtml(data.selected_contact.email)}</div></div></div>`;
       } else {
         selectedContactEl.textContent = 'No contact selected.';
         recipientIdEl.value = '';

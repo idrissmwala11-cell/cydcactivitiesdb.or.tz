@@ -10,10 +10,7 @@
         <img
             id="photoPreview"
             class="h-24 w-24 rounded-full object-cover border"
-            src="{{ $user->profile_photo
-                ? '/profile_photos/' . rawurlencode($user->profile_photo) . '?t=' . time()
-                : 'https://ui-avatars.com/api/?name=' . urlencode($user->name ?? 'User') . '&background=e5e7eb&color=111827&size=160'
-            }}"
+            src="{{ $user->avatar_url ?: 'https://ui-avatars.com/api/?name=' . urlencode($user->center_id ?? $user->name ?? 'User') . '&background=e5e7eb&color=111827&size=160' }}"
             alt="Profile Photo"
             onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name ?? 'User') }}&background=e5e7eb&color=111827&size=160';"
         >
@@ -76,7 +73,7 @@ function uploadPhoto(input) {
     })
     .then(data => {
         if (data.success && data.filename) {
-            photo.src = '/profile_photos/' + encodeURIComponent(data.filename) + '?t=' + new Date().getTime();
+            photo.src = data.avatar_url + (data.avatar_url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
             status.textContent = 'Profile photo updated for user ' + (data.user_id ?? '');
             status.className = 'text-green-600 text-sm mt-1';
         } else {

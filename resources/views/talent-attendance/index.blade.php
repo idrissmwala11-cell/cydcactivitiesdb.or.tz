@@ -91,9 +91,7 @@
                                             </td>
 
                                             @if(auth()->user()->role === 'admin')
-                                                <td class="fw-semibold text-dark">
-                                                    {{ $attendance->user->center_id ?? $attendance->user->name ?? 'N/A' }}
-                                                </td>
+                                                <td class="fw-semibold text-dark"><x-user-identity :user="$attendance->user" /></td>
                                             @endif
 
                                             <td class="text-center">

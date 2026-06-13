@@ -19,6 +19,7 @@ class User extends Authenticatable
         'center_id',
         'cluster_name',
         'status',
+        'profile_photo',
         // New fields for settings
         'theme_mode',       // light/dark mode
         'future_feature',   // 0 = disabled, 1 = enabled
@@ -91,6 +92,45 @@ class User extends Authenticatable
     public function getName(): string
     {
         return $this->center_id ?? 'No Center ID';
+    }
+
+    public function getAvatarStoragePathAttribute(): ?string
+    {
+        if (! empty($this->profile_photo)) {
+            $photo = ltrim((string) $this->profile_photo, '/');
+
+            return str_contains($photo, '/') ? $photo : 'profile_photos/'.$photo;
+        }
+
+        if (! empty($this->profile_picture)) {
+            return ltrim((string) $this->profile_picture, '/');
+        }
+
+        return null;
+    }
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if (! $this->avatar_storage_path || ! $this->exists) {
+            return null;
+        }
+
+        return route('users.avatar', [
+            'user' => $this->getKey(),
+            'v' => $this->updated_at?->timestamp,
+        ]);
+    }
+
+    public function getInitialsAttribute(): string
+    {
+        $displayName = $this->center_id ?: ($this->name ?: $this->email ?: 'User');
+        $parts = preg_split('/\s+/', trim($displayName)) ?: [];
+
+        return collect($parts)
+            ->filter()
+            ->take(2)
+            ->map(fn (string $part): string => strtoupper(substr($part, 0, 1)))
+            ->implode('') ?: 'U';
     }
 
     // Relationships

@@ -163,7 +163,7 @@
                             @forelse($records as $index => $record)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $record->user->center_id ?? $record->user->email ?? $record->user->name ?? 'Legacy record' }}</td>
+                                    <td><x-user-identity :user="$record->user" /></td>
                                     <td>{{ $record->user->email ?? 'N/A' }}</td>
                                     <td>{{ strtoupper($record->user->center_id ?? 'N/A') }}</td>
                                     <td>{{ $record->status ?? 'N/A' }}</td>

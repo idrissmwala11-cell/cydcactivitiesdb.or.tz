@@ -63,7 +63,7 @@
                                             </td>
 
                                             @if(auth()->user()->role === 'admin')
-                                                <td>{{ $skill->user->center_id ?? $skill->user->email ?? $skill->user->name ?? 'Legacy record' }}</td>
+                                                <td><x-user-identity :user="$skill->user" /></td>
                                             @endif
 
                                             <td>

@@ -66,7 +66,7 @@
 
                                 @if(auth()->user()->role === 'admin')
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $attendance->user->center_id ?? $attendance->user->email ?? $attendance->user->name ?? 'Legacy record' }}
+                                        <x-user-identity :user="$attendance->user" />
                                     </td>
                                 @endif
 

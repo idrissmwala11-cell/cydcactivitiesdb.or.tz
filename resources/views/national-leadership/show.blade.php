@@ -33,7 +33,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Submitted By:</strong></td>
-                                    <td>{{ $nationalLeadership->user->center_id ?? $nationalLeadership->user->email ?? $nationalLeadership->user->name ?? 'Legacy record' }}</td>
+                                    <td><x-user-identity :user="$nationalLeadership->user" :show-email="true" /></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Submission Date:</strong></td>

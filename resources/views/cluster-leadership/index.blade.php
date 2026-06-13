@@ -37,7 +37,7 @@
                                             <td>{{ $clusterLeader->cluster_name }}</td>
                                             <td>{{ $clusterLeader->yds_name }}</td>
                                             <td>{{ $clusterLeader->leadership_term ? \Carbon\Carbon::parse($clusterLeader->leadership_term)->format('M Y') : 'N/A' }}</td>
-                                            <td>{{ $clusterLeader->user->center_id ?? $clusterLeader->user->email ?? $clusterLeader->user->name ?? 'Legacy record' }}</td>
+                                            <td><x-user-identity :user="$clusterLeader->user" /></td>
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <a href="{{ route('cluster-leadership.show', $clusterLeader) }}" class="btn btn-sm btn-outline-info">

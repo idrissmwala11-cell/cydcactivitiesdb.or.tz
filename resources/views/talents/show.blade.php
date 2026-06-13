@@ -156,7 +156,7 @@
                                     | {{ __('Last Updated') }}: {{ $talent->updated_at->format('M d, Y \\a\\t H:i') }}
                                 @endif
                                 @if($talent->user)
-                                    | {{ __('By') }}: {{ $talent->user->center_id ?? 'No Center ID' }}
+                                    | {{ __('By') }}: <x-user-identity :user="$talent->user" :size="28" />
                                 @endif
                             </small>
                         </div>

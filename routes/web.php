@@ -39,6 +39,7 @@ use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PerformanceReportController;
 use App\Http\Controllers\FormTwoResultsController;
+use App\Http\Controllers\UserAvatarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,8 @@ Route::get('/admin/dashboard', [DashboardController::class, 'admin'])
 
 // User approval routes
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/users/{user}/avatar', UserAvatarController::class)->name('users.avatar');
     Route::get('/approval/pending', fn() => view('auth.approval-pending'))->name('approval.pending');
     Route::get('/approval/rejected', fn() => view('auth.approval-rejected'))->name('approval.rejected');
 });

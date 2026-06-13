@@ -38,7 +38,7 @@
                                             <td>{{ $nationalLeader->center }}</td>
                                             <td>{{ $leadCount }}</td>
                                             <td>{{ $nationalLeader->term_end ? $nationalLeader->term_end->format('M Y') : 'N/A' }}</td>
-                                            <td>{{ $nationalLeader->user->center_id ?? $nationalLeader->user->email ?? $nationalLeader->user->name ?? 'Legacy record' }}</td>
+                                            <td><x-user-identity :user="$nationalLeader->user" /></td>
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <a href="{{ route('national-leadership.show', $nationalLeader) }}" class="btn btn-sm btn-outline-info">

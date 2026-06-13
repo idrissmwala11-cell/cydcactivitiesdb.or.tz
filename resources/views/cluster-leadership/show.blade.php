@@ -37,7 +37,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Submitted By:</strong></td>
-                                    <td>{{ $clusterLeadership->user->center_id ?? $clusterLeadership->user->email ?? $clusterLeadership->user->name ?? 'Legacy record' }}</td>
+                                    <td><x-user-identity :user="$clusterLeadership->user" :show-email="true" /></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Submission Date:</strong></td>

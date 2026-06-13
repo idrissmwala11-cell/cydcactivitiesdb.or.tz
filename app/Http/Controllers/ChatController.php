@@ -40,6 +40,8 @@ class ChatController extends Controller
                     'id' => $contact->id,
                     'name' => $contact->center_id ?: $contact->email,
                     'email' => $contact->email,
+                    'avatar_url' => $contact->avatar_url,
+                    'initials' => $contact->initials,
                     'unread_count' => ChatMessage::where('sender_id', $contact->id)
                         ->where('recipient_id', $user->id)
                         ->whereNull('read_at')
@@ -50,12 +52,16 @@ class ChatController extends Controller
                 'id' => $selectedContact->id,
                 'name' => $selectedContact->center_id ?: $selectedContact->email,
                 'email' => $selectedContact->email,
+                'avatar_url' => $selectedContact->avatar_url,
+                'initials' => $selectedContact->initials,
             ] : null,
             'messages' => $messages->map(function ($message) use ($user) {
                 return [
                     'id' => $message->id,
                     'mine' => $message->sender_id === $user->id,
                     'sender_name' => $message->sender->center_id ?: $message->sender->email,
+                    'sender_avatar_url' => $message->sender->avatar_url,
+                    'sender_initials' => $message->sender->initials,
                     'message' => $message->message,
                     'created_at' => optional($message->created_at)->format('d M Y H:i'),
                 ];
@@ -91,6 +97,8 @@ class ChatController extends Controller
                     'id' => $message->id,
                     'mine' => true,
                     'sender_name' => $user->center_id ?: $user->email,
+                    'sender_avatar_url' => $user->avatar_url,
+                    'sender_initials' => $user->initials,
                     'message' => $message->message,
                     'created_at' => optional($message->created_at)->format('d M Y H:i'),
                 ],

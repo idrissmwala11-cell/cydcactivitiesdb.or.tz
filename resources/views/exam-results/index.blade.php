@@ -61,7 +61,7 @@
                                             {{ $section['uses_gpa'] ? ($examResult->gpa ?: 'N/A') : ($examResult->performance ?: 'N/A') }}
                                         </td>
                                         @if(Auth::user()->role === 'admin')
-                                            <td>{{ $examResult->user->center_id ?? $examResult->user->email ?? $examResult->user->name ?? 'Legacy record' }}</td>
+                                            <td><x-user-identity :user="$examResult->user" /></td>
                                         @endif
                                         <td>
                                             <div class="btn-group" role="group">

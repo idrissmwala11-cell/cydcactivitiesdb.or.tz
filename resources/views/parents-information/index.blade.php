@@ -72,7 +72,7 @@
                                         <td>{{ $parent->parent_of }}</td>
                                         <td>{{ $parent->activity }}</td>
                                         <td>{{ $parent->support_type }}</td>
-                                        <td>{{ $parent->user->center_id ?? 'No Center ID' }}</td>
+                                        <td><x-user-identity :user="$parent->user" /></td>
                                         <td>
                                    
     <span class="badge bg-success">Approved</span>

@@ -89,7 +89,7 @@
                                             {{ $centerLeadership->created_at->format('d/m/Y') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $centerLeadership->user->center_id ?? $centerLeadership->user->email ?? $centerLeadership->user->name ?? 'Legacy record' }}
+                                            <x-user-identity :user="$centerLeadership->user" />
                                         </td>
 
                                         <!-- Actions -->

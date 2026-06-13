@@ -965,6 +965,7 @@
 
                 @if(auth()->user()->role !== 'admin' && request()->routeIs('dashboard'))
                     <div class="topbar-dashboard-message ms-2 ms-md-0">
+                        <x-user-avatar :user="auth()->user()" :size="38" class="me-2" />
                         <div class="topbar-dashboard-message__content">
                             <p class="topbar-dashboard-message__title mb-0">
                                 {{ __('ui.welcome_back') }}, <span>{{ auth()->user()->center_id ?? __('ui.no_center_id') }}</span>
@@ -1069,26 +1070,9 @@
                     {{-- Profile Dropdown --}}
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="me-2">
-                                @if(auth()->user()->profile_photo)
-                                    <img
-                                        src="/profile_photos/{{ rawurlencode(auth()->user()->profile_photo) }}?t={{ time() }}"
-                                        alt="Profile Photo"
-                                        class="rounded-circle object-cover border border-white shadow"
-                                        style="width: 32px; height: 32px;"
-                                        onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->center_id ?? auth()->user()->name ?? 'User') }}&background=2563eb&color=ffffff&size=160';"
-                                    >
-                                @else
-                                    <img
-                                        src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->center_id ?? auth()->user()->name ?? 'User') }}&background=2563eb&color=ffffff&size=160"
-                                        alt="Profile Photo"
-                                        class="rounded-circle object-cover border border-white shadow"
-                                        style="width: 32px; height: 32px;"
-                                    >
-                                @endif
-                            </div>
+                            <x-user-avatar :user="auth()->user()" :size="32" class="border border-white shadow me-2" />
 
-                            <span class="text-dark fw-semibold ms-2">
+                            <span class="text-dark fw-semibold">
                                 {{ auth()->user()->center_id ?? 'No Center ID' }}
                             </span>
                         </a>
@@ -1382,6 +1366,16 @@
                 .replaceAll("'", '&#039;');
         }
 
+        function chatAvatar(person, size = 34) {
+            const initials = escapeHtml(person.initials || person.sender_initials || 'U');
+            const avatarUrl = person.avatar_url || person.sender_avatar_url;
+            const image = avatarUrl
+                ? `<img src="${escapeHtml(avatarUrl)}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`
+                : '';
+
+            return `<span class="d-inline-flex align-items-center justify-content-center rounded-circle overflow-hidden flex-shrink-0" style="width:${size}px;height:${size}px;position:relative;background:linear-gradient(135deg,#0f766e,#2563eb);color:#fff;font-weight:700;font-size:${Math.max(10, Math.round(size * .34))}px"><span>${initials}</span>${image}</span>`;
+        }
+
         function playBeep() {
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1430,9 +1424,12 @@
                 item.className = `btn btn-light border text-start w-100 chat-contact-item ${selectedContact && selectedContact.id === contact.id ? 'active' : ''}`;
                 item.innerHTML = `
                     <div class="d-flex justify-content-between align-items-start gap-2">
-                        <div>
-                            <div class="fw-semibold">${escapeHtml(contact.name)}</div>
-                            <div class="small text-muted">${escapeHtml(contact.email)}</div>
+                        <div class="d-flex align-items-center gap-2">
+                            ${chatAvatar(contact, 38)}
+                            <div>
+                                <div class="fw-semibold">${escapeHtml(contact.name)}</div>
+                                <div class="small text-muted">${escapeHtml(contact.email)}</div>
+                            </div>
                         </div>
                         ${contact.unread_count > 0 ? `<span class="badge bg-danger rounded-pill">${contact.unread_count > 99 ? '99+' : contact.unread_count}</span>` : ''}
                     </div>
@@ -1453,11 +1450,13 @@
 
             messagesEl.innerHTML = messages.map(message => `
                 <div class="d-flex mb-3 ${message.mine ? 'justify-content-end' : 'justify-content-start'}">
+                    ${message.mine ? '' : `<span class="me-2 mt-1">${chatAvatar(message, 30)}</span>`}
                     <div class="chat-message-bubble ${message.mine ? 'chat-message-mine' : 'chat-message-other'}">
                         <div class="small ${message.mine ? 'text-white-50' : 'text-muted'} mb-1">${message.mine ? 'You' : escapeHtml(message.sender_name)}</div>
                         <div style="white-space: pre-wrap;">${escapeHtml(message.message)}</div>
                         <div class="small mt-2 ${message.mine ? 'text-white-50' : 'text-muted'}">${escapeHtml(message.created_at || '')}</div>
                     </div>
+                    ${message.mine ? `<span class="ms-2 mt-1">${chatAvatar(message, 30)}</span>` : ''}
                 </div>
             `).join('');
 
@@ -1495,7 +1494,7 @@
                 if (data.selected_contact) {
                     selectedUserId = data.selected_contact.id;
                     recipientIdEl.value = data.selected_contact.id;
-                    selectedContactEl.innerHTML = `<div class="fw-semibold text-dark">${escapeHtml(data.selected_contact.name)}</div><div class="small text-muted">${escapeHtml(data.selected_contact.email)}</div>`;
+                    selectedContactEl.innerHTML = `<div class="d-flex align-items-center gap-2">${chatAvatar(data.selected_contact, 38)}<div><div class="fw-semibold text-dark">${escapeHtml(data.selected_contact.name)}</div><div class="small text-muted">${escapeHtml(data.selected_contact.email)}</div></div></div>`;
                 } else {
                     selectedContactEl.textContent = 'No contact selected.';
                     recipientIdEl.value = '';

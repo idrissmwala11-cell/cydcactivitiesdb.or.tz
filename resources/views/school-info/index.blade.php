@@ -50,7 +50,7 @@
                                         <td>{{ $studentName }}</td>
                                         <td>{{ $schoolName }}</td>
                                         @if(Auth::user()->role === 'admin')
-                                            <td>{{ $record->user->center_id ?? $record->user->email ?? $record->user->name ?? 'Legacy record' }}</td>
+                                            <td><x-user-identity :user="$record->user" /></td>
                                         @endif
                                         <td>{{ $record->created_at?->format('d M Y') }}</td>
                                         <td>

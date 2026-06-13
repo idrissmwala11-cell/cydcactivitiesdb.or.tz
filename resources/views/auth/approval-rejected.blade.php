@@ -47,6 +47,7 @@
                     </div>
                     
                     <div class="mt-4">
+                        <div class="mb-3"><x-user-identity :user="auth()->user()" :size="48" :show-email="true" /></div>
                         <p class="text-muted">
                             <strong>Account Details:</strong><br>
                             Email: {{ auth()->user()->email }}<br>

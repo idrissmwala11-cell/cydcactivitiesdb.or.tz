@@ -151,9 +151,7 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="bg-warning bg-opacity-10 rounded-circle p-2 me-3">
-                                                            <i class="bi bi-person text-warning"></i>
-                                                        </div>
+                                                        <x-user-avatar :user="$user" :size="40" class="me-3" />
                                                         <div>
                                                             <div class="fw-medium">{{ $user->center_id ?? 'No Center ID' }}</div>
                                                             <small class="text-muted">ID: {{ $user->id }}</small>
@@ -749,12 +747,7 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
-                                                    <i class="bi bi-person text-primary"></i>
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-0">{{ $user->center_id ?? 'No Center ID' }}</h6>
-                                                </div>
+                                                <x-user-identity :user="$user" :size="40" />
                                             </div>
                                         </td>
                                         <td>{{ $user->email }}</td>
@@ -978,13 +971,7 @@
                             @foreach($recentUsers as $user)
                                 <div class="list-group-item border-0 px-0 py-2">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
-                                            <i class="bi bi-person text-primary"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-0">{{ $user->center_id ?? 'No Center ID' }}</h6>
-                                            <small class="text-muted">{{ $user->email }}</small>
-                                        </div>
+                                        <x-user-identity :user="$user" :size="40" :show-email="true" class="flex-grow-1" />
                                         <span class="badge bg-{{ $user->role === 'admin' ? 'danger' : 'primary' }}">
                                             {{ ucfirst($user->role) }}
                                         </span>

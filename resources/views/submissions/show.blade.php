@@ -71,7 +71,7 @@
                             </div>
                             <div>
                                 <h3 class="text-2xl font-bold text-gray-800">{{ $config['title'] }}</h3>
-                                <p class="text-gray-600">Submitted by {{ $submission->user->center_id ?? 'No Center ID' }}</p>
+                                <p class="text-gray-600">Submitted by <x-user-identity :user="$submission->user" /></p>
                             </div>
                         </div>
                         
@@ -94,7 +94,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Name</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $submission->user->center_id ?? 'No Center ID' }}</p>
+                            <p class="mt-1 text-sm text-gray-900"><x-user-identity :user="$submission->user" /></p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Email</label>

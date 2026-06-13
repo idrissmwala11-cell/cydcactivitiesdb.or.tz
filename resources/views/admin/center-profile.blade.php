@@ -27,7 +27,7 @@
                     <span class="badge bg-light text-primary fw-semibold mb-3 px-3 py-2">Center Profile</span>
                     <h2 class="fw-bold mb-2">{{ $centerId }}</h2>
                     <p class="mb-1 text-white-50">Profile ya kituo ikitumia records za users wote wenye Center ID hii.</p>
-                    <p class="mb-0 text-white-50">Imefunguliwa kupitia user: {{ $selectedUser->email }}</p>
+                    <div class="mb-0 text-white-50"><x-user-identity :user="$selectedUser" :size="38" :show-email="true" /></div>
                 </div>
 
                 <div class="d-flex flex-wrap gap-3">
@@ -51,7 +51,7 @@
                     <div class="d-flex flex-wrap gap-2">
                         @foreach($centerUsers as $centerUser)
                             <span class="badge rounded-pill text-bg-light border">
-                                {{ $centerUser->center_id ?: $centerUser->email }} | {{ ucfirst($centerUser->role) }}
+                                <x-user-identity :user="$centerUser" :size="26" /> | {{ ucfirst($centerUser->role) }}
                             </span>
                         @endforeach
                     </div>
@@ -175,8 +175,7 @@
                             <tr>
                                 <td>{{ $records->firstItem() + $index }}</td>
                                 <td>
-                                    <div class="fw-semibold">{{ $record->user->center_id ?? $record->user->email ?? 'N/A' }}</div>
-                                    <small class="text-muted">{{ $record->user->email ?? 'No email' }}</small>
+                                    <x-user-identity :user="$record->user" :show-email="true" />
                                 </td>
                                 @foreach($previewKeys as $previewKey)
                                     <td>{{ $recordData[$previewKey] ?? 'N/A' }}</td>

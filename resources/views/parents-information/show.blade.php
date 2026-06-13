@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-sm-6">
                             <small class="text-muted d-block">Submitted By</small>
-                            <div>{{ $parentsInformation->user->center_id ?? 'No Center ID' }}</div>
+                            <x-user-identity :user="$parentsInformation->user" :show-email="true" />
                         </div>
                     </div>
                 </div>

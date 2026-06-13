@@ -51,7 +51,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <strong>Submitted by:</strong>
-                                    <p class="mb-0">{{ $schoolInformationRecord->user->center_id ?? $schoolInformationRecord->user->email ?? $schoolInformationRecord->user->name ?? 'Legacy record' }}</p>
+                                    <p class="mb-0"><x-user-identity :user="$schoolInformationRecord->user" :show-email="true" /></p>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <strong>Submission date:</strong>

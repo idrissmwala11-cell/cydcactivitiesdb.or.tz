@@ -15,7 +15,7 @@
                 <div class="flex items-start justify-between gap-4 flex-wrap mb-6">
                     <div>
                         <h2 class="font-semibold text-2xl text-gray-800 leading-tight">Savings Group</h2>
-                        <div class="text-sm text-gray-500 mt-1">Submitted by {{ $savingGroup->user->center_id ?? $savingGroup->user->email ?? $savingGroup->user->name ?? 'Legacy record' }}</div>
+                        <div class="text-sm text-gray-500 mt-1">Submitted by <x-user-identity :user="$savingGroup->user" /></div>
                     </div>
                     <div class="text-end">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $savingGroup->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
@@ -29,7 +29,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg">
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Name</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $savingGroup->user->center_id ?? $savingGroup->user->name ?? 'N/A' }}</p>
+                            <p class="mt-1 text-sm text-gray-900"><x-user-identity :user="$savingGroup->user" /></p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Email</label>

@@ -139,6 +139,7 @@ class ProfileController extends Controller
         return response()->json([
             'success' => true,
             'filename' => $filename,
+            'avatar_url' => $user->fresh()->avatar_url,
             'user_id' => $user->id,
             'email' => $user->email,
             'saved' => $saved,
