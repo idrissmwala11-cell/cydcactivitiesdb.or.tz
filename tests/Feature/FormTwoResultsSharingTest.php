@@ -24,6 +24,9 @@ class FormTwoResultsSharingTest extends TestCase
         $subject = FormTwoSubject::where('education_level', 'secondary')
             ->where('abbreviation', 'B/MATH')
             ->firstOrFail();
+        $unselectedSubject = FormTwoSubject::where('education_level', 'secondary')
+            ->where('abbreviation', 'COMM')
+            ->firstOrFail();
         $assessment = FormTwoAssessment::create([
             'name' => 'Shared Test',
             'slug' => 'shared-test',
@@ -60,6 +63,19 @@ class FormTwoResultsSharingTest extends TestCase
             'class_level' => 'Form 2',
             'assessment_id' => $assessment->id,
         ];
+
+        $marks = $this->actingAs($viewer)->get(route('form-two-results.marks.index', $query));
+        $marks->assertOk();
+        $marksHtml = $marks->getContent();
+        preg_match('/<tr data-student-row="'.$student->id.'".*?<\/tr>/s', $marksHtml, $studentRowMatch);
+        $studentRow = $studentRowMatch[0] ?? '';
+
+        $this->assertNotSame('', $studentRow, 'Student row must be rendered in Marks Entry.');
+        $this->assertTrue(str_contains($studentRow, 'FCP URAMBO'), 'Marks Entry must display the student FCP name.');
+        $this->assertTrue(str_contains($studentRow, $subject->abbreviation), 'Marks Entry must display the selected subject.');
+        $this->assertTrue(str_contains($studentRow, 'data-subject="'.$subject->id.'"'), 'Selected subject must have a marks input.');
+        $this->assertFalse(str_contains($studentRow, 'data-subject="'.$unselectedSubject->id.'"'), 'Unselected subject must not have a marks input for this student.');
+        $this->assertFalse(str_contains($studentRow, '>N/R<'), 'Marks Entry must not display N/R subject cells.');
 
         $results = $this->actingAs($viewer)->get(route('form-two-results.results.index', $query));
         $results->assertOk()

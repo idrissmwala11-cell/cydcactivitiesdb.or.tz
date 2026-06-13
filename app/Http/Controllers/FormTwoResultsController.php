@@ -221,7 +221,9 @@ class FormTwoResultsController extends Controller
         $assessment = $this->selectedAssessment($request);
         $selection = $this->selection($request, $assessment);
         $students = $this->studentQuery($selection)->where('is_active', true)
-            ->with(['subjects' => fn ($query) => $query->where('form_two_subjects.is_active', true), 'marks' => function ($query) use ($assessment) {
+            ->with(['subjects' => fn ($query) => $query
+                ->where('form_two_subjects.is_active', true)
+                ->where('form_two_student_subject.registered', true), 'marks' => function ($query) use ($assessment) {
                 if ($assessment) {
                     $query->where('assessment_id', $assessment->id);
                 }
@@ -233,7 +235,6 @@ class FormTwoResultsController extends Controller
             'assessments' => $this->assessmentQuery($selection)->orderBy('display_order')->get(),
             'assessment' => $assessment,
             'students' => $students,
-            'subjects' => FormTwoSubject::where('is_active', true)->where('education_level', $selection['education_level'])->orderBy('display_order')->get(),
             ...$selection,
         ]);
     }

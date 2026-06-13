@@ -18,6 +18,10 @@
     .f2-table thead .sticky-col { z-index: 3; background: var(--f2-dark); }
     .f2-mark { min-width: 76px; text-align: center; }
     .f2-mark.is-absent { background: #fff0f0; color: #a11919; }
+    .f2-subject-entry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: .55rem; }
+    .f2-subject-entry { min-width: 0; padding: .55rem; border: 1px solid #cbd8cf; border-radius: 8px; background: #f8fbf9; text-align: center; }
+    .f2-subject-entry__title { display: flex; justify-content: space-between; align-items: baseline; gap: .35rem; margin-bottom: .4rem; color: var(--f2-dark); }
+    .f2-subject-entry__title span { color: #6b7280; font-size: .7rem; }
     .f2-code { display: block; font-size: .72rem; opacity: .75; font-weight: 500; }
     .f2-grade-A { background: #d9f6e4 !important; color: #075c2e; font-weight: 800; }
     .f2-grade-B { background: #e6f3ff !important; color: #174f7a; font-weight: 800; }

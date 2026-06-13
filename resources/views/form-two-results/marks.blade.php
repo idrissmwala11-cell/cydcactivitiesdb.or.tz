@@ -35,23 +35,41 @@
                 <input type="hidden" name="marks_payload" id="marks-payload">
                 <div class="table-responsive" style="max-height:68vh">
                     <table class="table table-bordered f2-table mb-0">
-                        <thead class="sticky-top"><tr><th>Na.</th><th class="sticky-col">{{ $isPrimary ? 'Majina ya Wanafunzi' : "Candidates' Names" }}</th><th>{{ $isPrimary ? 'Jinsi' : 'Sex' }}</th>@foreach($subjects as $subject)<th>{{ $subject->abbreviation }}<span class="f2-code">{{ $subject->code }}</span></th>@endforeach</tr></thead>
+                        <thead class="sticky-top">
+                            <tr>
+                                <th>Na.</th>
+                                <th class="sticky-col">{{ $isPrimary ? 'Majina ya Wanafunzi' : "Candidates' Names" }}</th>
+                                <th>FCP Name</th>
+                                <th>{{ $isPrimary ? 'Jinsi' : 'Sex' }}</th>
+                                <th style="min-width:560px">{{ $isPrimary ? 'Masomo Aliyochagua' : 'Selected Subjects' }}</th>
+                            </tr>
+                        </thead>
                         <tbody>
                         @foreach($students as $student)
-                            @php($registeredIds = $student->subjects->where('pivot.registered', true)->pluck('id'))
-                            <tr>
-                                <td class="text-center">{{ $student->student_number }}</td><td class="sticky-col fw-bold">{{ $student->candidate_name }}</td><td class="text-center">{{ $student->sex }}</td>
-                                @foreach($subjects as $subject)
-                                    @php($mark = $student->marks->firstWhere('subject_id', $subject->id))
-                                    <td class="p-1 text-center {{ $registeredIds->contains($subject->id) ? '' : 'table-secondary' }}">
-                                    @if($registeredIds->contains($subject->id))
-                                        <input type="number" class="form-control form-control-sm f2-mark mb-1" min="0" max="{{ (float) $assessment->max_marks }}" step="0.01" value="{{ $mark?->is_absent ? '' : $mark?->mark }}" data-student="{{ $student->id }}" data-subject="{{ $subject->id }}">
-                                        <label class="small text-danger"><input type="checkbox" class="form-check-input f2-absent" data-student="{{ $student->id }}" data-subject="{{ $subject->id }}" @checked($mark?->is_absent)> ABS</label>
+                            <tr data-student-row="{{ $student->id }}">
+                                <td class="text-center">{{ $student->student_number }}</td>
+                                <td class="sticky-col fw-bold">{{ $student->candidate_name }}</td>
+                                <td class="text-nowrap fw-semibold">{{ $student->fcp_name ?: '-' }}</td>
+                                <td class="text-center">{{ $student->sex }}</td>
+                                <td class="p-2">
+                                    @if($student->subjects->isEmpty())
+                                        <span class="text-muted">{{ $isPrimary ? 'Hakuna somo lililochaguliwa.' : 'No subjects selected.' }}</span>
                                     @else
-                                        <span class="text-muted">N/R</span>
+                                        <div class="f2-subject-entry-grid">
+                                            @foreach($student->subjects as $subject)
+                                                @php($mark = $student->marks->firstWhere('subject_id', $subject->id))
+                                                <div class="f2-subject-entry">
+                                                    <div class="f2-subject-entry__title">
+                                                        <strong>{{ $subject->abbreviation }}</strong>
+                                                        <span>{{ $subject->code }}</span>
+                                                    </div>
+                                                    <input type="number" class="form-control form-control-sm f2-mark mb-1" min="0" max="{{ (float) $assessment->max_marks }}" step="0.01" value="{{ $mark?->is_absent ? '' : $mark?->mark }}" data-student="{{ $student->id }}" data-subject="{{ $subject->id }}" aria-label="{{ $subject->name }}">
+                                                    <label class="small text-danger mb-0"><input type="checkbox" class="form-check-input f2-absent" data-student="{{ $student->id }}" data-subject="{{ $subject->id }}" @checked($mark?->is_absent)> ABS</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     @endif
-                                    </td>
-                                @endforeach
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
