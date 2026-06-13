@@ -98,7 +98,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                             <div class="form-text">
-                                Mode ya Center ID: To: ekawira@tz.ci.org; CC: idrissmwala11@gmail.com na users wote wa kituo husika.
+                                Mode ya Center ID: wote wataonekana kwenye To kwa mpangilio wa ekawira@tz.ci.org, idrissmwala11@gmail.com, kisha users wote wa kituo husika.
                             </div>
                         </div>
                         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-3">

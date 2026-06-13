@@ -44,7 +44,7 @@ class CenterDataReportEmailTest extends TestCase
         Mail::assertNotSent(CenterDataReportMail::class, fn (CenterDataReportMail $mail) => $mail->hasTo($admin->email));
     }
 
-    public function test_admin_can_send_one_email_per_center_with_admins_and_center_users_copied(): void
+    public function test_admin_can_send_one_email_per_center_with_all_recipients_in_to(): void
     {
         Mail::fake();
 
@@ -65,17 +65,27 @@ class CenterDataReportEmailTest extends TestCase
 
         Mail::assertSent(CenterDataReportMail::class, 2);
         Mail::assertSent(CenterDataReportMail::class, function (CenterDataReportMail $mail) use ($centerOneUsers) {
+            $toAddresses = collect($mail->to)->pluck('address')->all();
+
             return $mail->centerId === 'TZ001'
                 && $mail->centerUsersCount === 5
                 && $mail->hasTo('ekawira@tz.ci.org')
-                && $mail->hasCc('idrissmwala11@gmail.com')
-                && $centerOneUsers->every(fn (User $user) => $mail->hasCc($user->email));
+                && $mail->hasTo('idrissmwala11@gmail.com')
+                && $centerOneUsers->every(fn (User $user) => $mail->hasTo($user->email))
+                && $toAddresses === [
+                    'ekawira@tz.ci.org',
+                    'idrissmwala11@gmail.com',
+                    ...$centerOneUsers->pluck('email')->all(),
+                ]
+                && count($mail->cc) === 0;
         });
         Mail::assertSent(CenterDataReportMail::class, function (CenterDataReportMail $mail) use ($centerTwoUser) {
             return $mail->centerId === 'TZ002'
                 && $mail->hasTo('ekawira@tz.ci.org')
-                && $mail->hasCc('idrissmwala11@gmail.com')
-                && $mail->hasCc($centerTwoUser->email);
+                && $mail->hasTo('idrissmwala11@gmail.com')
+                && $mail->hasTo($centerTwoUser->email)
+                && count($mail->to) === 3
+                && count($mail->cc) === 0;
         });
     }
 

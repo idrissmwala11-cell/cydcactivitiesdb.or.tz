@@ -266,25 +266,22 @@ class DashboardController extends Controller
 
                 $summary = $summaryByCenter[$centerId];
                 $totalRecords = (int) collect($summary)->sum('count');
-                $ccEmails = collect([$secondaryAdmin])
+                $toEmails = collect([$primaryAdmin, $secondaryAdmin])
                     ->merge($centerUsers->pluck('email')->map(fn ($email) => trim((string) $email)))
                     ->filter()
                     ->unique(fn ($email) => strtolower($email))
-                    ->reject(fn ($email) => strtolower($email) === strtolower($primaryAdmin))
                     ->values()
                     ->all();
 
                 try {
-                    Mail::to($primaryAdmin)
-                        ->cc($ccEmails)
-                        ->send(new CenterDataReportMail(
+                    Mail::to($toEmails)->send(new CenterDataReportMail(
                             recipient: $centerUsers->first(),
                             caption: $validated['caption'],
                             centerId: $centerId,
                             summary: $summary,
                             totalRecords: $totalRecords,
                             centerUsersCount: $centerUsers->count(),
-                        ));
+                    ));
                     $sent++;
                 } catch (Throwable $exception) {
                     $failed++;
