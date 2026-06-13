@@ -194,6 +194,16 @@ class DashboardController extends Controller
             ->whereRaw("TRIM(center_id) <> ''")
             ->count();
 
+        $centerReportCenterCount = User::where('role', '!=', 'admin')
+            ->whereNotNull('email')
+            ->whereNotNull('center_id')
+            ->whereRaw("TRIM(email) <> ''")
+            ->whereRaw("TRIM(center_id) <> ''")
+            ->selectRaw('UPPER(TRIM(center_id)) as normalized_center_id')
+            ->distinct()
+            ->get()
+            ->count();
+
         return view('dashboard.admin', compact(
             'stats',
             'userRegistrationTrends',
@@ -207,7 +217,8 @@ class DashboardController extends Controller
             'recentNewUsers',
             'pendingUsers',
             'centersWithoutData',
-            'centerReportRecipientCount'
+            'centerReportRecipientCount',
+            'centerReportCenterCount'
         ));
     }
 
@@ -215,7 +226,10 @@ class DashboardController extends Controller
     {
         $validated = $request->validate([
             'caption' => ['required', 'string', 'max:1500'],
+            'delivery_mode' => ['nullable', 'in:individual,grouped_center'],
         ]);
+
+        $deliveryMode = $validated['delivery_mode'] ?? 'individual';
 
         $users = User::where('role', '!=', 'admin')
             ->orderBy('id')
@@ -229,43 +243,93 @@ class DashboardController extends Controller
         $failed = 0;
         $skipped = 0;
 
-        foreach ($users as $user) {
+        $validUsers = $users->filter(function (User $user) use (&$skipped) {
             $email = trim((string) $user->email);
             $centerId = strtoupper(trim((string) $user->center_id));
 
             if ($email === '' || $centerId === '') {
                 $skipped++;
-                continue;
+                return false;
             }
 
-            if (! isset($summaryByCenter[$centerId])) {
-                $summaryByCenter[$centerId] = $this->getCenterDataSummary($centerId)->all();
+            return true;
+        });
+
+        if ($deliveryMode === 'grouped_center') {
+            $primaryAdmin = trim((string) config('center_data_reports.primary_admin_email'));
+            $secondaryAdmin = trim((string) config('center_data_reports.secondary_admin_email'));
+
+            foreach ($validUsers->groupBy(fn (User $user) => strtoupper(trim((string) $user->center_id))) as $centerId => $centerUsers) {
+                if (! isset($summaryByCenter[$centerId])) {
+                    $summaryByCenter[$centerId] = $this->getCenterDataSummary($centerId)->all();
+                }
+
+                $summary = $summaryByCenter[$centerId];
+                $totalRecords = (int) collect($summary)->sum('count');
+                $ccEmails = collect([$secondaryAdmin])
+                    ->merge($centerUsers->pluck('email')->map(fn ($email) => trim((string) $email)))
+                    ->filter()
+                    ->unique(fn ($email) => strtolower($email))
+                    ->reject(fn ($email) => strtolower($email) === strtolower($primaryAdmin))
+                    ->values()
+                    ->all();
+
+                try {
+                    Mail::to($primaryAdmin)
+                        ->cc($ccEmails)
+                        ->send(new CenterDataReportMail(
+                            recipient: $centerUsers->first(),
+                            caption: $validated['caption'],
+                            centerId: $centerId,
+                            summary: $summary,
+                            totalRecords: $totalRecords,
+                            centerUsersCount: $centerUsers->count(),
+                        ));
+                    $sent++;
+                } catch (Throwable $exception) {
+                    $failed++;
+                    Log::error('Grouped center data report email failed.', [
+                        'center_id' => $centerId,
+                        'error' => $exception->getMessage(),
+                    ]);
+                }
             }
 
-            $summary = $summaryByCenter[$centerId];
-            $totalRecords = (int) collect($summary)->sum('count');
+            $message = "Report email zimetumwa kwa Center ID {$sent}.";
+        } else {
+            foreach ($validUsers as $user) {
+                $email = trim((string) $user->email);
+                $centerId = strtoupper(trim((string) $user->center_id));
 
-            try {
-                Mail::to($email)->send(new CenterDataReportMail(
-                    recipient: $user,
-                    caption: $validated['caption'],
-                    centerId: $centerId,
-                    summary: $summary,
-                    totalRecords: $totalRecords,
-                    centerUsersCount: (int) ($centerUserCounts[$centerId] ?? 1),
-                ));
-                $sent++;
-            } catch (Throwable $exception) {
-                $failed++;
-                Log::error('Center data report email failed.', [
-                    'user_id' => $user->id,
-                    'center_id' => $centerId,
-                    'error' => $exception->getMessage(),
-                ]);
+                if (! isset($summaryByCenter[$centerId])) {
+                    $summaryByCenter[$centerId] = $this->getCenterDataSummary($centerId)->all();
+                }
+
+                $summary = $summaryByCenter[$centerId];
+                $totalRecords = (int) collect($summary)->sum('count');
+
+                try {
+                    Mail::to($email)->send(new CenterDataReportMail(
+                        recipient: $user,
+                        caption: $validated['caption'],
+                        centerId: $centerId,
+                        summary: $summary,
+                        totalRecords: $totalRecords,
+                        centerUsersCount: (int) ($centerUserCounts[$centerId] ?? 1),
+                    ));
+                    $sent++;
+                } catch (Throwable $exception) {
+                    $failed++;
+                    Log::error('Center data report email failed.', [
+                        'user_id' => $user->id,
+                        'center_id' => $centerId,
+                        'error' => $exception->getMessage(),
+                    ]);
+                }
             }
+
+            $message = "Report email zimetumwa kwa users {$sent}.";
         }
-
-        $message = "Report email zimetumwa kwa users {$sent}.";
 
         if ($skipped > 0) {
             $message .= " Users {$skipped} wamerukwa kwa kukosa email au Center ID.";

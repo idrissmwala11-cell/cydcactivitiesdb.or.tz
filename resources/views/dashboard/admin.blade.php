@@ -84,8 +84,25 @@
                         @error('caption')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                        <div class="mt-3">
+                            <label for="centerReportDeliveryMode" class="form-label fw-semibold">Njia ya Kutuma</label>
+                            <select id="centerReportDeliveryMode" name="delivery_mode" class="form-select @error('delivery_mode') is-invalid @enderror" required>
+                                <option value="individual" @selected(old('delivery_mode', 'individual') === 'individual')>
+                                    Kila user apokee email yake ({{ number_format($centerReportRecipientCount ?? 0) }} emails)
+                                </option>
+                                <option value="grouped_center" @selected(old('delivery_mode') === 'grouped_center')>
+                                    Email moja kwa kila Center ID ({{ number_format($centerReportCenterCount ?? 0) }} emails)
+                                </option>
+                            </select>
+                            @error('delivery_mode')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">
+                                Mode ya Center ID: To: ekawira@tz.ci.org; CC: idrissmwala11@gmail.com na users wote wa kituo husika.
+                            </div>
+                        </div>
                         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-3">
-                            <small class="text-muted">Admins na users wasio na email au Center ID hawatatumwa.</small>
+                            <small class="text-muted">Mode ya kwanza imebaki kama ilivyo. Users wasio na email au Center ID hawatatumwa.</small>
                             <button type="submit" class="btn btn-success px-4">
                                 <i class="bi bi-send-fill me-2"></i>Tuma Reports kwa Users Wote
                             </button>

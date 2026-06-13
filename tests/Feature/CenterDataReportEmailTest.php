@@ -26,6 +26,7 @@ class CenterDataReportEmailTest extends TestCase
 
         $response = $this->actingAs($admin)->post(route('admin.center-data-reports.email'), [
             'caption' => 'Tafadhali pitia taarifa ya ujazaji wa data ya center yako.',
+            'delivery_mode' => 'individual',
         ]);
 
         $response->assertRedirect();
@@ -41,6 +42,41 @@ class CenterDataReportEmailTest extends TestCase
             return $mail->hasTo($secondUser->email) && $mail->centerId === 'TZ002';
         });
         Mail::assertNotSent(CenterDataReportMail::class, fn (CenterDataReportMail $mail) => $mail->hasTo($admin->email));
+    }
+
+    public function test_admin_can_send_one_email_per_center_with_admins_and_center_users_copied(): void
+    {
+        Mail::fake();
+
+        config()->set('center_data_reports.primary_admin_email', 'ekawira@tz.ci.org');
+        config()->set('center_data_reports.secondary_admin_email', 'idrissmwala11@gmail.com');
+
+        $admin = User::factory()->create(['role' => 'admin']);
+        $centerOneUsers = User::factory()->count(5)->create(['center_id' => 'TZ001']);
+        $centerTwoUser = User::factory()->create(['center_id' => 'TZ002']);
+
+        $response = $this->actingAs($admin)->post(route('admin.center-data-reports.email'), [
+            'caption' => 'Report ya pamoja ya kituo.',
+            'delivery_mode' => 'grouped_center',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        Mail::assertSent(CenterDataReportMail::class, 2);
+        Mail::assertSent(CenterDataReportMail::class, function (CenterDataReportMail $mail) use ($centerOneUsers) {
+            return $mail->centerId === 'TZ001'
+                && $mail->centerUsersCount === 5
+                && $mail->hasTo('ekawira@tz.ci.org')
+                && $mail->hasCc('idrissmwala11@gmail.com')
+                && $centerOneUsers->every(fn (User $user) => $mail->hasCc($user->email));
+        });
+        Mail::assertSent(CenterDataReportMail::class, function (CenterDataReportMail $mail) use ($centerTwoUser) {
+            return $mail->centerId === 'TZ002'
+                && $mail->hasTo('ekawira@tz.ci.org')
+                && $mail->hasCc('idrissmwala11@gmail.com')
+                && $mail->hasCc($centerTwoUser->email);
+        });
     }
 
     public function test_regular_user_cannot_send_center_reports(): void
