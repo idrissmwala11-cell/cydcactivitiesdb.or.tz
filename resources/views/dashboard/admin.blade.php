@@ -56,6 +56,46 @@
         </div>
     </div>
 
+    {{-- Center Data Report Email --}}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header border-0 p-4" style="background: linear-gradient(135deg, #172554, #2563eb); color: #fff;">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                        <div>
+                            <h5 class="mb-1"><i class="bi bi-envelope-paper-fill me-2"></i>Tuma Center Data Reports</h5>
+                            <p class="mb-0 text-white-50">Caption moja itatumwa pamoja na report maalum ya Center ID ya kila user.</p>
+                        </div>
+                        <span class="badge bg-light text-primary px-3 py-2">{{ number_format($centerReportRecipientCount ?? 0) }} recipients</span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ route('admin.center-data-reports.email') }}" onsubmit="return confirm('Unataka kutuma report kwa users wote wasiokuwa admins?')">
+                        @csrf
+                        <label for="centerReportCaption" class="form-label fw-semibold">Caption ya Email</label>
+                        <textarea
+                            id="centerReportCaption"
+                            name="caption"
+                            rows="4"
+                            maxlength="1500"
+                            class="form-control @error('caption') is-invalid @enderror"
+                            placeholder="Mfano: Habari, tafadhali pitia muhtasari wa ujazaji wa data wa center yako..."
+                            required>{{ old('caption') }}</textarea>
+                        @error('caption')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-3">
+                            <small class="text-muted">Admins na users wasio na email au Center ID hawatatumwa.</small>
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-send-fill me-2"></i>Tuma Reports kwa Users Wote
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Search Section --}}
     <div class="row mb-4">
         <div class="col-12">

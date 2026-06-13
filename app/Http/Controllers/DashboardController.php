@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CenterDataReportMail;
 use App\Models\User;
 use App\Models\Participant;
 use App\Models\Instructor;
@@ -32,14 +33,17 @@ use App\Models\ExamResult;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
+use Throwable;
 
 class DashboardController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('admin')->only(['admin', 'updateUser', 'deleteUser', 'toggleUserStatus', 'showCenterProfile', 'centersWithoutData']);
+        $this->middleware('admin')->only(['admin', 'updateUser', 'deleteUser', 'toggleUserStatus', 'showCenterProfile', 'centersWithoutData', 'sendCenterDataReports']);
     }
 
     /**
@@ -183,6 +187,13 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
+        $centerReportRecipientCount = User::where('role', '!=', 'admin')
+            ->whereNotNull('email')
+            ->whereNotNull('center_id')
+            ->whereRaw("TRIM(email) <> ''")
+            ->whereRaw("TRIM(center_id) <> ''")
+            ->count();
+
         return view('dashboard.admin', compact(
             'stats',
             'userRegistrationTrends',
@@ -195,8 +206,76 @@ class DashboardController extends Controller
             'recentSubmissions',
             'recentNewUsers',
             'pendingUsers',
-            'centersWithoutData'
+            'centersWithoutData',
+            'centerReportRecipientCount'
         ));
+    }
+
+    public function sendCenterDataReports(Request $request)
+    {
+        $validated = $request->validate([
+            'caption' => ['required', 'string', 'max:1500'],
+        ]);
+
+        $users = User::where('role', '!=', 'admin')
+            ->orderBy('id')
+            ->get();
+
+        $summaryByCenter = [];
+        $centerUserCounts = $users
+            ->filter(fn (User $user) => trim((string) $user->center_id) !== '')
+            ->countBy(fn (User $user) => strtoupper(trim((string) $user->center_id)));
+        $sent = 0;
+        $failed = 0;
+        $skipped = 0;
+
+        foreach ($users as $user) {
+            $email = trim((string) $user->email);
+            $centerId = strtoupper(trim((string) $user->center_id));
+
+            if ($email === '' || $centerId === '') {
+                $skipped++;
+                continue;
+            }
+
+            if (! isset($summaryByCenter[$centerId])) {
+                $summaryByCenter[$centerId] = $this->getCenterDataSummary($centerId)->all();
+            }
+
+            $summary = $summaryByCenter[$centerId];
+            $totalRecords = (int) collect($summary)->sum('count');
+
+            try {
+                Mail::to($email)->send(new CenterDataReportMail(
+                    recipient: $user,
+                    caption: $validated['caption'],
+                    centerId: $centerId,
+                    summary: $summary,
+                    totalRecords: $totalRecords,
+                    centerUsersCount: (int) ($centerUserCounts[$centerId] ?? 1),
+                ));
+                $sent++;
+            } catch (Throwable $exception) {
+                $failed++;
+                Log::error('Center data report email failed.', [
+                    'user_id' => $user->id,
+                    'center_id' => $centerId,
+                    'error' => $exception->getMessage(),
+                ]);
+            }
+        }
+
+        $message = "Report email zimetumwa kwa users {$sent}.";
+
+        if ($skipped > 0) {
+            $message .= " Users {$skipped} wamerukwa kwa kukosa email au Center ID.";
+        }
+
+        if ($failed > 0) {
+            return back()->withInput()->with('error', $message." Email {$failed} zimeshindwa kutumwa; angalia mail settings/logs.");
+        }
+
+        return back()->with('success', $message);
     }
 
     /**

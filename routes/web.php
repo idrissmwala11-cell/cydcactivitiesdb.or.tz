@@ -373,6 +373,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('/users', [DashboardController::class, 'manageUsers'])->name('users.index');
     Route::get('/centers-without-data', [DashboardController::class, 'centersWithoutData'])->name('centers-without-data');
+    Route::post('/center-data-reports/email', [DashboardController::class, 'sendCenterDataReports'])->name('center-data-reports.email');
     Route::get('/users/{user}/center-profile', [DashboardController::class, 'showCenterProfile'])->name('users.center-profile');
     Route::patch('/users/{user}', [DashboardController::class, 'updateUser'])->name('users.update');
     Route::patch('/users/{user}/toggle-status', [DashboardController::class, 'toggleUserStatus'])->name('users.toggle-status');
