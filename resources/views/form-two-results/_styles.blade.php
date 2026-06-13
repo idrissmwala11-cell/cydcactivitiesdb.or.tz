@@ -16,6 +16,10 @@
     .f2-table tbody td { vertical-align: middle; }
     .f2-table .sticky-col { position: sticky; left: 0; z-index: 2; background: #fff; min-width: 190px; }
     .f2-table thead .sticky-col { z-index: 3; background: var(--f2-dark); }
+    .f2-marks-table { width: 100%; table-layout: fixed; }
+    .f2-marks-table .sticky-col { min-width: 0; }
+    .f2-marks-table .f2-student-name-col { width: 180px; max-width: 180px; white-space: normal; overflow-wrap: anywhere; line-height: 1.35; }
+    .f2-marks-table .f2-fcp-name-col { width: 145px; max-width: 145px; white-space: normal; overflow-wrap: anywhere; line-height: 1.35; }
     .f2-mark { min-width: 76px; text-align: center; }
     .f2-mark.is-absent { background: #fff0f0; color: #a11919; }
     .f2-subject-entry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: .55rem; }

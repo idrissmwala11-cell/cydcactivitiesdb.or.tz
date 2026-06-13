@@ -34,12 +34,19 @@
                 @csrf @method('PUT')
                 <input type="hidden" name="marks_payload" id="marks-payload">
                 <div class="table-responsive" style="max-height:68vh">
-                    <table class="table table-bordered f2-table mb-0">
+                    <table class="table table-bordered f2-table f2-marks-table mb-0">
+                        <colgroup>
+                            <col style="width:72px">
+                            <col style="width:180px">
+                            <col style="width:145px">
+                            <col style="width:58px">
+                            <col>
+                        </colgroup>
                         <thead class="sticky-top">
                             <tr>
                                 <th>Na.</th>
-                                <th class="sticky-col">{{ $isPrimary ? 'Majina ya Wanafunzi' : "Candidates' Names" }}</th>
-                                <th>FCP Name</th>
+                                <th class="sticky-col f2-student-name-col">{{ $isPrimary ? 'Majina ya Wanafunzi' : "Candidates' Names" }}</th>
+                                <th class="f2-fcp-name-col">FCP Name</th>
                                 <th>{{ $isPrimary ? 'Jinsi' : 'Sex' }}</th>
                                 <th style="min-width:560px">{{ $isPrimary ? 'Masomo Aliyochagua' : 'Selected Subjects' }}</th>
                             </tr>
@@ -48,8 +55,8 @@
                         @foreach($students as $student)
                             <tr data-student-row="{{ $student->id }}">
                                 <td class="text-center">{{ $student->student_number }}</td>
-                                <td class="sticky-col fw-bold">{{ $student->candidate_name }}</td>
-                                <td class="text-nowrap fw-semibold">{{ $student->fcp_name ?: '-' }}</td>
+                                <td class="sticky-col f2-student-name-col fw-bold">{{ $student->candidate_name }}</td>
+                                <td class="f2-fcp-name-col fw-semibold">{{ $student->fcp_name ?: '-' }}</td>
                                 <td class="text-center">{{ $student->sex }}</td>
                                 <td class="p-2">
                                     @if($student->subjects->isEmpty())
