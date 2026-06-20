@@ -3,6 +3,9 @@
 @section('title', 'Edit Masomo ya Fani')
 
 @section('content')
+@php
+    $routePrefix = request()->routeIs('admin.*') ? 'admin.masomo-ya-fani' : 'submissions.masomo-ya-fani';
+@endphp
 <div class="py-12">
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -91,6 +94,10 @@
                                 @endforeach
                             </select>
                         </div>
+                    </div>
+
+                    <div class="mt-6">
+                        @include('program-day._participants-fields', ['record' => $masomoYaFani])
                     </div>
 
                     <div class="mt-6 flex items-center justify-between">

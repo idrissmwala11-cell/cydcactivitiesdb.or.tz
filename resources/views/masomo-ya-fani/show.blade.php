@@ -59,6 +59,8 @@
                     </div>
                 @endif
 
+                @include('program-day._participants-summary', ['record' => $masomoYaFani])
+
                 <div class="flex items-center justify-between pt-6">
                     @if(auth()->user()->role === 'admin')
                         <a href="{{ route('admin.masomo-ya-fani.index') }}"

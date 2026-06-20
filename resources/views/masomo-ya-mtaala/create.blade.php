@@ -179,6 +179,8 @@
                 </div>
             </div>
 
+            @include('program-day._participants-fields', ['record' => $existingSubmission ?? null])
+
             <div class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white shadow-sm">
                 <div class="p-6 md:flex md:items-end md:justify-between md:gap-6">
                     <div class="md:w-72">

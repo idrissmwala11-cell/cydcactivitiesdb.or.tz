@@ -46,6 +46,8 @@ class MasomoYaFaniController extends Controller
             'student_preferences' => 'nullable|string',
             'student_feedback' => 'nullable|string',
             'teacher_feedback' => 'nullable|string',
+            'present_participants' => 'nullable|string',
+            'absent_participants' => 'nullable|string',
             'status' => 'required|in:draft,submitted',
         ]);
 
@@ -83,6 +85,8 @@ class MasomoYaFaniController extends Controller
             'student_preferences' => 'nullable|string',
             'student_feedback' => 'nullable|string',
             'teacher_feedback' => 'nullable|string',
+            'present_participants' => 'nullable|string',
+            'absent_participants' => 'nullable|string',
             'status' => 'required|in:draft,submitted,approved,rejected',
         ]);
 

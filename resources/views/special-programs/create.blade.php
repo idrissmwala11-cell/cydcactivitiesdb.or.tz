@@ -72,6 +72,8 @@
                                       class="w-full px-3 py-2 border border-gray-300 rounded-md">{{ old('supervisor_feedback') }}</textarea>
                         </div>
 
+                        @include('program-day._participants-fields', ['record' => null])
+
                         <div class="flex justify-between items-center pt-6 border-t">
                             <a href="{{ route('submissions.special-program.index') }}"
                                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">

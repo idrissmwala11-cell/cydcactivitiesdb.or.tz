@@ -69,6 +69,8 @@
                                   class="w-full px-3 py-2 border border-gray-300 rounded-md">{{ old('supervisor_feedback', $specialProgram->supervisor_feedback) }}</textarea>
                     </div>
 
+                    @include('program-day._participants-fields', ['record' => $specialProgram])
+
                     <div class="flex flex-wrap gap-3 pt-4 border-t">
                         <a href="{{ route('submissions.special-program.show', $specialProgram->id) }}"
                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">

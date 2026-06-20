@@ -16,6 +16,8 @@ class SpecialProgram extends Model
         'age_range',
         'teacher_feedback',
         'supervisor_feedback',
+        'present_participants',
+        'absent_participants',
         'user_id',
     ];
 

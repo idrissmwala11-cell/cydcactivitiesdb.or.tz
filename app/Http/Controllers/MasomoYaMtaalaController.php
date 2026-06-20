@@ -49,6 +49,8 @@ class MasomoYaMtaalaController extends Controller
             'mada_aliyo_fundisha' => 'nullable|string',
             'maoni_ya_mwanafunzi' => 'nullable|string',
             'maoni_ya_mwalimu' => 'nullable|string',
+            'present_participants' => 'nullable|string',
+            'absent_participants' => 'nullable|string',
             'action' => 'required|in:draft,submit',
         ]);
 
@@ -62,6 +64,8 @@ class MasomoYaMtaalaController extends Controller
             'category' => $validated['category'],
             'student_feedback' => $validated['maoni_ya_mwanafunzi'] ?? null,
             'teacher_feedback' => $validated['maoni_ya_mwalimu'] ?? null,
+            'present_participants' => $validated['present_participants'] ?? null,
+            'absent_participants' => $validated['absent_participants'] ?? null,
             'status' => $validated['action'] === 'submit' ? 'submitted' : 'draft',
         ];
 
@@ -93,6 +97,8 @@ class MasomoYaMtaalaController extends Controller
             'mada_aliyo_fundisha' => $masomoYaMtaala->topic,
             'maoni_ya_mwanafunzi' => $masomoYaMtaala->student_feedback,
             'maoni_ya_mwalimu' => $masomoYaMtaala->teacher_feedback,
+            'present_participants' => $masomoYaMtaala->present_participants,
+            'absent_participants' => $masomoYaMtaala->absent_participants,
             'status' => $masomoYaMtaala->status,
         ];
 
@@ -112,6 +118,8 @@ class MasomoYaMtaalaController extends Controller
             'mada_aliyo_fundisha' => 'nullable|string',
             'maoni_ya_mwanafunzi' => 'nullable|string',
             'maoni_ya_mwalimu' => 'nullable|string',
+            'present_participants' => 'nullable|string',
+            'absent_participants' => 'nullable|string',
             'action' => 'required|in:draft,submit',
         ]);
 
@@ -124,6 +132,8 @@ class MasomoYaMtaalaController extends Controller
             'category' => $validated['category'],
             'student_feedback' => $validated['maoni_ya_mwanafunzi'] ?? null,
             'teacher_feedback' => $validated['maoni_ya_mwalimu'] ?? null,
+            'present_participants' => $validated['present_participants'] ?? null,
+            'absent_participants' => $validated['absent_participants'] ?? null,
             'status' => $validated['action'] === 'submit' ? 'submitted' : 'draft',
         ];
 

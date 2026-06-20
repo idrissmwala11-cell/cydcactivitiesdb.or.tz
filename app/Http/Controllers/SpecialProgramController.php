@@ -40,6 +40,8 @@ class SpecialProgramController extends Controller
             'age_range' => 'required|string|max:255',
             'teacher_feedback' => 'nullable|string',
             'supervisor_feedback' => 'nullable|string',
+            'present_participants' => 'nullable|string',
+            'absent_participants' => 'nullable|string',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -89,6 +91,8 @@ class SpecialProgramController extends Controller
             'age_range' => 'required|string|max:255',
             'teacher_feedback' => 'nullable|string',
             'supervisor_feedback' => 'nullable|string',
+            'present_participants' => 'nullable|string',
+            'absent_participants' => 'nullable|string',
         ]);
 
         $special_program->update($validated);

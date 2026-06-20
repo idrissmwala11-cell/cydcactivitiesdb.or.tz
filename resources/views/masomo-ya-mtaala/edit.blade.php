@@ -50,41 +50,41 @@
                     <div class="p-6 md:p-8">
                         <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                             <div>
-                                <label for="lesson_date" class="mb-2 block text-sm font-semibold text-gray-700">Date</label>
-                                <input type="date" name="lesson_date" id="lesson_date"
-                                       value="{{ old('lesson_date', $masomoYaMtaala->lesson_date?->format('Y-m-d')) }}"
+                                <label for="date" class="mb-2 block text-sm font-semibold text-gray-700">Date</label>
+                                <input type="date" name="date" id="date"
+                                       value="{{ old('date', $masomoYaMtaala->date?->format('Y-m-d')) }}"
                                        required
                                        class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100">
                             </div>
 
                             <div>
-                                <label for="instructor_name" class="mb-2 block text-sm font-semibold text-gray-700">Teacher Name</label>
-                                <input type="text" name="instructor_name" id="instructor_name"
-                                       value="{{ old('instructor_name', $masomoYaMtaala->instructor_name) }}"
+                                <label for="jina_la_mwalimu" class="mb-2 block text-sm font-semibold text-gray-700">Teacher Name</label>
+                                <input type="text" name="jina_la_mwalimu" id="jina_la_mwalimu"
+                                       value="{{ old('jina_la_mwalimu', $masomoYaMtaala->teacher) }}"
                                        required
                                        class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100">
                             </div>
 
                             <div>
-                                <label for="subject" class="mb-2 block text-sm font-semibold text-gray-700">Subject Taught</label>
-                                <input type="text" name="subject" id="subject"
-                                       value="{{ old('subject', $masomoYaMtaala->subject) }}"
+                                <label for="somo_analofundisha" class="mb-2 block text-sm font-semibold text-gray-700">Subject Taught</label>
+                                <input type="text" name="somo_analofundisha" id="somo_analofundisha"
+                                       value="{{ old('somo_analofundisha', $masomoYaMtaala->subject_type) }}"
                                        required
                                        class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100">
                             </div>
 
                             <div>
-                                <label for="grade_level" class="mb-2 block text-sm font-semibold text-gray-700">Grade / Level</label>
-                                <select name="grade_level" id="grade_level"
+                                <label for="darasa_la_mjaka_mingapi" class="mb-2 block text-sm font-semibold text-gray-700">Grade / Level</label>
+                                <select name="darasa_la_mjaka_mingapi" id="darasa_la_mjaka_mingapi"
                                         class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100">
                                     <option value="">Select grade/level...</option>
                                     @for($i = 1; $i <= 7; $i++)
-                                        <option value="Standard {{ $i }}" {{ old('grade_level', $masomoYaMtaala->grade_level) === 'Standard '.$i ? 'selected' : '' }}>
+                                        <option value="Standard {{ $i }}" {{ old('darasa_la_mjaka_mingapi', $masomoYaMtaala->age_group) === 'Standard '.$i ? 'selected' : '' }}>
                                             Standard {{ $i }}
                                         </option>
                                     @endfor
                                     @for($i = 1; $i <= 6; $i++)
-                                        <option value="Form {{ $i }}" {{ old('grade_level', $masomoYaMtaala->grade_level) === 'Form '.$i ? 'selected' : '' }}>
+                                        <option value="Form {{ $i }}" {{ old('darasa_la_mjaka_mingapi', $masomoYaMtaala->age_group) === 'Form '.$i ? 'selected' : '' }}>
                                             Form {{ $i }}
                                         </option>
                                     @endfor
@@ -92,10 +92,9 @@
                             </div>
 
                             <div class="md:col-span-2">
-                                <label for="lesson_topic" class="mb-2 block text-sm font-semibold text-gray-700">Lesson Topic</label>
-                                <input type="text" name="lesson_topic" id="lesson_topic"
-                                       value="{{ old('lesson_topic', $masomoYaMtaala->lesson_topic) }}"
-                                       required
+                                <label for="mada_aliyo_fundisha" class="mb-2 block text-sm font-semibold text-gray-700">Lesson Topic</label>
+                                <input type="text" name="mada_aliyo_fundisha" id="mada_aliyo_fundisha"
+                                       value="{{ old('mada_aliyo_fundisha', $masomoYaMtaala->topic) }}"
                                        class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100">
                             </div>
 
@@ -138,20 +137,11 @@
                             </div>
 
                             <div>
-                                <label for="performance_rating" class="mb-2 block text-sm font-semibold text-gray-700">Performance Rating (1-10)</label>
-                                <input type="number" name="performance_rating" id="performance_rating" min="1" max="10"
-                                       value="{{ old('performance_rating', $masomoYaMtaala->performance_rating) }}"
-                                       class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-100">
-                            </div>
-
-                            <div>
-                                <label for="status" class="mb-2 block text-sm font-semibold text-gray-700">Status</label>
-                                <select name="status" id="status" required
+                                <label for="action" class="mb-2 block text-sm font-semibold text-gray-700">Save Option</label>
+                                <select name="action" id="action" required
                                         class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-100">
-                                    <option value="pending" {{ old('status', $masomoYaMtaala->status) === 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="in_progress" {{ old('status', $masomoYaMtaala->status) === 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                    <option value="completed" {{ old('status', $masomoYaMtaala->status) === 'completed' ? 'selected' : '' }}>Completed</option>
-                                    <option value="reviewed" {{ old('status', $masomoYaMtaala->status) === 'reviewed' ? 'selected' : '' }}>Reviewed</option>
+                                    <option value="draft" {{ old('action', $masomoYaMtaala->status === 'submitted' ? 'submit' : 'draft') === 'draft' ? 'selected' : '' }}>Save as Draft</option>
+                                    <option value="submit" {{ old('action', $masomoYaMtaala->status === 'submitted' ? 'submit' : 'draft') === 'submit' ? 'selected' : '' }}>Submit Record</option>
                                 </select>
                             </div>
                         </div>
@@ -167,19 +157,21 @@
                     <div class="p-6 md:p-8">
                         <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                             <div>
-                                <label for="instructor_comments" class="mb-2 block text-sm font-semibold text-gray-700">Instructor Comments</label>
-                                <textarea name="instructor_comments" id="instructor_comments" rows="5"
-                                          class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-amber-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-100">{{ old('instructor_comments', $masomoYaMtaala->instructor_comments) }}</textarea>
+                                <label for="maoni_ya_mwanafunzi" class="mb-2 block text-sm font-semibold text-gray-700">Student Comments</label>
+                                <textarea name="maoni_ya_mwanafunzi" id="maoni_ya_mwanafunzi" rows="5"
+                                          class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-amber-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-100">{{ old('maoni_ya_mwanafunzi', $masomoYaMtaala->student_feedback) }}</textarea>
                             </div>
 
                             <div>
-                                <label for="supervisor_comments" class="mb-2 block text-sm font-semibold text-gray-700">Supervisor Comments</label>
-                                <textarea name="supervisor_comments" id="supervisor_comments" rows="5"
-                                          class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-amber-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-100">{{ old('supervisor_comments', $masomoYaMtaala->supervisor_comments) }}</textarea>
+                                <label for="maoni_ya_mwalimu" class="mb-2 block text-sm font-semibold text-gray-700">Teacher Comments</label>
+                                <textarea name="maoni_ya_mwalimu" id="maoni_ya_mwalimu" rows="5"
+                                          class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm text-gray-900 shadow-sm transition focus:border-amber-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-100">{{ old('maoni_ya_mwalimu', $masomoYaMtaala->teacher_feedback) }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                @include('program-day._participants-fields', ['record' => $masomoYaMtaala])
 
                 <div class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white shadow-sm">
                     <div class="p-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">

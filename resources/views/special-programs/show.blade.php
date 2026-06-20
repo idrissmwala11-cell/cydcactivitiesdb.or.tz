@@ -44,6 +44,8 @@
                     <div class="mt-1 text-gray-900 whitespace-pre-line">{{ $specialProgram->supervisor_feedback ?? '-' }}</div>
                 </div>
 
+                @include('program-day._participants-summary', ['record' => $specialProgram])
+
                 <div class="flex flex-wrap gap-3 pt-4 border-t">
                     <a href="{{ route('submissions.special-program.index') }}"
                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">

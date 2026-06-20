@@ -18,6 +18,8 @@ class MasomoYaFani extends Model
         'student_preferences',
         'student_feedback',
         'teacher_feedback',
+        'present_participants',
+        'absent_participants',
         'status',
         'admin_notes',
         'submitted_at',

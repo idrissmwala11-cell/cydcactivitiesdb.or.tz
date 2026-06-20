@@ -94,6 +94,8 @@
                 </div>
             @endif
 
+            @include('program-day._participants-summary', ['record' => $masomoYaMtaala])
+
             <div class="bg-white shadow-sm rounded-lg p-6 border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="space-y-1">
                     <div>

@@ -132,6 +132,10 @@
 
                         </div>
 
+                        <div class="mt-6">
+                            @include('program-day._participants-fields', ['record' => $existingSubmission ?? null])
+                        </div>
+
                         <div class="mt-6 flex flex-wrap gap-3">
                             <button type="submit"
                                     class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
