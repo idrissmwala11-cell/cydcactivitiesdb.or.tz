@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SpecialProgram;
+use App\Support\ProgramDayAttendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,13 +41,23 @@ class SpecialProgramController extends Controller
             'age_range' => 'required|string|max:255',
             'teacher_feedback' => 'nullable|string',
             'supervisor_feedback' => 'nullable|string',
-            'present_participants' => 'nullable|string',
-            'absent_participants' => 'nullable|string',
+            'participant_roster_text' => 'nullable|string',
+            'attendance_marker' => 'nullable|string',
+            'present_participant_numbers' => 'nullable|array',
+            'present_participant_numbers.*' => 'nullable|string',
         ]);
 
-        $validated['user_id'] = Auth::id();
+        $data = [
+            'date' => $validated['date'],
+            'teacher' => $validated['teacher'],
+            'topic' => $validated['topic'],
+            'age_range' => $validated['age_range'],
+            'teacher_feedback' => $validated['teacher_feedback'] ?? null,
+            'supervisor_feedback' => $validated['supervisor_feedback'] ?? null,
+            'user_id' => Auth::id(),
+        ] + ProgramDayAttendance::fromRequest($request, Auth::id());
 
-        SpecialProgram::create($validated);
+        SpecialProgram::create($data);
 
         return redirect()->route('submissions.special-program.index')
             ->with('success', 'Special Program saved successfully.');
@@ -91,11 +102,22 @@ class SpecialProgramController extends Controller
             'age_range' => 'required|string|max:255',
             'teacher_feedback' => 'nullable|string',
             'supervisor_feedback' => 'nullable|string',
-            'present_participants' => 'nullable|string',
-            'absent_participants' => 'nullable|string',
+            'participant_roster_text' => 'nullable|string',
+            'attendance_marker' => 'nullable|string',
+            'present_participant_numbers' => 'nullable|array',
+            'present_participant_numbers.*' => 'nullable|string',
         ]);
 
-        $special_program->update($validated);
+        $data = [
+            'date' => $validated['date'],
+            'teacher' => $validated['teacher'],
+            'topic' => $validated['topic'],
+            'age_range' => $validated['age_range'],
+            'teacher_feedback' => $validated['teacher_feedback'] ?? null,
+            'supervisor_feedback' => $validated['supervisor_feedback'] ?? null,
+        ] + ProgramDayAttendance::fromRequest($request, (int) $special_program->user_id);
+
+        $special_program->update($data);
 
         return redirect()->route('submissions.special-program.index')
             ->with('success', 'Special Program updated successfully.');

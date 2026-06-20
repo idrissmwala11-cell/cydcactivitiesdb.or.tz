@@ -18,6 +18,8 @@ class SpecialProgram extends Model
         'supervisor_feedback',
         'present_participants',
         'absent_participants',
+        'present_count',
+        'absent_count',
         'user_id',
     ];
 

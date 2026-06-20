@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasomoYaFani;
+use App\Support\ProgramDayAttendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,14 +47,26 @@ class MasomoYaFaniController extends Controller
             'student_preferences' => 'nullable|string',
             'student_feedback' => 'nullable|string',
             'teacher_feedback' => 'nullable|string',
-            'present_participants' => 'nullable|string',
-            'absent_participants' => 'nullable|string',
+            'participant_roster_text' => 'nullable|string',
+            'attendance_marker' => 'nullable|string',
+            'present_participant_numbers' => 'nullable|array',
+            'present_participant_numbers.*' => 'nullable|string',
             'status' => 'required|in:draft,submitted',
         ]);
 
-        $validated['user_id'] = Auth::id();
+        $data = [
+            'date' => $validated['date'],
+            'teacher' => $validated['teacher'],
+            'fani_type' => $validated['fani_type'],
+            'topic' => $validated['topic'],
+            'student_preferences' => $validated['student_preferences'] ?? null,
+            'student_feedback' => $validated['student_feedback'] ?? null,
+            'teacher_feedback' => $validated['teacher_feedback'] ?? null,
+            'status' => $validated['status'],
+            'user_id' => Auth::id(),
+        ] + ProgramDayAttendance::fromRequest($request, Auth::id());
 
-        MasomoYaFani::create($validated);
+        MasomoYaFani::create($data);
 
         return redirect()->route('submissions.masomo-ya-fani.index')
             ->with('success', 'Masomo ya Fani saved successfully.');
@@ -85,12 +98,25 @@ class MasomoYaFaniController extends Controller
             'student_preferences' => 'nullable|string',
             'student_feedback' => 'nullable|string',
             'teacher_feedback' => 'nullable|string',
-            'present_participants' => 'nullable|string',
-            'absent_participants' => 'nullable|string',
+            'participant_roster_text' => 'nullable|string',
+            'attendance_marker' => 'nullable|string',
+            'present_participant_numbers' => 'nullable|array',
+            'present_participant_numbers.*' => 'nullable|string',
             'status' => 'required|in:draft,submitted,approved,rejected',
         ]);
 
-        $masomoYaFani->update($validated);
+        $data = [
+            'date' => $validated['date'],
+            'teacher' => $validated['teacher'],
+            'fani_type' => $validated['fani_type'],
+            'topic' => $validated['topic'],
+            'student_preferences' => $validated['student_preferences'] ?? null,
+            'student_feedback' => $validated['student_feedback'] ?? null,
+            'teacher_feedback' => $validated['teacher_feedback'] ?? null,
+            'status' => $validated['status'],
+        ] + ProgramDayAttendance::fromRequest($request, (int) $masomoYaFani->user_id);
+
+        $masomoYaFani->update($data);
 
         if (Auth::user()->role === 'admin') {
             return redirect()->route('admin.masomo-ya-fani.index')

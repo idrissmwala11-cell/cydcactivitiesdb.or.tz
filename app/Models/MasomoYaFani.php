@@ -20,6 +20,8 @@ class MasomoYaFani extends Model
         'teacher_feedback',
         'present_participants',
         'absent_participants',
+        'present_count',
+        'absent_count',
         'status',
         'admin_notes',
         'submitted_at',

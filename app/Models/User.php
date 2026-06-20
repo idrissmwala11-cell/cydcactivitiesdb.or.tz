@@ -144,6 +144,11 @@ class User extends Authenticatable
         return $this->hasMany(MasomoYaMtaala::class);
     }
 
+    public function programDayParticipants(): HasMany
+    {
+        return $this->hasMany(ProgramDayParticipant::class);
+    }
+
     public function baseLeaders(): HasMany
     {
         return $this->hasMany(BaseLeader::class);

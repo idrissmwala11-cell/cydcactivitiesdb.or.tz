@@ -6,6 +6,7 @@ use App\Models\Submission;
 use App\Models\MasomoYaMtaala;
 use App\Models\MasomoYaFani;
 use App\Models\SpecialProgram;
+use App\Support\ProgramDayAttendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -134,8 +135,10 @@ class SubmissionController extends Controller
             'mada_aliyo_fundisha' => 'nullable|string',
             'maoni_ya_mwanafunzi' => 'nullable|string',
             'maoni_ya_mwalimu' => 'nullable|string',
-            'present_participants' => 'nullable|string',
-            'absent_participants' => 'nullable|string',
+            'participant_roster_text' => 'nullable|string',
+            'attendance_marker' => 'nullable|string',
+            'present_participant_numbers' => 'nullable|array',
+            'present_participant_numbers.*' => 'nullable|string',
             'action' => 'required|in:save_draft,draft,submit'
         ]);
 
@@ -150,9 +153,10 @@ class SubmissionController extends Controller
             'tarehe', 'jina_la_mwalimu', 'somo_analofundisha',
             'kiroho', 'kimwili', 'kiakili', 'kijamii',
             'darasa_la_mjaka_mingapi', 'mada_aliyo_fundisha',
-            'maoni_ya_mwanafunzi', 'maoni_ya_mwalimu',
-            'present_participants', 'absent_participants'
+            'maoni_ya_mwanafunzi', 'maoni_ya_mwalimu'
         ]);
+
+        $data = array_merge($data, ProgramDayAttendance::fromRequest($request, Auth::id()));
         
         $data['user_id'] = Auth::id();
         $data['status'] = $status;
@@ -190,8 +194,10 @@ class SubmissionController extends Controller
             'washiriki_wanapendelea_nini_kwenye_fani_yake' => 'nullable|string',
             'maoni_ya_mwanafunzi' => 'nullable|string',
             'maoni_ya_mwalimu' => 'nullable|string',
-            'present_participants' => 'nullable|string',
-            'absent_participants' => 'nullable|string',
+            'participant_roster_text' => 'nullable|string',
+            'attendance_marker' => 'nullable|string',
+            'present_participant_numbers' => 'nullable|array',
+            'present_participant_numbers.*' => 'nullable|string',
             'action' => 'required|in:save_draft,draft,submit'
         ]);
 
@@ -210,12 +216,10 @@ class SubmissionController extends Controller
             'student_preferences' => $request->washiriki_wanapendelea_nini_kwenye_fani_yake,
             'student_feedback' => $request->maoni_ya_mwanafunzi,
             'teacher_feedback' => $request->maoni_ya_mwalimu,
-            'present_participants' => $request->present_participants,
-            'absent_participants' => $request->absent_participants,
             'user_id' => Auth::id(),
             'status' => $status,
             'submitted_at' => $submittedAt
-        ];
+        ] + ProgramDayAttendance::fromRequest($request, Auth::id());
 
         // Check if user already has a draft
         $existingSubmission = MasomoYaFani::where('user_id', Auth::id())

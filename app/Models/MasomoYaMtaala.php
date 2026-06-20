@@ -22,6 +22,8 @@ class MasomoYaMtaala extends Model
         'teacher_feedback',
         'present_participants',
         'absent_participants',
+        'present_count',
+        'absent_count',
     ];
 
     protected $casts = [

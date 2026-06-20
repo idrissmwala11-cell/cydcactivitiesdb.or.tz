@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasomoYaMtaala;
+use App\Support\ProgramDayAttendance;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,10 +50,14 @@ class MasomoYaMtaalaController extends Controller
             'mada_aliyo_fundisha' => 'nullable|string',
             'maoni_ya_mwanafunzi' => 'nullable|string',
             'maoni_ya_mwalimu' => 'nullable|string',
-            'present_participants' => 'nullable|string',
-            'absent_participants' => 'nullable|string',
+            'participant_roster_text' => 'nullable|string',
+            'attendance_marker' => 'nullable|string',
+            'present_participant_numbers' => 'nullable|array',
+            'present_participant_numbers.*' => 'nullable|string',
             'action' => 'required|in:draft,submit',
         ]);
+
+        $attendance = ProgramDayAttendance::fromRequest($request, Auth::id());
 
         $data = [
             'user_id' => Auth::id(),
@@ -64,10 +69,8 @@ class MasomoYaMtaalaController extends Controller
             'category' => $validated['category'],
             'student_feedback' => $validated['maoni_ya_mwanafunzi'] ?? null,
             'teacher_feedback' => $validated['maoni_ya_mwalimu'] ?? null,
-            'present_participants' => $validated['present_participants'] ?? null,
-            'absent_participants' => $validated['absent_participants'] ?? null,
             'status' => $validated['action'] === 'submit' ? 'submitted' : 'draft',
-        ];
+        ] + $attendance;
 
         MasomoYaMtaala::create($data);
 
@@ -118,10 +121,14 @@ class MasomoYaMtaalaController extends Controller
             'mada_aliyo_fundisha' => 'nullable|string',
             'maoni_ya_mwanafunzi' => 'nullable|string',
             'maoni_ya_mwalimu' => 'nullable|string',
-            'present_participants' => 'nullable|string',
-            'absent_participants' => 'nullable|string',
+            'participant_roster_text' => 'nullable|string',
+            'attendance_marker' => 'nullable|string',
+            'present_participant_numbers' => 'nullable|array',
+            'present_participant_numbers.*' => 'nullable|string',
             'action' => 'required|in:draft,submit',
         ]);
+
+        $attendance = ProgramDayAttendance::fromRequest($request, (int) $masomoYaMtaala->user_id);
 
         $data = [
             'date' => $validated['date'],
@@ -132,10 +139,8 @@ class MasomoYaMtaalaController extends Controller
             'category' => $validated['category'],
             'student_feedback' => $validated['maoni_ya_mwanafunzi'] ?? null,
             'teacher_feedback' => $validated['maoni_ya_mwalimu'] ?? null,
-            'present_participants' => $validated['present_participants'] ?? null,
-            'absent_participants' => $validated['absent_participants'] ?? null,
             'status' => $validated['action'] === 'submit' ? 'submitted' : 'draft',
-        ];
+        ] + $attendance;
 
         $masomoYaMtaala->update($data);
 
