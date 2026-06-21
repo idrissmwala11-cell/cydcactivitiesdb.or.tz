@@ -6,6 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'CYDC') }} - @yield('title', 'Dashboard')</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
+    <link rel="apple-touch-icon" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
+
     <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 

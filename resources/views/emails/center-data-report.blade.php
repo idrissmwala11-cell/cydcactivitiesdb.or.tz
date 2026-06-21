@@ -12,9 +12,18 @@
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:760px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(15,23,42,.08);">
                     <tr>
                         <td style="padding:30px;background:linear-gradient(135deg,#172554,#2563eb);color:#ffffff;">
-                            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.82;">Center Profile</div>
-                            <h1 style="margin:10px 0 6px;font-size:28px;line-height:1.2;">{{ $centerId }}</h1>
-                            <p style="margin:0;color:#dbeafe;font-size:14px;">Taarifa ya records zilizojazwa na watumiaji wa center hii.</p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="74" style="vertical-align:top;padding-right:16px;">
+                                        <img src="{{ asset('images/cydc-activities-logo.png') }}" alt="CYDC Activities Database" width="62" height="62" style="display:block;border-radius:50%;object-fit:cover;background:#ffffff;border:2px solid rgba(255,255,255,.75);">
+                                    </td>
+                                    <td style="vertical-align:top;color:#ffffff;">
+                                        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.82;">Center Profile</div>
+                                        <h1 style="margin:10px 0 6px;font-size:28px;line-height:1.2;">{{ $centerId }}</h1>
+                                        <p style="margin:0;color:#dbeafe;font-size:14px;">Taarifa ya records zilizojazwa na watumiaji wa center hii.</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
 
