@@ -23,13 +23,15 @@
                 --sidebar-width: 256px;
             }
 
-            html {
+            html,
+            body.admin-layout {
                 font-size: 80%;
             }
         }
 
         @media print {
-            html {
+            html,
+            body.admin-layout {
                 font-size: 100%;
             }
         }
@@ -490,7 +492,7 @@
 
     <script src="{{ asset('js/search-test.js') }}"></script>
 </head>
-<body>
+<body @class(['admin-layout' => auth()->check() && auth()->user()->role === 'admin'])>
 @auth
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
