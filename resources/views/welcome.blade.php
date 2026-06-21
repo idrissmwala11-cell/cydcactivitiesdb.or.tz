@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CYDC ACTIVITIES DATABASE</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
-    <link rel="apple-touch-icon" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=20260621b">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=20260621b">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=20260621b">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}?v=20260621b">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />

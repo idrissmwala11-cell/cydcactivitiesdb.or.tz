@@ -7,9 +7,10 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="icon" type="image/png" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
-        <link rel="shortcut icon" type="image/png" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
-        <link rel="apple-touch-icon" href="{{ asset('images/cydc-activities-logo.png') }}?v=20260621">
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=20260621b">
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=20260621b">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=20260621b">
+        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}?v=20260621b">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

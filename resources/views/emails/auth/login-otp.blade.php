@@ -9,7 +9,7 @@
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 24px;">
             <tr>
                 <td width="70" style="vertical-align:middle;padding-right:14px;">
-                    <img src="{{ asset('images/cydc-activities-logo.png') }}" alt="CYDC Activities Database" width="58" height="58" style="display:block;border-radius:50%;object-fit:cover;border:1px solid #dbeafe;">
+                    <img src="{{ asset('images/cydc-email-logo.png') }}" alt="CYDC Activities Database" width="64" height="64" style="display:block;border-radius:50%;border:1px solid #dbeafe;">
                 </td>
                 <td style="vertical-align:middle;">
                     <h1 style="font-size: 22px; color: #1d4ed8; margin: 0 0 4px;">CYDC Activities Database</h1>

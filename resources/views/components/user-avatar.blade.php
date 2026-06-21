@@ -3,7 +3,7 @@
 @php
     $size = max(20, (int) $size);
     $initials = $user?->initials ?? 'U';
-    $avatarUrl = $user?->avatar_url ?: asset('images/cydc-activities-logo.png');
+    $avatarUrl = $user?->avatar_url ?: asset('images/cydc-email-logo.png');
 @endphp
 
 <span

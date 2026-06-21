@@ -112,7 +112,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): ?string
     {
         if (! $this->avatar_storage_path || ! $this->exists) {
-            return asset('images/cydc-activities-logo.png');
+            return asset('images/cydc-email-logo.png');
         }
 
         return route('users.avatar', [
