@@ -34,6 +34,7 @@
                                 <th class="px-4 py-3 text-left">Fani</th>
                                 <th class="px-4 py-3 text-left">Topic</th>
                                 <th class="px-4 py-3 text-left">Status</th>
+                                <th class="px-4 py-3 text-left">Submitted By</th>
                                 <th class="px-4 py-3 text-left">Actions</th>
                             </tr>
                         </thead>
@@ -59,6 +60,9 @@
                                             @endif">
                                             {{ ucfirst($item->status ?? 'N/A') }}
                                         </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-gray-800">
+                                        <x-user-identity :user="$item->user" :show-email="true" />
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex flex-wrap gap-2">
@@ -87,7 +91,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center px-4 py-6 text-gray-500">
+                                    <td colspan="7" class="text-center px-4 py-6 text-gray-500">
                                         No records found.
                                     </td>
                                 </tr>

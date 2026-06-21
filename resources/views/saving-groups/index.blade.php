@@ -27,9 +27,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Members</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registration Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bank Account</th>
-                                @if(auth()->user()->role === 'admin')
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted By</th>
-                                @endif
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted By</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -40,9 +38,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $group->member_count }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $group->registration_status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $group->bank_account }}</td>
-                                    @if(auth()->user()->role === 'admin')
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><x-user-identity :user="$group->user" /></td>
-                                    @endif
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><x-user-identity :user="$group->user" :show-email="true" /></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                         <a href="{{ route('saving-groups.show', $group) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
                                         <a href="{{ route('saving-groups.edit', $group) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
@@ -55,7 +51,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="{{ auth()->user()->role === 'admin' ? 6 : 5 }}" class="px-6 py-4 text-center text-sm text-gray-500">No savings groups found.</td>
+                                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">No savings groups found.</td>
                                 </tr>
                             @endforelse
                         </tbody>

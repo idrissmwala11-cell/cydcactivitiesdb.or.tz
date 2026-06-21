@@ -26,6 +26,7 @@
                                 <th>Location</th>
                                 <th>Sponsor</th>
                                 <th>Local Number</th>
+                                <th>Submitted By</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -40,6 +41,7 @@
                                         <small class="text-muted">{{ $record->sponsor_type }}</small>
                                     </td>
                                     <td>{{ $record->local_number }}</td>
+                                    <td><x-user-identity :user="$record->user" :show-email="true" /></td>
                                     <td>
                                         <div class="d-flex gap-2 flex-wrap">
                                             <a href="{{ route('local-sponsorship.show', $record) }}" class="btn btn-sm btn-outline-primary">View</a>

@@ -40,7 +40,8 @@ class CenterSharedRecordsAccessTest extends TestCase
         $this->actingAs($sameCenterUser)
             ->get(route('submissions.masomo-ya-mtaala.index'))
             ->assertOk()
-            ->assertSee('Shared Center Topic');
+            ->assertSee('Shared Center Topic')
+            ->assertSee('TZ069');
 
         $this->actingAs($sameCenterUser)
             ->get(route('submissions.masomo-ya-mtaala.show', $record))

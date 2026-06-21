@@ -74,9 +74,7 @@
                                 <th>Duration</th>
                                 <th>Competed</th>
                                 <th>Needs Training</th>
-                                @if(auth()->user()->role === 'admin')
-                                    <th>Submitted By</th>
-                                @endif
+                                <th>Submitted By</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -121,15 +119,13 @@
                                         </span>
                                     </td>
 
-                                    @if(auth()->user()->role === 'admin')
-                                        <td>
-                                            @if($submittedBy)
-                                                <x-user-identity :user="$talent->user" :show-email="true" />
-                                            @else
-                                                <span class="badge bg-warning-subtle text-warning">Legacy record</span>
-                                            @endif
-                                        </td>
-                                    @endif
+                                    <td>
+                                        @if($submittedBy)
+                                            <x-user-identity :user="$talent->user" :show-email="true" />
+                                        @else
+                                            <span class="badge bg-warning-subtle text-warning">Legacy record</span>
+                                        @endif
+                                    </td>
 
                                     <td>
                                         <div class="d-flex flex-wrap gap-2">

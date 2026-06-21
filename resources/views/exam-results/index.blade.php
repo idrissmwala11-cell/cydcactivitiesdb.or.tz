@@ -40,9 +40,7 @@
                                     <th>Class / Level</th>
                                     <th>Exam</th>
                                     <th>Result</th>
-                                    @if(Auth::user()->role === 'admin')
-                                        <th>Submitted By</th>
-                                    @endif
+                                    <th>Submitted By</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -60,9 +58,7 @@
                                         <td>
                                             {{ $section['uses_gpa'] ? ($examResult->gpa ?: 'N/A') : ($examResult->performance ?: 'N/A') }}
                                         </td>
-                                        @if(Auth::user()->role === 'admin')
-                                            <td><x-user-identity :user="$examResult->user" /></td>
-                                        @endif
+                                        <td><x-user-identity :user="$examResult->user" :show-email="true" /></td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route($section['route'] . '.show', $examResult) }}" class="btn btn-sm btn-outline-info">
@@ -85,7 +81,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ Auth::user()->role === 'admin' ? 8 : 7 }}" class="text-center py-4">
+                                        <td colspan="8" class="text-center py-4">
                                             <i class="bi bi-clipboard-data text-muted" style="font-size: 3rem;"></i>
                                             <p class="text-muted mt-2 mb-0">There are currently no {{ strtolower($section['title']) }} records.</p>
                                         </td>

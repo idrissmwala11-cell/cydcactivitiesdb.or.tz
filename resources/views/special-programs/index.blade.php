@@ -30,6 +30,7 @@
                                 <th class="px-4 py-3 text-left">Teacher</th>
                                 <th class="px-4 py-3 text-left">Topic</th>
                                 <th class="px-4 py-3 text-left">Age Range</th>
+                                <th class="px-4 py-3 text-left">Submitted By</th>
                                 <th class="px-4 py-3 text-left">Actions</th>
                             </tr>
                         </thead>
@@ -42,6 +43,7 @@
                                     <td class="px-4 py-3">{{ $item->teacher ?? '-' }}</td>
                                     <td class="px-4 py-3">{{ $item->topic ?? '-' }}</td>
                                     <td class="px-4 py-3">{{ $item->age_range ?? '-' }}</td>
+                                    <td class="px-4 py-3"><x-user-identity :user="$item->user" :show-email="true" /></td>
                                     <td class="px-4 py-3">
                                         <div class="flex gap-2">
                                             <a href="{{ route('submissions.special-program.show', $item->id) }}"
@@ -67,7 +69,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center px-4 py-6 text-gray-500">
+                                    <td colspan="6" class="text-center px-4 py-6 text-gray-500">
                                         No records found.
                                     </td>
                                 </tr>

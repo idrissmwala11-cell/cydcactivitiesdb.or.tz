@@ -43,9 +43,7 @@
                                         <th class="py-3 text-center">{{ __('Total') }}</th>
                                         <th class="py-3 text-center">{{ __('Present') }}</th>
                                         <th class="py-3 text-center">{{ __('Absent') }}</th>
-                                        @if(auth()->user()->role === 'admin')
-                                            <th class="py-3">{{ __('Submitted By') }}</th>
-                                        @endif
+                                        <th class="py-3">{{ __('Submitted By') }}</th>
                                         <th class="py-3 text-center">{{ __('Actions') }}</th>
                                     </tr>
                                 </thead>
@@ -90,9 +88,7 @@
                                                 </span>
                                             </td>
 
-                                            @if(auth()->user()->role === 'admin')
-                                                <td class="fw-semibold text-dark"><x-user-identity :user="$attendance->user" /></td>
-                                            @endif
+                                            <td class="fw-semibold text-dark"><x-user-identity :user="$attendance->user" :show-email="true" /></td>
 
                                             <td class="text-center">
                                                 <div class="d-flex flex-wrap justify-content-center gap-2">

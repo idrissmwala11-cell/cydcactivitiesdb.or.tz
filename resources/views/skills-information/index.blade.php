@@ -36,9 +36,7 @@
                                         <th>{{ __('Gender') }}</th>
                                         <th>{{ __('Skill Category') }}</th>
                                         <th>{{ __('Skill Level') }}</th>
-                                        @if(auth()->user()->role === 'admin')
-                                            <th>{{ __('Submitted By') }}</th>
-                                        @endif
+                                        <th>{{ __('Submitted By') }}</th>
                                         <th>{{ __('Actions') }}</th>
                                     </tr>
                                 </thead>
@@ -62,9 +60,7 @@
                                                 </span>
                                             </td>
 
-                                            @if(auth()->user()->role === 'admin')
-                                                <td><x-user-identity :user="$skill->user" /></td>
-                                            @endif
+                                            <td><x-user-identity :user="$skill->user" :show-email="true" /></td>
 
                                             <td>
                                                 <div class="btn-group" role="group">

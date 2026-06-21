@@ -72,9 +72,7 @@
                             <th>Visit Date</th>
                             <th>School</th>
                             <th>Visitor</th>
-                            @if(Auth::user()->role === 'admin')
-                                <th>Submitted By</th>
-                            @endif
+                            <th>Submitted By</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -97,15 +95,13 @@
                                 <td>{{ $visitation->shule ?? 'N/A' }}</td>
                                 <td>{{ $visitation->mtembelezaji ?? 'N/A' }}</td>
 
-                                @if(Auth::user()->role === 'admin')
-                                    <td>
-                                        @if($submittedBy)
-                                            <x-user-identity :user="$visitation->user" :show-email="true" />
-                                        @else
-                                            <span class="badge bg-warning-subtle text-warning">Legacy record</span>
-                                        @endif
-                                    </td>
-                                @endif
+                                <td>
+                                    @if($submittedBy)
+                                        <x-user-identity :user="$visitation->user" :show-email="true" />
+                                    @else
+                                        <span class="badge bg-warning-subtle text-warning">Legacy record</span>
+                                    @endif
+                                </td>
 
                                 <td>
                                     <div class="d-flex flex-wrap gap-2">
@@ -131,7 +127,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ Auth::user()->role === 'admin' ? 7 : 6 }}" class="text-center py-5">
+                                <td colspan="7" class="text-center py-5">
                                     <i class="bi bi-house-door text-muted" style="font-size: 2.5rem;"></i>
                                     <p class="text-muted mt-3 mb-2">No home visitation records found.</p>
                                     <a href="{{ route('home-visitation.create') }}" class="btn btn-primary">

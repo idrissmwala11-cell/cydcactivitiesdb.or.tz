@@ -40,9 +40,7 @@
                                     <th>School</th>
                                     <th>Class</th>
                                     <th>Presence</th>
-                                    @if(Auth::user()->role === 'admin')
-                                        <th>Submitted By</th>
-                                    @endif
+                                    <th>Submitted By</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -59,9 +57,7 @@
                                                 {{ $visitation->participant_presence }}
                                             </span>
                                         </td>
-                                        @if(Auth::user()->role === 'admin')
-                                            <td><x-user-identity :user="$visitation->user" /></td>
-                                        @endif
+                                        <td><x-user-identity :user="$visitation->user" :show-email="true" /></td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route('school-visitation.show', $visitation) }}" class="btn btn-sm btn-outline-info">
@@ -84,7 +80,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ Auth::user()->role === 'admin' ? 8 : 7 }}" class="text-center py-4">
+                                        <td colspan="8" class="text-center py-4">
                                             <i class="bi bi-building-check text-muted" style="font-size: 3rem;"></i>
                                             <p class="text-muted mt-2 mb-0">No school visitation records available at the moment.</p>
                                         </td>

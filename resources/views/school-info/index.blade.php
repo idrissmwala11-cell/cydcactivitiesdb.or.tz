@@ -31,9 +31,7 @@
                                     <th>ID</th>
                                     <th>Student / Name</th>
                                     <th>School / Institution</th>
-                                    @if(Auth::user()->role === 'admin')
-                                        <th>Submitted By</th>
-                                    @endif
+                                    <th>Submitted By</th>
                                     <th>Date</th>
                                     <th>Actions</th>
                                 </tr>
@@ -49,9 +47,7 @@
                                         <td>{{ $record->id }}</td>
                                         <td>{{ $studentName }}</td>
                                         <td>{{ $schoolName }}</td>
-                                        @if(Auth::user()->role === 'admin')
-                                            <td><x-user-identity :user="$record->user" /></td>
-                                        @endif
+                                        <td><x-user-identity :user="$record->user" :show-email="true" /></td>
                                         <td>{{ $record->created_at?->format('d M Y') }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
@@ -75,7 +71,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ Auth::user()->role === 'admin' ? 6 : 5 }}" class="text-center py-4">
+                                        <td colspan="6" class="text-center py-4">
                                             <i class="bi bi-journal-text text-muted" style="font-size: 3rem;"></i>
                                             <p class="text-muted mt-2 mb-0">No {{ strtolower($section['title']) }} records available at the moment.</p>
                                         </td>

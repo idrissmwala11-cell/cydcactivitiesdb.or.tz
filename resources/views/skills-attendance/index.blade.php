@@ -71,9 +71,7 @@
                             <th>Lesson Topic</th>
                             <th>Present Count</th>
                             <th>Absent Count</th>
-                            @if(auth()->user()->role === 'admin')
-                                <th>Submitted By</th>
-                            @endif
+                            <th>Submitted By</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -115,15 +113,13 @@
                                     </span>
                                 </td>
 
-                                @if(auth()->user()->role === 'admin')
-                                    <td>
-                                        @if($submittedBy)
-                                            <x-user-identity :user="$attendance->user" :show-email="true" />
-                                        @else
-                                            <span class="badge bg-warning-subtle text-warning">Legacy record</span>
-                                        @endif
-                                    </td>
-                                @endif
+                                <td>
+                                    @if($submittedBy)
+                                        <x-user-identity :user="$attendance->user" :show-email="true" />
+                                    @else
+                                        <span class="badge bg-warning-subtle text-warning">Legacy record</span>
+                                    @endif
+                                </td>
 
                                 <td>
                                     <div class="d-flex flex-wrap gap-2">
@@ -149,7 +145,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ auth()->user()->role === 'admin' ? 7 : 6 }}" class="text-center py-5 text-muted">
+                                <td colspan="7" class="text-center py-5 text-muted">
                                     No skills attendance records found.
                                 </td>
                             </tr>

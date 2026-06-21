@@ -33,6 +33,7 @@
                                 <th class="px-4 py-3 text-left">Category</th>
                                 <th class="px-4 py-3 text-left">Age Group</th>
                                 <th class="px-4 py-3 text-left">Status</th>
+                                <th class="px-4 py-3 text-left">Submitted By</th>
                                 <th class="px-4 py-3 text-left">Actions</th>
                             </tr>
                         </thead>
@@ -75,6 +76,10 @@
                                             @endif">
                                             {{ ucfirst($item->status ?? 'N/A') }}
                                         </span>
+                                    </td>
+
+                                    <td class="px-4 py-3 text-gray-800">
+                                        <x-user-identity :user="$item->user" :show-email="true" />
                                     </td>
 
                                     <td class="px-4 py-3">
@@ -127,7 +132,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center px-4 py-6 text-gray-500">
+                                    <td colspan="9" class="text-center px-4 py-6 text-gray-500">
                                         No records found.
                                     </td>
                                 </tr>
