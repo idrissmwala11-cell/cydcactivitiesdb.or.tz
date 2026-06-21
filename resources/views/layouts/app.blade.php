@@ -19,30 +19,18 @@
 
     <style>
         @media screen and (min-width: 769px) {
-            @supports (zoom: 1) {
-                body {
-                    zoom: 80%;
-                    width: 125%;
-                    min-height: 125vh;
-                }
+            :root {
+                --sidebar-width: 256px;
             }
 
-            @supports not (zoom: 1) {
-                body {
-                    transform: scale(0.8);
-                    transform-origin: top left;
-                    width: 125%;
-                    min-height: 125vh;
-                }
+            html {
+                font-size: 80%;
             }
         }
 
         @media print {
-            body {
-                zoom: 100%;
-                transform: none;
-                width: auto;
-                min-height: auto;
+            html {
+                font-size: 100%;
             }
         }
 
