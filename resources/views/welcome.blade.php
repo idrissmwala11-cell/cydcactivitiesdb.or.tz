@@ -13,6 +13,18 @@
             padding: 0;
             box-sizing: border-box;
         }
+
+        @media screen and (min-width: 769px) {
+            html {
+                font-size: 80%;
+            }
+        }
+
+        @media print {
+            html {
+                font-size: 100%;
+            }
+        }
         
         body {
             font-family: 'Figtree', sans-serif;

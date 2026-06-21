@@ -13,6 +13,20 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style>
+            @media screen and (min-width: 769px) {
+                html {
+                    font-size: 80%;
+                }
+            }
+
+            @media print {
+                html {
+                    font-size: 100%;
+                }
+            }
+        </style>
     </head>
     <body class="font-sans text-gray-900 antialiased" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; position: relative;">
         <!-- Animated background elements -->
