@@ -11,9 +11,11 @@
                         <small class="text-muted">{{ __('Manage and review all submitted talent attendance sessions.') }}</small>
                     </div>
 
-                    <a href="{{ route('talent-attendance.create') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
-                        <i class="fas fa-plus me-1"></i> {{ __('Add Attendance Record') }}
-                    </a>
+                    <x-module-report-actions module="talent_attendance">
+                        <a href="{{ route('talent-attendance.create') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            <i class="fas fa-plus me-1"></i> {{ __('Add Attendance Record') }}
+                        </a>
+                    </x-module-report-actions>
                 </div>
 
                 <div class="card-body p-4">

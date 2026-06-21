@@ -13,9 +13,11 @@
                     <p class="text-muted mb-0">Manage home visitation records in a clean and easy-to-read layout.</p>
                 </div>
 
-                <a href="{{ route('home-visitation.create') }}" class="btn btn-primary px-4">
-                    <i class="bi bi-plus-circle me-1"></i>Add New Record
-                </a>
+                <x-module-report-actions module="home_visitation">
+                    <a href="{{ route('home-visitation.create') }}" class="btn btn-primary px-4">
+                        <i class="bi bi-plus-circle me-1"></i>Add New Record
+                    </a>
+                </x-module-report-actions>
             </div>
         </div>
 

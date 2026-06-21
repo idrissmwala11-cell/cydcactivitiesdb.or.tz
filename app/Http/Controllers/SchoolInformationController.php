@@ -18,36 +18,43 @@ class SchoolInformationController extends Controller
             'title' => 'Primary Information',
             'form_view' => 'school-info.primary',
             'route' => 'school-info.primary',
+            'report_module' => 'school_primary',
         ],
         'secondary' => [
             'title' => 'Secondary Information',
             'form_view' => 'school-info.secondary',
             'route' => 'school-info.secondary',
+            'report_module' => 'school_secondary',
         ],
         'a-level' => [
             'title' => 'A Level Information',
             'form_view' => 'school-info.a-level',
             'route' => 'school-info.a-level',
+            'report_module' => 'school_a_level',
         ],
         'university' => [
             'title' => 'University Information',
             'form_view' => 'school-info.university',
             'route' => 'school-info.university',
+            'report_module' => 'school_university',
         ],
         'college' => [
             'title' => 'College Information',
             'form_view' => 'school-info.college',
             'route' => 'school-info.college',
+            'report_module' => 'school_college',
         ],
         'vocational-training' => [
             'title' => 'Vocational Training Information',
             'form_view' => 'school-info.vocational-training',
             'route' => 'school-info.vocational-training',
+            'report_module' => 'school_vocational_training',
         ],
         'others' => [
             'title' => 'Other Educational Information',
             'form_view' => 'school-info.others',
             'route' => 'school-info.others',
+            'report_module' => 'school_others',
         ],
     ];
 

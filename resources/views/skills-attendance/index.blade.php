@@ -14,9 +14,11 @@
                     <p class="text-muted mb-0">Track class attendance, teachers, and submitted records clearly.</p>
                 </div>
 
-                <a href="{{ route('skills-attendance.create') }}" class="btn btn-primary px-4">
-                    <i class="bi bi-plus-circle me-1"></i>Add New Record
-                </a>
+                <x-module-report-actions module="skills_attendance">
+                    <a href="{{ route('skills-attendance.create') }}" class="btn btn-primary px-4">
+                        <i class="bi bi-plus-circle me-1"></i>Add New Record
+                    </a>
+                </x-module-report-actions>
             </div>
         </div>
 

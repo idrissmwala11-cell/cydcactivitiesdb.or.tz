@@ -401,6 +401,33 @@ return [
             ],
         ],
 
+        'vocational_training' => [
+            'title' => 'Vocational Training',
+            'model' => App\Models\VocationalTraining::class,
+            'fields' => [
+                'student_name' => 'Student Name',
+                'school_name' => 'School / Institution',
+                'skill_category' => 'Skill Category',
+                'training_level' => 'Training Level',
+                'created_at' => 'Created At',
+            ],
+        ],
+
+        'saving_groups' => [
+            'title' => 'Savings Groups',
+            'model' => App\Models\SavingGroup::class,
+            'fields' => [
+                'group_name' => 'Group Name',
+                'member_count' => 'Members',
+                'group_mentor' => 'Group Mentor',
+                'registration_status' => 'Registration Status',
+                'savings_level' => 'Savings Level',
+                'bank_account' => 'Bank Account',
+                'group_progress' => 'Group Progress',
+                'created_at' => 'Created At',
+            ],
+        ],
+
         'base_leader' => [
             'title' => 'Base Leader',
             'model' => App\Models\BaseLeader::class,

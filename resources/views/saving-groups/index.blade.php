@@ -14,9 +14,11 @@
 
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">Savings Groups</h2>
-                    <a href="{{ route('saving-groups.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Add New Record
-                    </a>
+                    <x-module-report-actions module="saving_groups">
+                        <a href="{{ route('saving-groups.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Add New Record
+                        </a>
+                    </x-module-report-actions>
                 </div>
 
                 <div class="overflow-x-auto">

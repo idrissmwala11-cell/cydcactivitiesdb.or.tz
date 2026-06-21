@@ -14,10 +14,12 @@
                     Center Leadership Information
                 </h1>
 
-                <a href="{{ route('center-leadership.create') }}"
-                   class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Add New Record
-                </a>
+                <x-module-report-actions module="center_leader">
+                    <a href="{{ route('center-leadership.create') }}"
+                       class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Add New Record
+                    </a>
+                </x-module-report-actions>
             </div>
 
             <!-- Success Message -->

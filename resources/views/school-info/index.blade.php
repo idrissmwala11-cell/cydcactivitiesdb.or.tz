@@ -10,10 +10,12 @@
                         <i class="bi bi-journal-text me-2"></i>
                         {{ $section['title'] }}
                     </h5>
-                    <a href="{{ route($section['route'] . '.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-1"></i>
-                        Add New Record
-                    </a>
+                    <x-module-report-actions :module="$section['report_module']">
+                        <a href="{{ route($section['route'] . '.create') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Add New Record
+                        </a>
+                    </x-module-report-actions>
                 </div>
 
                 <div class="card-body">

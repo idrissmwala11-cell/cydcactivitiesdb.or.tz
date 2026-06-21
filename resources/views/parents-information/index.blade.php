@@ -7,11 +7,13 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>{{ __('Parents Information') }}</h4>
-                    @if(!Auth::user()->role !== 'admin')
-                        <a href="{{ route('parents-information.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> {{ __('Add New Parent') }}
-                        </a>
-                    @endif
+                    <x-module-report-actions module="parents_information">
+                        @if(!Auth::user()->role !== 'admin')
+                            <a href="{{ route('parents-information.create') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> {{ __('Add New Parent') }}
+                            </a>
+                        @endif
+                    </x-module-report-actions>
                 </div>
 
                 <div class="card-body">

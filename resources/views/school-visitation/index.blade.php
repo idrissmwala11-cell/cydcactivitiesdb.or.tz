@@ -10,16 +10,12 @@
                         <i class="bi bi-building-check me-2"></i>
                         School Visitation Records
                     </h5>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="{{ route('reports.run', ['module' => 'school_visitation', 'center_id' => strtoupper(auth()->user()->center_id ?? ''), 'period' => 'all']) }}" class="btn btn-success">
-                            <i class="bi bi-bar-chart-line me-1"></i>
-                            Run Report
-                        </a>
+                    <x-module-report-actions module="school_visitation">
                         <a href="{{ route('school-visitation.create') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i>
                             Add New Record
                         </a>
-                    </div>
+                    </x-module-report-actions>
                 </div>
 
                 <div class="card-body">

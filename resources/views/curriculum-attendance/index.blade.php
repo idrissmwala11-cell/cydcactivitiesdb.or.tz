@@ -19,9 +19,11 @@
             @endif
 
             <div class="flex justify-end mb-4">
-                <a href="{{ route('curriculum-attendance.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
-                    Add New Record
-                </a>
+                <x-module-report-actions module="curriculum_attendance">
+                    <a href="{{ route('curriculum-attendance.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
+                        Add New Record
+                    </a>
+                </x-module-report-actions>
             </div>
 
             <div class="overflow-x-auto">

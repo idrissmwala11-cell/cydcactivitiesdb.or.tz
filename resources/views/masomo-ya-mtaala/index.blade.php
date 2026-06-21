@@ -14,12 +14,14 @@
             @endif
 
             <div class="bg-white shadow rounded-lg overflow-hidden">
-                <div class="p-6 border-b flex items-center justify-between">
+                <div class="p-6 border-b flex items-center justify-between flex-wrap gap-2">
                     <h3 class="text-xl font-semibold text-gray-800">Curriculum Studies Records</h3>
-                    <a href="{{ route('submissions.masomo-ya-mtaala.create') }}"
-                       class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                        Add Record
-                    </a>
+                    <x-module-report-actions module="masomo_ya_mtaala">
+                        <a href="{{ route('submissions.masomo-ya-mtaala.create') }}"
+                           class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                            Add Record
+                        </a>
+                    </x-module-report-actions>
                 </div>
 
                 <div class="p-6 overflow-x-auto">

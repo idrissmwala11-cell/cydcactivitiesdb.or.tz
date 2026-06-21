@@ -13,9 +13,11 @@
                     <p class="text-muted mb-0">Manage participant talents, training needs, and submitted records clearly.</p>
                 </div>
 
-                <a href="{{ route('talents.create') }}" class="btn btn-primary px-4">
-                    <i class="bi bi-plus-circle me-1"></i>Add New Talent
-                </a>
+                <x-module-report-actions module="talents_information">
+                    <a href="{{ route('talents.create') }}" class="btn btn-primary px-4">
+                        <i class="bi bi-plus-circle me-1"></i>Add New Talent
+                    </a>
+                </x-module-report-actions>
             </div>
         </div>
 

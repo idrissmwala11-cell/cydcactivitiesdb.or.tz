@@ -25,10 +25,12 @@
                                 Manage vocational training programs and track participant progress.
                             </p>
                         </div>
-                        <a href="{{ route('vocational-training.create') }}" 
-                           class="btn btn-primary">
-                            <i class="fas fa-plus me-1"></i>Add New Training Program
-                        </a>
+                        <x-module-report-actions module="vocational_training">
+                            <a href="{{ route('vocational-training.create') }}"
+                               class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i>Add New Training Program
+                            </a>
+                        </x-module-report-actions>
                     </div>
 
                     <!-- Search and Filter Section -->

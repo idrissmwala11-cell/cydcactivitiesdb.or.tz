@@ -10,9 +10,13 @@
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">VIONGOZI WA NJE YA WIZARA</h2>
-                    <a href="{{ route('out-of-ministry-leadership.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                        <i class="bi bi-plus-circle me-1"></i>Add New Record
-                    </a>
+                    <div class="d-flex flex-wrap gap-2">
+                        <x-module-report-actions module="out_of_ministry">
+                            <a href="{{ route('out-of-ministry-leadership.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                <i class="bi bi-plus-circle me-1"></i>Add New Record
+                            </a>
+                        </x-module-report-actions>
+                    </div>
                 </div>
 
                 <!-- Success Message -->

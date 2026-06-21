@@ -9,9 +9,11 @@
             <h2 class="mb-1">Local Sponsorship</h2>
             <p class="text-muted mb-0">Manage children registered under local sponsorship.</p>
         </div>
-        <a href="{{ route('local-sponsorship.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-1"></i> Add Record
-        </a>
+        <x-module-report-actions module="local_sponsorship">
+            <a href="{{ route('local-sponsorship.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-1"></i> Add Record
+            </a>
+        </x-module-report-actions>
     </div>
 
     <div class="card border-0 shadow-sm">

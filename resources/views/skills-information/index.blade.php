@@ -7,9 +7,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>{{ __('Skills Information Records') }}</h4>
-                    <a href="{{ route('skills-information.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle"></i> {{ __('Add New Record') }}
-                    </a>
+                    <x-module-report-actions module="skills_information">
+                        <a href="{{ route('skills-information.create') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> {{ __('Add New Record') }}
+                        </a>
+                    </x-module-report-actions>
                 </div>
 
                 <div class="card-body">

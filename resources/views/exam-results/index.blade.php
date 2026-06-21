@@ -10,16 +10,12 @@
                         <i class="bi bi-graph-up-arrow me-2"></i>
                         {{ $section['title'] }}
                     </h5>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="{{ route('reports.run', ['module' => $section['report_module'], 'center_id' => strtoupper(auth()->user()->center_id ?? ''), 'period' => 'all']) }}" class="btn btn-success">
-                            <i class="bi bi-bar-chart-line me-1"></i>
-                            Run Report
-                        </a>
+                    <x-module-report-actions :module="$section['report_module']">
                         <a href="{{ route($section['route'] . '.create') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i>
                             Add New Record
                         </a>
-                    </div>
+                    </x-module-report-actions>
                 </div>
 
                 <div class="card-body">

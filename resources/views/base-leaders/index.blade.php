@@ -8,9 +8,11 @@
                 <h4 class="mb-1"><i class="bi bi-people-fill me-2 text-primary"></i>Base Leadership</h4>
                 <p class="text-muted mb-0">List of base leadership records.</p>
             </div>
-            <a href="{{ route('base-leaders.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-1"></i>Add New Record
-            </a>
+            <x-module-report-actions module="base_leader">
+                <a href="{{ route('base-leaders.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i>Add New Record
+                </a>
+            </x-module-report-actions>
         </div>
 
         <div class="card-body">
