@@ -15,7 +15,7 @@
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td width="74" style="vertical-align:top;padding-right:16px;">
-                                        <img src="{{ asset('images/cydc-email-logo.png') }}" alt="CYDC Activities Database" width="68" height="68" style="display:block;border-radius:50%;background:#ffffff;border:2px solid rgba(255,255,255,.75);">
+                                        <img src="{{ asset('public/images/cydc-email-logo.png') }}" alt="CYDC Activities Database" width="68" height="68" style="display:block;border-radius:50%;background:#ffffff;border:2px solid rgba(255,255,255,.75);">
                                     </td>
                                     <td style="vertical-align:top;color:#ffffff;">
                                         <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.82;">Center Profile</div>
