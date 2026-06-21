@@ -11,9 +11,7 @@ class OutOfMinistryLeaderController extends Controller
 {
     protected function authorizeLeaderAccess(OutOfMinistryLeader $leader): void
     {
-        if (Auth::user()->role !== 'admin' && $leader->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($leader);
     }
 
     /**
@@ -21,10 +19,7 @@ class OutOfMinistryLeaderController extends Controller
      */
     public function index()
     {
-        $outOfMinistryLeaders = OutOfMinistryLeader::with(['user', 'outOfMinistryLeaderDetails'])
-            ->when(Auth::user()->role !== 'admin', function ($query) {
-                return $query->where('user_id', Auth::id());
-            })
+        $outOfMinistryLeaders = $this->scopeRecordsVisibleToUser(OutOfMinistryLeader::with(['user', 'outOfMinistryLeaderDetails']), Auth::user())
             ->latest()
             ->paginate(10);
             

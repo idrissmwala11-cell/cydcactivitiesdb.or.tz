@@ -62,8 +62,9 @@ class SchoolInformationController extends Controller
         $user = Auth::user();
 
         $records = SchoolInformationRecord::with('user')
-            ->where('education_level', $section['key'])
-            ->when($user->role !== 'admin', fn ($query) => $query->where('user_id', $user->id))
+            ->where('education_level', $section['key']);
+
+        $records = $this->scopeRecordsVisibleToUser($records, $user)
             ->latest()
             ->paginate(15);
 
@@ -177,14 +178,10 @@ class SchoolInformationController extends Controller
 
     protected function authorizeRecord(SchoolInformationRecord $record, string $sectionKey): void
     {
-        $user = Auth::user();
-
         if ($record->education_level !== $sectionKey) {
             throw new NotFoundHttpException('School information record not found in this section.');
         }
 
-        if ($user->role !== 'admin' && (int) $record->user_id !== (int) $user->id) {
-            abort(403, 'You are not allowed to view another user\'s record.');
-        }
+        $this->authorizeCenterRecord($record, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

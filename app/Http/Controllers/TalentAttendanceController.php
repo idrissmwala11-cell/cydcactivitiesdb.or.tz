@@ -21,16 +21,9 @@ class TalentAttendanceController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $attendances = TalentAttendance::with(['user', 'absentParticipants'])
-                ->latest('date')
-                ->paginate(10);
-        } else {
-            $attendances = TalentAttendance::with(['user', 'absentParticipants'])
-                ->where('user_id', $user->id)
-                ->latest('date')
-                ->paginate(10);
-        }
+        $attendances = $this->scopeRecordsVisibleToUser(TalentAttendance::with(['user', 'absentParticipants']), $user)
+            ->latest('date')
+            ->paginate(10);
 
         return view('talent-attendance.index', compact('attendances'));
     }
@@ -180,10 +173,6 @@ class TalentAttendanceController extends Controller
 
     protected function authorizeUser(TalentAttendance $talentAttendance): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $talentAttendance->user_id !== (int) $user->id) {
-            abort(403, 'This action is unauthorized.');
-        }
+        $this->authorizeCenterRecord($talentAttendance, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

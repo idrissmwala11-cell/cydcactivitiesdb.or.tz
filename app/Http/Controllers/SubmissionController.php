@@ -25,7 +25,7 @@ class SubmissionController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        $submissions = Submission::where('user_id', $user->id)
+        $submissions = $this->scopeRecordsVisibleToUser(Submission::query(), $user)
             ->whereNotIn('section_type', [
                 'exam_primary',
                 'exam_secondary',
@@ -43,11 +43,11 @@ class SubmissionController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
             
-        $masomoSubmissions = MasomoYaMtaala::where('user_id', $user->id)
+        $masomoSubmissions = $this->scopeRecordsVisibleToUser(MasomoYaMtaala::query(), $user)
             ->orderBy('created_at', 'desc')
             ->get();
             
-        $faniSubmissions = MasomoYaFani::where('user_id', $user->id)
+        $faniSubmissions = $this->scopeRecordsVisibleToUser(MasomoYaFani::query(), $user)
             ->orderBy('created_at', 'desc')
             ->get();
             
@@ -508,7 +508,7 @@ $specialPrograms = SpecialProgram::with('user')
             abort(403);
         }
 
-        if ($user->role === 'admin' || $submission->user_id === $user->id) {
+        if ($this->userCanAccessCenterRecord($submission, $user)) {
             return;
         }
 

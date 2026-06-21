@@ -17,8 +17,7 @@ class SchoolVisitationController extends Controller
     {
         $user = Auth::user();
 
-        $schoolVisitations = SchoolVisitation::with('user')
-            ->when($user->role !== 'admin', fn ($query) => $query->where('user_id', $user->id))
+        $schoolVisitations = $this->scopeRecordsVisibleToUser(SchoolVisitation::with('user'), $user)
             ->latest()
             ->paginate(15);
 
@@ -99,10 +98,6 @@ class SchoolVisitationController extends Controller
 
     protected function authorizeUser(SchoolVisitation $schoolVisitation): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $schoolVisitation->user_id !== (int) $user->id) {
-            abort(403, 'You are not allowed to view another user\'s record.');
-        }
+        $this->authorizeCenterRecord($schoolVisitation, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

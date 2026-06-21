@@ -20,16 +20,9 @@ class HomeVisitationController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $homeVisitations = HomeVisitation::with('user')
-                ->latest()
-                ->paginate(15);
-        } else {
-            $homeVisitations = HomeVisitation::with('user')
-                ->where('user_id', $user->id)
-                ->latest()
-                ->paginate(15);
-        }
+        $homeVisitations = $this->scopeRecordsVisibleToUser(HomeVisitation::with('user'), $user)
+            ->latest()
+            ->paginate(15);
 
         return view('home-visitation.index', compact('homeVisitations'));
     }
@@ -144,10 +137,6 @@ class HomeVisitationController extends Controller
      */
     protected function authorizeUser(HomeVisitation $homeVisitation): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $homeVisitation->user_id !== (int) $user->id) {
-            abort(403, 'You are not allowed to view another user record.');
-        }
+        $this->authorizeCenterRecord($homeVisitation, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

@@ -17,8 +17,7 @@ class LocalSponsorshipController extends Controller
     {
         $user = Auth::user();
 
-        $localSponsorships = LocalSponsorship::with('user')
-            ->when($user->role !== 'admin', fn ($query) => $query->where('user_id', $user->id))
+        $localSponsorships = $this->scopeRecordsVisibleToUser(LocalSponsorship::with('user'), $user)
             ->latest()
             ->paginate(15);
 
@@ -93,10 +92,6 @@ class LocalSponsorshipController extends Controller
 
     protected function authorizeUser(LocalSponsorship $localSponsorship): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $localSponsorship->user_id !== (int) $user->id) {
-            abort(403, 'You are not allowed to access another user record.');
-        }
+        $this->authorizeCenterRecord($localSponsorship, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

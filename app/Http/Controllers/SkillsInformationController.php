@@ -20,16 +20,9 @@ class SkillsInformationController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $skillsInformation = SkillsInformation::with('user')
-                ->latest()
-                ->paginate(15);
-        } else {
-            $skillsInformation = SkillsInformation::with('user')
-                ->where('user_id', $user->id)
-                ->latest()
-                ->paginate(15);
-        }
+        $skillsInformation = $this->scopeRecordsVisibleToUser(SkillsInformation::with('user'), $user)
+            ->latest()
+            ->paginate(15);
 
         return view('skills-information.index', compact('skillsInformation'));
     }
@@ -138,10 +131,6 @@ class SkillsInformationController extends Controller
      */
     protected function authorizeUser(SkillsInformation $skillsInformation): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $skillsInformation->user_id !== (int) $user->id) {
-            abort(403, 'Huruhusiwi kuona taarifa za mtumiaji mwingine.');
-        }
+        $this->authorizeCenterRecord($skillsInformation, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

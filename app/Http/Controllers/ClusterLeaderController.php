@@ -11,9 +11,7 @@ class ClusterLeaderController extends Controller
 {
     protected function authorizeLeaderAccess(ClusterLeader $clusterLeader): void
     {
-        if (Auth::user()->role !== 'admin' && $clusterLeader->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($clusterLeader);
     }
 
     /**
@@ -21,10 +19,7 @@ class ClusterLeaderController extends Controller
      */
     public function index()
     {
-        $clusterLeaders = ClusterLeader::with(['user', 'leaderDetails'])
-            ->when(Auth::user()->role !== 'admin', function ($query) {
-                return $query->where('user_id', Auth::id());
-            })
+        $clusterLeaders = $this->scopeRecordsVisibleToUser(ClusterLeader::with(['user', 'leaderDetails']), Auth::user())
             ->latest()
             ->paginate(10);
             

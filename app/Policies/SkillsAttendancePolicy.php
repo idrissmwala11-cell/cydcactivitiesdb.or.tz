@@ -22,7 +22,7 @@ class SkillsAttendancePolicy
      */
     public function view(User $user, SkillsAttendance $skillsAttendance): bool|Response
     {
-        return $user->role === 'admin' || $user->id === $skillsAttendance->user_id
+        return $this->canAccessCenterRecord($user, $skillsAttendance)
             ? Response::allow()
             : Response::deny('You do not have permission to view this record.');
     }
@@ -40,7 +40,7 @@ class SkillsAttendancePolicy
      */
     public function update(User $user, SkillsAttendance $skillsAttendance): bool|Response
     {
-        return $user->role === 'admin' || $user->id === $skillsAttendance->user_id
+        return $this->canAccessCenterRecord($user, $skillsAttendance)
             ? Response::allow()
             : Response::deny('You do not have permission to update this record.');
     }
@@ -50,7 +50,7 @@ class SkillsAttendancePolicy
      */
     public function delete(User $user, SkillsAttendance $skillsAttendance): bool|Response
     {
-        return $user->role === 'admin' || $user->id === $skillsAttendance->user_id
+        return $this->canAccessCenterRecord($user, $skillsAttendance)
             ? Response::allow()
             : Response::deny('You do not have permission to delete this record.');
     }
@@ -69,5 +69,19 @@ class SkillsAttendancePolicy
     public function forceDelete(User $user, SkillsAttendance $skillsAttendance): bool|Response
     {
         return Response::deny('Force delete is not allowed.');
+    }
+
+    private function canAccessCenterRecord(User $user, SkillsAttendance $skillsAttendance): bool
+    {
+        if ($user->role === 'admin' || (int) $user->id === (int) $skillsAttendance->user_id) {
+            return true;
+        }
+
+        $skillsAttendance->loadMissing('user');
+
+        $viewerCenter = strtoupper(trim((string) $user->center_id));
+        $recordCenter = strtoupper(trim((string) $skillsAttendance->user?->center_id));
+
+        return $viewerCenter !== '' && $viewerCenter === $recordCenter;
     }
 }

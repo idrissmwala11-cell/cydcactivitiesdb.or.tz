@@ -85,8 +85,9 @@ class ExamResultsController extends Controller
         $user = Auth::user();
 
         $examResults = ExamResult::with('user')
-            ->where('education_level', $section['key'])
-            ->when($user->role !== 'admin', fn ($query) => $query->where('user_id', $user->id))
+            ->where('education_level', $section['key']);
+
+        $examResults = $this->scopeRecordsVisibleToUser($examResults, $user)
             ->latest()
             ->paginate(15);
 
@@ -187,15 +188,11 @@ class ExamResultsController extends Controller
 
     protected function authorizeExamResult(ExamResult $examResult, string $sectionKey): void
     {
-        $user = Auth::user();
-
         if ($examResult->education_level !== $sectionKey) {
             throw new NotFoundHttpException('Exam result not found in this section.');
         }
 
-        if ($user->role !== 'admin' && (int) $examResult->user_id !== (int) $user->id) {
-            abort(403, 'You are not allowed to view another user\'s record.');
-        }
+        $this->authorizeCenterRecord($examResult, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 
     protected function resolveSection(Request $request): array

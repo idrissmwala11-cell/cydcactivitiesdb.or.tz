@@ -13,16 +13,9 @@ class SpecialProgramController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $specialPrograms = SpecialProgram::with('user')
-                ->latest()
-                ->paginate(15);
-        } else {
-            $specialPrograms = SpecialProgram::with('user')
-                ->where('user_id', $user->id)
-                ->latest()
-                ->paginate(15);
-        }
+        $specialPrograms = $this->scopeRecordsVisibleToUser(SpecialProgram::with('user'), $user)
+            ->latest()
+            ->paginate(15);
 
         return view('special-programs.index', compact('specialPrograms'));
     }
@@ -65,35 +58,21 @@ class SpecialProgramController extends Controller
 
     public function show(SpecialProgram $special_program)
     {
-    
-
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && $special_program->user_id != $user->id) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($special_program);
 
         return view('special-programs.show', ['specialProgram' => $special_program]);
     }
 
     public function edit(SpecialProgram $special_program)
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && $special_program->user_id !== $user->id) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($special_program);
 
         return view('special-programs.edit', ['specialProgram' => $special_program]);
     }
 
     public function update(Request $request, SpecialProgram $special_program)
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && $special_program->user_id !== $user->id) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($special_program);
 
         $validated = $request->validate([
             'date' => 'required|date',
@@ -125,11 +104,7 @@ class SpecialProgramController extends Controller
 
     public function destroy(SpecialProgram $special_program)
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && $special_program->user_id !== $user->id) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($special_program);
 
         $special_program->delete();
 

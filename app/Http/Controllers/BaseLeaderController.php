@@ -15,10 +15,7 @@ class BaseLeaderController extends Controller
      */
     public function index()
     {
-        $baseLeaders = BaseLeader::with(['user', 'baseLeaderDetails'])
-            ->when(Auth::user()->role !== 'admin', function ($query) {
-                return $query->where('user_id', Auth::id());
-            })
+        $baseLeaders = $this->scopeRecordsVisibleToUser(BaseLeader::with(['user', 'baseLeaderDetails']), Auth::user())
             ->latest()
             ->paginate(15);
         return view('base-leaders.index', compact('baseLeaders'));
@@ -79,9 +76,7 @@ class BaseLeaderController extends Controller
      */
     public function show(BaseLeader $baseLeader)
     {
-        if (Auth::user()->role !== 'admin' && $baseLeader->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($baseLeader);
 
         $baseLeader->load(['user', 'baseLeaderDetails']);
         return view('base-leaders.show', compact('baseLeader'));
@@ -92,9 +87,7 @@ class BaseLeaderController extends Controller
      */
     public function edit(BaseLeader $baseLeader)
     {
-        if (Auth::user()->role !== 'admin' && $baseLeader->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($baseLeader);
 
         $baseLeader->load('baseLeaderDetails');
         return view('base-leaders.edit', compact('baseLeader'));
@@ -105,9 +98,7 @@ class BaseLeaderController extends Controller
      */
     public function update(Request $request, BaseLeader $baseLeader)
     {
-        if (Auth::user()->role !== 'admin' && $baseLeader->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($baseLeader);
 
         $validated = $request->validate([
             'base_name' => 'required|string|max:255',
@@ -145,9 +136,7 @@ class BaseLeaderController extends Controller
      */
     public function destroy(BaseLeader $baseLeader)
     {
-        if (Auth::user()->role !== 'admin' && $baseLeader->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($baseLeader);
 
         $baseLeader->delete();
         

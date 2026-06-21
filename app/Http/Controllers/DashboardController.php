@@ -60,13 +60,13 @@ class DashboardController extends Controller
 
         // User-specific statistics (limited view)
         $stats = [
-            'my_attendance' => TalentAttendance::where('user_id', $user->id)->count(),
+            'my_attendance' => $this->scopeRecordsVisibleToUser(TalentAttendance::query(), $user)->count(),
             'total_programs' => Program::count(),
             'available_skills' => SkillVideo::where('is_active', true)->count(),
         ];
 
         // User's recent activities only
-        $myRecentAttendance = TalentAttendance::where('user_id', $user->id)
+        $myRecentAttendance = $this->scopeRecordsVisibleToUser(TalentAttendance::query(), $user)
             ->latest()
             ->take(5)
             ->get();
@@ -913,7 +913,7 @@ class DashboardController extends Controller
         $results = [];
 
         if ($query) {
-            $results = $this->searchUserSubmissions($query, auth()->id());
+            $results = $this->searchUserSubmissions($query);
         }
 
         return view('user.search', compact('results', 'query'));
@@ -925,7 +925,7 @@ class DashboardController extends Controller
         $results = [];
 
         if ($query) {
-            $results = $this->searchUserSubmissions($query, auth()->id());
+            $results = $this->searchUserSubmissions($query);
         }
 
         return response()->json([
@@ -940,12 +940,12 @@ class DashboardController extends Controller
         return $this->runSubmissionSearch($query);
     }
 
-    private function searchUserSubmissions($query, $userId)
+    private function searchUserSubmissions($query)
     {
-        return $this->runSubmissionSearch($query, (int) $userId);
+        return $this->runSubmissionSearch($query, auth()->user());
     }
 
-    private function runSubmissionSearch(string $query, ?int $userId = null): array
+    private function runSubmissionSearch(string $query, ?User $scopedUser = null): array
     {
         $searchTerm = trim($query);
         $viewer = auth()->user();
@@ -1109,9 +1109,13 @@ class DashboardController extends Controller
 
         foreach ($sources as $source) {
             $modelClass = $source['model'];
-            $items = $modelClass::query()
-                ->with('user')
-                ->when($userId !== null, fn ($builder) => $builder->where('user_id', $userId))
+            $itemsQuery = $modelClass::query()->with('user');
+
+            if ($scopedUser !== null) {
+                $this->scopeRecordsVisibleToUser($itemsQuery, $scopedUser);
+            }
+
+            $items = $itemsQuery
                 ->where(function ($builder) use ($source, $searchTerm) {
                     foreach ($source['fields'] as $index => $field) {
                         if ($index === 0) {

@@ -16,8 +16,7 @@ class SavingGroupController extends Controller
     {
         $user = Auth::user();
 
-        $savingGroups = SavingGroup::with(['user', 'groupMembers'])
-            ->when($user->role !== 'admin', fn ($query) => $query->where('user_id', $user->id))
+        $savingGroups = $this->scopeRecordsVisibleToUser(SavingGroup::with(['user', 'groupMembers']), $user)
             ->latest()
             ->paginate(15);
 
@@ -136,11 +135,7 @@ class SavingGroupController extends Controller
 
     private function authorizeSavingGroup(SavingGroup $savingGroup): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $savingGroup->user_id !== (int) $user->id) {
-            abort(403, 'You are not allowed to access another user record.');
-        }
+        $this->authorizeCenterRecord($savingGroup, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 
     private function syncMembers(SavingGroup $savingGroup, array $members): void

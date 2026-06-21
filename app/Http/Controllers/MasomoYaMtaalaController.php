@@ -15,16 +15,9 @@ class MasomoYaMtaalaController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $masomoYaMtaala = MasomoYaMtaala::with('user')
-                ->latest('date')
-                ->paginate(10);
-        } else {
-            $masomoYaMtaala = MasomoYaMtaala::with('user')
-                ->where('user_id', $user->id)
-                ->latest('date')
-                ->paginate(10);
-        }
+        $masomoYaMtaala = $this->scopeRecordsVisibleToUser(MasomoYaMtaala::with('user'), $user)
+            ->latest('date')
+            ->paginate(10);
 
         return view('masomo-ya-mtaala.index', compact('masomoYaMtaala'));
     }
@@ -170,10 +163,6 @@ class MasomoYaMtaalaController extends Controller
 
     private function authorizeUser(MasomoYaMtaala $masomoYaMtaala): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && $masomoYaMtaala->user_id != $user->id) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($masomoYaMtaala);
     }
 }

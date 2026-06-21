@@ -17,16 +17,9 @@ class CurriculumAttendanceController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $curriculumAttendances = CurriculumAttendance::with(['user', 'participants'])
-                ->latest()
-                ->paginate(15);
-        } else {
-            $curriculumAttendances = CurriculumAttendance::with(['user', 'participants'])
-                ->where('user_id', $user->id)
-                ->latest()
-                ->paginate(15);
-        }
+        $curriculumAttendances = $this->scopeRecordsVisibleToUser(CurriculumAttendance::with(['user', 'participants']), $user)
+            ->latest()
+            ->paginate(15);
 
         return view('curriculum-attendance.index', compact('curriculumAttendances'));
     }
@@ -149,10 +142,6 @@ class CurriculumAttendanceController extends Controller
 
     protected function authorizeUser(CurriculumAttendance $curriculumAttendance): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $curriculumAttendance->user_id !== (int) $user->id) {
-            abort(403, 'Huruhusiwi kuona taarifa za mtumiaji mwingine.');
-        }
+        $this->authorizeCenterRecord($curriculumAttendance, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

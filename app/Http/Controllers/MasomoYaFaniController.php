@@ -13,16 +13,9 @@ class MasomoYaFaniController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $faniRecords = MasomoYaFani::with('user')
-                ->latest('date')
-                ->paginate(15);
-        } else {
-            $faniRecords = MasomoYaFani::with('user')
-                ->where('user_id', $user->id)
-                ->latest('date')
-                ->paginate(15);
-        }
+        $faniRecords = $this->scopeRecordsVisibleToUser(MasomoYaFani::with('user'), $user)
+            ->latest('date')
+            ->paginate(15);
 
         return view('submissions.masomo-ya-fani', compact('faniRecords'));
     }
@@ -144,10 +137,6 @@ class MasomoYaFaniController extends Controller
 
     private function authorizeRecord(MasomoYaFani $masomoYaFani): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && $masomoYaFani->user_id != $user->id) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($masomoYaFani);
     }
 }

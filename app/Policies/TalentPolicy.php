@@ -21,8 +21,7 @@ class TalentPolicy
      */
     public function view(User $user, TalentsInformation $talent): bool
     {
-        // Admin can view all records, users can view their own records
-        return $user->role === 'admin' || $user->id === $talent->user_id;
+        return $this->canAccessCenterRecord($user, $talent);
     }
 
     /**
@@ -38,8 +37,7 @@ class TalentPolicy
      */
     public function update(User $user, TalentsInformation $talent): bool
     {
-        // Admin can update all records, users can update their own records
-        return $user->role === 'admin' || $user->id === $talent->user_id;
+        return $this->canAccessCenterRecord($user, $talent);
     }
 
     /**
@@ -47,8 +45,7 @@ class TalentPolicy
      */
     public function delete(User $user, TalentsInformation $talent): bool
     {
-        // Admin can delete all records, users can delete their own records
-        return $user->role === 'admin' || $user->id === $talent->user_id;
+        return $this->canAccessCenterRecord($user, $talent);
     }
 
     /**
@@ -65,5 +62,19 @@ class TalentPolicy
     public function forceDelete(User $user, TalentsInformation $talent): bool
     {
         return false;
+    }
+
+    private function canAccessCenterRecord(User $user, TalentsInformation $talent): bool
+    {
+        if ($user->role === 'admin' || (int) $user->id === (int) $talent->user_id) {
+            return true;
+        }
+
+        $talent->loadMissing('user');
+
+        $viewerCenter = strtoupper(trim((string) $user->center_id));
+        $recordCenter = strtoupper(trim((string) $talent->user?->center_id));
+
+        return $viewerCenter !== '' && $viewerCenter === $recordCenter;
     }
 }

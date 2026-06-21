@@ -11,9 +11,7 @@ class NationalLeaderController extends Controller
 {
     protected function authorizeLeaderAccess(NationalLeader $nationalLeader): void
     {
-        if (Auth::user()->role !== 'admin' && $nationalLeader->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($nationalLeader);
     }
 
     /**
@@ -21,10 +19,7 @@ class NationalLeaderController extends Controller
      */
     public function index()
     {
-        $nationalLeaders = NationalLeader::with(['user', 'nationalLeaderDetails'])
-            ->when(Auth::user()->role !== 'admin', function ($query) {
-                return $query->where('user_id', Auth::id());
-            })
+        $nationalLeaders = $this->scopeRecordsVisibleToUser(NationalLeader::with(['user', 'nationalLeaderDetails']), Auth::user())
             ->latest()
             ->paginate(10);
             

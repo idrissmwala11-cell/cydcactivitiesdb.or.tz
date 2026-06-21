@@ -22,16 +22,9 @@ class TalentController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $talents = TalentsInformation::with('user')
-                ->latest()
-                ->paginate(10);
-        } else {
-            $talents = TalentsInformation::with('user')
-                ->where('user_id', $user->id)
-                ->latest()
-                ->paginate(10);
-        }
+        $talents = $this->scopeRecordsVisibleToUser(TalentsInformation::with('user'), $user)
+            ->latest()
+            ->paginate(10);
 
         return view('talents.index', compact('talents'));
     }
@@ -149,10 +142,6 @@ class TalentController extends Controller
      */
     protected function authorizeUser(TalentsInformation $talent): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $talent->user_id !== (int) $user->id) {
-            abort(403, 'Huruhusiwi kuona taarifa za mtumiaji mwingine.');
-        }
+        $this->authorizeCenterRecord($talent, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

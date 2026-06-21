@@ -15,21 +15,9 @@ class ParentsInformationController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-
-            // Admin anaona records zote
-            $parentsInformation = ParentsInformation::with('user')
-                ->latest()
-                ->paginate(15);
-
-        } else {
-
-            // User anaona records zake tu
-            $parentsInformation = ParentsInformation::with('user')
-                ->where('user_id', $user->id)
-                ->latest()
-                ->paginate(15);
-        }
+        $parentsInformation = $this->scopeRecordsVisibleToUser(ParentsInformation::with('user'), $user)
+            ->latest()
+            ->paginate(15);
 
         return view('parents-information.index', compact('parentsInformation'));
     }
@@ -72,9 +60,7 @@ class ParentsInformationController extends Controller
      */
     public function show(ParentsInformation $parentsInformation)
     {
-        if (Auth::user()->role !== 'admin' && $parentsInformation->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($parentsInformation);
 
         return view('parents-information.show', compact('parentsInformation'));
     }
@@ -84,9 +70,7 @@ class ParentsInformationController extends Controller
      */
     public function edit(ParentsInformation $parentsInformation)
     {
-        if (Auth::user()->role !== 'admin' && $parentsInformation->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($parentsInformation);
 
         return view('parents-information.edit', compact('parentsInformation'));
     }
@@ -96,9 +80,7 @@ class ParentsInformationController extends Controller
      */
     public function update(Request $request, ParentsInformation $parentsInformation)
     {
-        if (Auth::user()->role !== 'admin' && $parentsInformation->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($parentsInformation);
 
         $validated = $request->validate([
             'parent_name' => 'required|string|max:255',
@@ -122,9 +104,7 @@ class ParentsInformationController extends Controller
      */
     public function destroy(ParentsInformation $parentsInformation)
     {
-        if (Auth::user()->role !== 'admin' && $parentsInformation->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($parentsInformation);
 
         $parentsInformation->delete();
 

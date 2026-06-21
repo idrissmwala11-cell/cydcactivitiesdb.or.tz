@@ -21,16 +21,9 @@ class SkillsAttendanceController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            $attendances = SkillsAttendance::with(['user', 'absentParticipants'])
-                ->latest('date')
-                ->paginate(15);
-        } else {
-            $attendances = SkillsAttendance::with(['user', 'absentParticipants'])
-                ->where('user_id', $user->id)
-                ->latest('date')
-                ->paginate(15);
-        }
+        $attendances = $this->scopeRecordsVisibleToUser(SkillsAttendance::with(['user', 'absentParticipants']), $user)
+            ->latest('date')
+            ->paginate(15);
 
         return view('skills-attendance.index', compact('attendances'));
     }
@@ -159,10 +152,6 @@ class SkillsAttendanceController extends Controller
 
     protected function authorizeUser(SkillsAttendance $skillsAttendance): void
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'admin' && (int) $skillsAttendance->user_id !== (int) $user->id) {
-            abort(403, 'You do not have permission to view this record.');
-        }
+        $this->authorizeCenterRecord($skillsAttendance, 'Huruhusiwi kuona taarifa za center nyingine.');
     }
 }

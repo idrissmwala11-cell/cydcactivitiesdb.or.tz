@@ -13,10 +13,7 @@ class CenterLeadershipController extends Controller
      */
     public function index()
     {
-        $centerLeaderships = CenterLeadership::with('user')
-            ->when(Auth::user()->role !== 'admin', function ($query) {
-                return $query->where('user_id', Auth::id());
-            })
+        $centerLeaderships = $this->scopeRecordsVisibleToUser(CenterLeadership::with('user'), Auth::user())
             ->latest()
             ->paginate(10);
 
@@ -62,9 +59,7 @@ class CenterLeadershipController extends Controller
      */
     public function show(CenterLeadership $centerLeadership)
     {
-        if (Auth::user()->role !== 'admin' && $centerLeadership->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($centerLeadership);
 
         return view('center-leadership.show', compact('centerLeadership'));
     }
@@ -74,9 +69,7 @@ class CenterLeadershipController extends Controller
      */
     public function edit(CenterLeadership $centerLeadership)
     {
-        if (Auth::user()->role !== 'admin' && $centerLeadership->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($centerLeadership);
 
         return view('center-leadership.edit', compact('centerLeadership'));
     }
@@ -87,9 +80,7 @@ class CenterLeadershipController extends Controller
      */
     public function update(Request $request, CenterLeadership $centerLeadership)
     {
-        if (Auth::user()->role !== 'admin' && $centerLeadership->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($centerLeadership);
 
         $validated = $request->validate([
             'center_name' => ['required', 'string', 'max:255', 'not_regex:/^\d+$/'],
@@ -115,9 +106,7 @@ class CenterLeadershipController extends Controller
      */
     public function destroy(CenterLeadership $centerLeadership)
     {
-        if (Auth::user()->role !== 'admin' && $centerLeadership->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeCenterRecord($centerLeadership);
 
         $centerLeadership->delete();
 
