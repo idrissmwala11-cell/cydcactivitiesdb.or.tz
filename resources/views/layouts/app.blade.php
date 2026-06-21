@@ -78,10 +78,35 @@
 
         #announcementDropdown {
             color: #111827 !important;
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
         }
 
-        #announcementDropdown .badge {
-            font-size: 0.65rem;
+        #announcementUnreadBadge,
+        .topbar-unread-badge {
+            position: absolute;
+            top: -0.2rem;
+            right: -0.25rem;
+            min-width: 1.25rem;
+            height: 1.25rem;
+            padding: 0 0.35rem;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.68rem;
+            line-height: 1;
+            font-weight: 800;
+            color: #ffffff;
+            background: #dc2626;
+            border: 2px solid #ffffff;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
+            z-index: 20;
         }
 
         .topbar-icon-link {
@@ -1018,7 +1043,7 @@
                             <span class="topbar-chat-label">{{ auth()->user()->role === 'admin' ? __('ui.chat_with_user') : __('ui.chat_with_admin') }}</span>
 
                             @if(($chatUnreadCount ?? 0) > 0)
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <span class="topbar-unread-badge">
                                     {{ $chatUnreadCount > 99 ? '99+' : $chatUnreadCount }}
                                 </span>
                             @endif
@@ -1035,11 +1060,11 @@
                            aria-expanded="false">
                             <i class="bi bi-bell fs-5 text-dark"></i>
 
-        @if(($announcementCount ?? 0) > 0)
-            <span id="announcementUnreadBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {{ $announcementCount > 99 ? '99+' : $announcementCount }}
-            </span>
-        @endif
+                            @if(($announcementCount ?? 0) > 0)
+                                <span id="announcementUnreadBadge" class="topbar-unread-badge">
+                                    {{ $announcementCount > 99 ? '99+' : $announcementCount }}
+                                </span>
+                            @endif
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0"
@@ -1424,7 +1449,7 @@
             if (count > 0) {
                 if (!badge) {
                     badge = document.createElement('span');
-                    badge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+                    badge.className = 'topbar-unread-badge';
                     chatToggle.appendChild(badge);
                 }
                 badge.textContent = count > 99 ? '99+' : String(count);
