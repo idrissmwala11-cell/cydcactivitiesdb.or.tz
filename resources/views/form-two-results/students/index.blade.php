@@ -3,7 +3,11 @@
 @section('content')
 @include('form-two-results._styles')
 <div class="container-fluid f2-shell">
-    @php($isPrimary = $educationLevel === 'primary')
+    @php
+        $isPrimary = $educationLevel === 'primary';
+        $classCode = config('form_two_results.class_codes.'.$classLevel, preg_replace('/\D/', '', $classLevel));
+        $studentNumberPrefix = ($isPrimary ? 'P' : 'F').$classCode;
+    @endphp
     @include('form-two-results._nav')
     @include('form-two-results._scope')
     @include('form-two-results._alerts')
@@ -23,7 +27,7 @@
                 <tbody>
                 @forelse($students as $student)
                     <tr>
-                        <td>{{ $student->student_number }}</td><td class="fw-bold">{{ $student->candidate_name }}</td><td>{{ $student->fcp_name ?: '-' }}</td><td class="text-center">{{ $student->sex }}</td>
+                        <td class="text-center text-nowrap">{{ $studentNumberPrefix }}-{{ str_pad((string) $loop->iteration, 3, '0', STR_PAD_LEFT) }}</td><td class="fw-bold">{{ $student->candidate_name }}</td><td>{{ $student->fcp_name ?: '-' }}</td><td class="text-center">{{ $student->sex }}</td>
                         <td>{{ $student->subjects->where('pivot.registered', true)->pluck('abbreviation')->join(', ') }}</td>
                         <td class="text-nowrap"><a class="btn btn-sm btn-warning" href="{{ route('form-two-results.students.edit', $student) }}"><i class="bi bi-pencil"></i></a> <form class="d-inline" method="POST" action="{{ route('form-two-results.students.destroy', $student) }}" onsubmit="return confirm('Futa mwanafunzi na alama zake?')">@csrf @method('DELETE')<button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button></form></td>
                     </tr>
@@ -33,7 +37,6 @@
                 </tbody>
             </table>
         </div>
-        @if($students->hasPages())<div class="p-3">{{ $students->links() }}</div>@endif
     </div>
 </div>
 @endsection

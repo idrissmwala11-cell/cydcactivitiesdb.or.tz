@@ -75,7 +75,7 @@ class FormTwoResultsController extends Controller
         $selection = $this->selection($request);
 
         return view('form-two-results.students.index', [
-            'students' => $this->studentQuery($selection)->with('subjects')->orderBy('student_number')->paginate(30)->withQueryString(),
+            'students' => $this->studentQuery($selection)->with('subjects')->orderBy('student_number')->get(),
             'subjects' => FormTwoSubject::where('is_active', true)->where('education_level', $selection['education_level'])->orderBy('display_order')->get(),
             ...$selection,
         ]);
