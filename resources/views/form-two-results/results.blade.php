@@ -38,7 +38,7 @@
                 <tbody>
                 @forelse($rows as $row)
                     <tr>
-                        <td>{{ $row['student']->student_number }}</td><td class="sticky-col fw-bold">{{ $row['student']->candidate_name }}</td><td class="text-nowrap">{{ $row['student']->fcp_name ?: '-' }}</td><td class="text-center">{{ $row['student']->sex }}</td>
+                        <td class="text-center">{{ $loop->iteration }}</td><td class="sticky-col fw-bold">{{ $row['student']->candidate_name }}</td><td class="text-nowrap">{{ $row['student']->fcp_name ?: '-' }}</td><td class="text-center">{{ $row['student']->sex }}</td>
                         <td class="small lh-lg">
                             @forelse(collect($row['subjects'])->filter(fn ($item) => $item['mark'] !== null || $item['isAbsent']) as $subjectResult)
                                 @php($markText = $subjectResult['isAbsent'] ? 'ABS' : rtrim(rtrim(number_format($subjectResult['mark'], 2, '.', ''), '0'), '.'))
