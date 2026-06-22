@@ -8,6 +8,8 @@ return [
         'maryelias0167@gmail.com',
     ],
 
+    'publisher_email' => 'snashon.tz0827@gmail.com',
+
     'school_name' => 'CHILD AND YOUTH DEVELOPMENT CENTERS',
     'school_subtitle' => 'URAMBO, NZEGA AND IGUNGA CLUSTERS',
     'report_title' => 'FORM TWO JOINT EXAMINATION RESULTS',

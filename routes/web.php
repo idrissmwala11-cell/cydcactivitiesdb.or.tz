@@ -98,6 +98,7 @@ Route::middleware(['auth', 'form-two-results.access'])
         Route::get('/analysis', [FormTwoResultsController::class, 'analysis'])->name('analysis.index');
         Route::get('/reports', [FormTwoResultsController::class, 'reports'])->name('reports.index');
         Route::post('/reports/{assessment}/publish', [FormTwoResultsController::class, 'publishResults'])->name('reports.publish');
+        Route::delete('/reports/{assessment}/publish', [FormTwoResultsController::class, 'unpublishResults'])->name('reports.unpublish');
         Route::get('/reports/{student}', [FormTwoResultsController::class, 'report'])->name('reports.show');
     });
 

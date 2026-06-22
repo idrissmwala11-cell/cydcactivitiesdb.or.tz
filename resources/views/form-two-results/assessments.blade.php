@@ -32,8 +32,22 @@
                 <td><input form="assessment-{{ $assessment->id }}" class="form-control" name="term" value="{{ $assessment->term }}" required></td>
                 <td><input form="assessment-{{ $assessment->id }}" type="date" class="form-control" name="assessment_date" value="{{ $assessment->assessment_date?->format('Y-m-d') }}"></td>
                 <td><input form="assessment-{{ $assessment->id }}" type="number" class="form-control" name="max_marks" value="{{ $isPrimary ? 50 : 100 }}" readonly></td>
-                <td class="text-center"><input form="assessment-{{ $assessment->id }}" type="hidden" name="is_published" value="0"><input form="assessment-{{ $assessment->id }}" type="checkbox" class="form-check-input" name="is_published" value="1" @checked($assessment->is_published)></td>
-                <td class="text-nowrap"><button form="assessment-{{ $assessment->id }}" class="btn btn-sm btn-success"><i class="bi bi-check"></i></button> <form class="d-inline" method="POST" action="{{ route('form-two-results.assessments.destroy', $assessment) }}" onsubmit="return confirm('Futa assessment na alama zake?')">@csrf @method('DELETE')<button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button></form></td>
+                <td class="text-center">
+                    @if(auth()->user()->canPublishFormTwoResults())
+                        <input form="assessment-{{ $assessment->id }}" type="hidden" name="is_published" value="0">
+                        <input form="assessment-{{ $assessment->id }}" type="checkbox" class="form-check-input" name="is_published" value="1" @checked($assessment->is_published)>
+                    @else
+                        <span class="badge {{ $assessment->is_published ? 'bg-success' : 'bg-secondary' }}">{{ $assessment->is_published ? ($isPrimary ? 'Imechapishwa' : 'Published') : ($isPrimary ? 'Haijachapishwa' : 'Not Published') }}</span>
+                    @endif
+                </td>
+                <td class="text-nowrap">
+                    <button form="assessment-{{ $assessment->id }}" class="btn btn-sm btn-success"><i class="bi bi-check"></i></button>
+                    @if(! $assessment->is_published || auth()->user()->canPublishFormTwoResults())
+                        <form class="d-inline" method="POST" action="{{ route('form-two-results.assessments.destroy', $assessment) }}" onsubmit="return confirm('Futa assessment na alama zake?')">@csrf @method('DELETE')<button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button></form>
+                    @else
+                        <button type="button" class="btn btn-sm btn-secondary" disabled title="Published assessment inalindwa"><i class="bi bi-lock"></i></button>
+                    @endif
+                </td>
             </tr>
         @endforeach
         </tbody></table></div>

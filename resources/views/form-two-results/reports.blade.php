@@ -26,10 +26,17 @@
         </form>
 
         @if($assessment)
-            <div class="px-3 pb-3 d-flex justify-content-end">
+            <div class="px-3 pb-3 d-flex flex-wrap justify-content-end align-items-center gap-2">
                 @if($assessment->is_published)
                     <span class="badge bg-success fs-6 px-3 py-2"><i class="bi bi-check-circle me-1"></i>{{ $isPrimary ? 'Matokeo Yamepublish' : 'Results Published' }}</span>
-                @else
+                    @if(auth()->user()->canPublishFormTwoResults())
+                        <form method="POST" action="{{ route('form-two-results.reports.unpublish', $assessment) }}" onsubmit="return confirm('{{ $isPrimary ? 'Ondoa matokeo haya kwa users wote? Marks hazitafutwa.' : 'Remove these published results for all users? Marks will not be deleted.' }}')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger"><i class="bi bi-eye-slash me-1"></i>{{ $isPrimary ? 'Ondoa Matokeo Yaliyopublish' : 'Remove Published Results' }}</button>
+                        </form>
+                    @endif
+                @elseif(auth()->user()->canPublishFormTwoResults())
                     <form method="POST" action="{{ route('form-two-results.reports.publish', $assessment) }}" onsubmit="return confirm('{{ $isPrimary ? 'Unataka kupublish matokeo haya kwa users wote?' : 'Publish these results for all users?' }}')">
                         @csrf
                         <button class="btn btn-primary"><i class="bi bi-megaphone me-1"></i>{{ $isPrimary ? 'Publish Matokeo' : 'Publish Results' }}</button>

@@ -61,6 +61,14 @@ class User extends Authenticatable
         return $this->isAdmin() || in_array(strtolower(trim((string) $this->email)), $allowedEmails, true);
     }
 
+    public function canPublishFormTwoResults(): bool
+    {
+        $publisherEmail = strtolower(trim((string) config('form_two_results.publisher_email')));
+
+        return $this->isAdmin()
+            || ($publisherEmail !== '' && strtolower(trim((string) $this->email)) === $publisherEmail);
+    }
+
     // Status methods
     public function isPending(): bool
     {

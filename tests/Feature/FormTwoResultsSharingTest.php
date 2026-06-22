@@ -21,6 +21,10 @@ class FormTwoResultsSharingTest extends TestCase
             'email' => 'snashon.tz0827@gmail.com',
             'role' => 'user',
         ]);
+        $resultsEditor = User::factory()->create([
+            'email' => 'amasele.tz0844@gmail.com',
+            'role' => 'user',
+        ]);
         $viewer = User::factory()->create(['role' => 'user']);
         $subject = FormTwoSubject::where('education_level', 'secondary')
             ->where('abbreviation', 'B/MATH')
@@ -68,6 +72,13 @@ class FormTwoResultsSharingTest extends TestCase
         $this->actingAs($viewer)
             ->post(route('form-two-results.reports.publish', $assessment))
             ->assertForbidden();
+        $this->actingAs($resultsEditor)
+            ->get(route('form-two-results.reports.index', $query))
+            ->assertOk()
+            ->assertDontSee('Publish Results');
+        $this->actingAs($resultsEditor)
+            ->post(route('form-two-results.reports.publish', $assessment))
+            ->assertForbidden();
 
         $this->actingAs($publisher)
             ->post(route('form-two-results.reports.publish', $assessment))
@@ -88,6 +99,21 @@ class FormTwoResultsSharingTest extends TestCase
             ->assertSee('76-A')
             ->assertDontSee('Marks Entry')
             ->assertDontSee('Publish Results');
+
+        $this->actingAs($resultsEditor)
+            ->delete(route('form-two-results.reports.unpublish', $assessment))
+            ->assertForbidden();
+        $this->actingAs($resultsEditor)
+            ->delete(route('form-two-results.assessments.destroy', $assessment))
+            ->assertForbidden();
+        $this->actingAs($publisher)
+            ->delete(route('form-two-results.reports.unpublish', $assessment))
+            ->assertRedirect();
+
+        $this->assertFalse($assessment->fresh()->is_published);
+        $this->actingAs($viewer)
+            ->get(route('published-results.index', $query))
+            ->assertNotFound();
     }
 
     public function test_full_results_list_is_ordered_by_position_with_absent_students_last(): void

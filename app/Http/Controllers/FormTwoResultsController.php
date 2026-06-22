@@ -198,10 +198,13 @@ class FormTwoResultsController extends Controller
         abort_unless(in_array($validated['class_level'], config("form_two_results.classes.{$validated['education_level']}", []), true), 422, 'Darasa halilingani na ngazi iliyochaguliwa.');
         $validated['max_marks'] = $validated['education_level'] === 'primary' ? 50 : 100;
 
-        $assessment->update([
-            ...$validated,
-            'is_published' => (bool) ($validated['is_published'] ?? false),
-        ]);
+        $isPublished = $assessment->is_published;
+        if ($request->user()?->canPublishFormTwoResults()) {
+            $isPublished = (bool) ($validated['is_published'] ?? false);
+        }
+        unset($validated['is_published']);
+
+        $assessment->update([...$validated, 'is_published' => $isPublished]);
 
         return redirect()->route('form-two-results.assessments.index', [
             'education_level' => $validated['education_level'],
@@ -209,8 +212,12 @@ class FormTwoResultsController extends Controller
         ])->with('success', 'Kipindi cha mtihani kimehifadhiwa.');
     }
 
-    public function destroyAssessment(FormTwoAssessment $assessment): RedirectResponse
+    public function destroyAssessment(Request $request, FormTwoAssessment $assessment): RedirectResponse
     {
+        if ($assessment->is_published) {
+            abort_unless($request->user()?->canPublishFormTwoResults(), 403, 'Huna ruhusa ya kufuta assessment iliyopublish.');
+        }
+
         $assessment->delete();
 
         return back()->with('success', 'Kipindi cha mtihani kimefutwa.');
@@ -429,7 +436,7 @@ class FormTwoResultsController extends Controller
 
     public function publishResults(Request $request, FormTwoAssessment $assessment): RedirectResponse
     {
-        abort_unless($request->user()?->canAccessFormTwoResults(), 403);
+        abort_unless($request->user()?->canPublishFormTwoResults(), 403, 'Huna ruhusa ya kupublish matokeo.');
 
         $hasRecordedResults = $assessment->marks()
             ->where(fn ($query) => $query->whereNotNull('mark')->orWhere('is_absent', true))
@@ -448,6 +455,21 @@ class FormTwoResultsController extends Controller
             'report_type' => 'list',
             'run' => 1,
         ])->with('success', 'Orodha ya matokeo imepublish na sasa inaonekana kwa users wote.');
+    }
+
+    public function unpublishResults(Request $request, FormTwoAssessment $assessment): RedirectResponse
+    {
+        abort_unless($request->user()?->canPublishFormTwoResults(), 403, 'Huna ruhusa ya kuondoa matokeo yaliyopublish.');
+
+        $assessment->update(['is_published' => false]);
+
+        return redirect()->route('form-two-results.reports.index', [
+            'education_level' => $assessment->education_level,
+            'class_level' => $assessment->class_level,
+            'assessment_id' => $assessment->id,
+            'report_type' => 'list',
+            'run' => 1,
+        ])->with('success', 'Matokeo yameondolewa kwenye published results. Marks zote zimebaki salama.');
     }
 
     public function publishedResults(Request $request): View
