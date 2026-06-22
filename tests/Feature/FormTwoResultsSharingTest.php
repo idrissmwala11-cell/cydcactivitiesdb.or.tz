@@ -14,6 +14,82 @@ class FormTwoResultsSharingTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_authorized_user_can_publish_results_for_read_only_access_by_all_users(): void
+    {
+        $creator = User::factory()->create(['role' => 'admin']);
+        $publisher = User::factory()->create([
+            'email' => 'snashon.tz0827@gmail.com',
+            'role' => 'user',
+        ]);
+        $viewer = User::factory()->create(['role' => 'user']);
+        $subject = FormTwoSubject::where('education_level', 'secondary')
+            ->where('abbreviation', 'B/MATH')
+            ->firstOrFail();
+        $assessment = FormTwoAssessment::create([
+            'name' => 'Published Test',
+            'slug' => 'published-test',
+            'term' => 'TERM I',
+            'assessment_date' => '2026-06-22',
+            'max_marks' => 100,
+            'display_order' => 101,
+            'is_published' => false,
+            'education_level' => 'secondary',
+            'class_level' => 'Form 2',
+        ]);
+        $student = FormTwoStudent::create([
+            'student_number' => 'F2-PUBLISH-TEST',
+            'candidate_name' => 'PUBLISHED STUDENT',
+            'fcp_name' => 'FCP PUBLISH',
+            'sex' => 'M',
+            'education_level' => 'secondary',
+            'class_level' => 'Form 2',
+            'is_active' => true,
+            'created_by' => $creator->id,
+        ]);
+        $student->subjects()->attach($subject->id, ['registered' => true]);
+        FormTwoMark::create([
+            'assessment_id' => $assessment->id,
+            'student_id' => $student->id,
+            'subject_id' => $subject->id,
+            'mark' => 76,
+            'is_absent' => false,
+            'recorded_by' => $publisher->id,
+        ]);
+
+        $query = [
+            'education_level' => 'secondary',
+            'class_level' => 'Form 2',
+            'assessment_id' => $assessment->id,
+        ];
+
+        $this->actingAs($viewer)
+            ->get(route('form-two-results.results.index', $query))
+            ->assertForbidden();
+        $this->actingAs($viewer)
+            ->post(route('form-two-results.reports.publish', $assessment))
+            ->assertForbidden();
+
+        $this->actingAs($publisher)
+            ->post(route('form-two-results.reports.publish', $assessment))
+            ->assertRedirect();
+
+        $this->assertTrue($assessment->fresh()->is_published);
+
+        $this->actingAs($viewer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('View Results List');
+
+        $this->actingAs($viewer)
+            ->get(route('published-results.index', $query))
+            ->assertOk()
+            ->assertSee('PUBLISHED RESULTS')
+            ->assertSee('PUBLISHED STUDENT')
+            ->assertSee('76-A')
+            ->assertDontSee('Marks Entry')
+            ->assertDontSee('Publish Results');
+    }
+
     public function test_full_results_list_is_ordered_by_position_with_absent_students_last(): void
     {
         $creator = User::factory()->create(['role' => 'admin']);

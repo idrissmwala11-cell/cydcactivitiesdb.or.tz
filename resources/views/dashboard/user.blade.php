@@ -69,6 +69,26 @@
         </div>
     </div>
 
+    <!-- Published Results -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-body p-4 d-flex flex-wrap justify-content-between align-items-center gap-3" style="background: linear-gradient(135deg, #0f5132, #198754); color: #fff;">
+                    <div>
+                        <h5 class="mb-1"><i class="bi bi-trophy me-2"></i>Published Student Results</h5>
+                        <p class="mb-0 text-white-50">Choose a class and assessment to view the official read-only results list.</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-light text-success px-3 py-2">{{ number_format($publishedResultsCount ?? 0) }} published</span>
+                        <a href="{{ route('published-results.index') }}" class="btn btn-light text-success fw-semibold">
+                            <i class="bi bi-table me-1"></i>View Results List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Center Data Summary -->
     <div class="row mb-4">
         <div class="col-12">

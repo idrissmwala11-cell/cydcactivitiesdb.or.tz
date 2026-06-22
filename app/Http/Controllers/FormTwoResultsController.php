@@ -411,18 +411,7 @@ class FormTwoResultsController extends Controller
             }
 
             if ($reportType === 'list') {
-                $rows = $rows->sort(function (array $left, array $right): int {
-                    if ($left['rank'] === null && $right['rank'] !== null) {
-                        return 1;
-                    }
-
-                    if ($left['rank'] !== null && $right['rank'] === null) {
-                        return -1;
-                    }
-
-                    return ($left['rank'] <=> $right['rank'])
-                        ?: strcasecmp($left['student']->candidate_name, $right['student']->candidate_name);
-                })->values();
+                $rows = $this->sortRowsByPosition($rows);
             }
         }
 
@@ -434,6 +423,57 @@ class FormTwoResultsController extends Controller
             'reportType' => $reportType,
             'rows' => $rows,
             'hasRun' => $request->boolean('run'),
+            ...$selection,
+        ]);
+    }
+
+    public function publishResults(Request $request, FormTwoAssessment $assessment): RedirectResponse
+    {
+        abort_unless($request->user()?->canAccessFormTwoResults(), 403);
+
+        $hasRecordedResults = $assessment->marks()
+            ->where(fn ($query) => $query->whereNotNull('mark')->orWhere('is_absent', true))
+            ->exists();
+
+        if (! $hasRecordedResults) {
+            return back()->withErrors(['publish' => 'Weka angalau matokeo ya mwanafunzi mmoja kabla ya kupublish.']);
+        }
+
+        $assessment->update(['is_published' => true]);
+
+        return redirect()->route('form-two-results.reports.index', [
+            'education_level' => $assessment->education_level,
+            'class_level' => $assessment->class_level,
+            'assessment_id' => $assessment->id,
+            'report_type' => 'list',
+            'run' => 1,
+        ])->with('success', 'Orodha ya matokeo imepublish na sasa inaonekana kwa users wote.');
+    }
+
+    public function publishedResults(Request $request): View
+    {
+        $selection = $this->selection($request);
+        $assessments = $this->assessmentQuery($selection)
+            ->where('is_published', true)
+            ->orderByDesc('display_order')
+            ->get();
+
+        $assessment = $request->filled('assessment_id')
+            ? $assessments->firstWhere('id', $request->integer('assessment_id'))
+            : $assessments->first();
+
+        if ($request->filled('assessment_id')) {
+            abort_unless($assessment, 404, 'Matokeo haya hayajapublish au hayapo kwenye darasa lililochaguliwa.');
+        }
+
+        $rows = $assessment
+            ? $this->sortRowsByPosition($this->resultRows($assessment))
+            : collect();
+
+        return view('form-two-results.published-results', [
+            'assessments' => $assessments,
+            'assessment' => $assessment,
+            'rows' => $rows,
             ...$selection,
         ]);
     }
@@ -513,6 +553,22 @@ class FormTwoResultsController extends Controller
 
             return $row;
         });
+    }
+
+    private function sortRowsByPosition(Collection $rows): Collection
+    {
+        return $rows->sort(function (array $left, array $right): int {
+            if ($left['rank'] === null && $right['rank'] !== null) {
+                return 1;
+            }
+
+            if ($left['rank'] !== null && $right['rank'] === null) {
+                return -1;
+            }
+
+            return ($left['rank'] <=> $right['rank'])
+                ?: strcasecmp($left['student']->candidate_name, $right['student']->candidate_name);
+        })->values();
     }
 
     private function selection(Request $request, ?FormTwoAssessment $assessment = null): array

@@ -30,6 +30,7 @@ use App\Models\ClusterLeader;
 use App\Models\OutOfMinistryLeader;
 use App\Models\SchoolInformationRecord;
 use App\Models\ExamResult;
+use App\Models\FormTwoAssessment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +81,7 @@ class DashboardController extends Controller
         $centerId = strtoupper(trim((string) $user->center_id));
         $centerDataSummary = collect();
         $totalCenterDataRecords = 0;
+        $publishedResultsCount = FormTwoAssessment::where('is_published', true)->count();
 
         if ($centerId !== '') {
             $centerDataSummary = $this->getCenterDataSummary($centerId);
@@ -92,7 +94,8 @@ class DashboardController extends Controller
             'skillVideos',
             'centerId',
             'centerDataSummary',
-            'totalCenterDataRecords'
+            'totalCenterDataRecords',
+            'publishedResultsCount'
         ));
     }
 

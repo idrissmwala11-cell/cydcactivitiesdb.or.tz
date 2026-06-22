@@ -17,8 +17,26 @@
             <div class="col-md-3"><label class="form-label">{{ $isPrimary ? 'Mtihani' : 'Assessment' }}</label><select class="form-select" name="assessment_id">@foreach($assessments as $item)<option value="{{ $item->id }}" @selected($assessment?->is($item))>{{ $item->name }}</option>@endforeach</select></div>
             <div class="col-md-3"><label class="form-label">FCP</label><select class="form-select" name="fcp_name"><option value="">{{ $isPrimary ? 'FCP zote / Wanafunzi wote' : 'All FCPs / All students' }}</option>@foreach($fcpNames as $fcpName)<option value="{{ $fcpName }}" @selected($selectedFcp === $fcpName)>{{ $fcpName }}</option>@endforeach</select></div>
             <div class="col-md-2"><label class="form-label">{{ $isPrimary ? 'Aina ya Ripoti' : 'Report Type' }}</label><select class="form-select" name="report_type"><option value="cards" @selected($reportType === 'cards')>{{ $isPrimary ? 'Ripoti moja moja' : 'Individual cards' }}</option><option value="list" @selected($reportType === 'list')>{{ $isPrimary ? 'Orodha kamili' : 'Full results list' }}</option></select></div>
-            <div class="col-12 d-flex justify-content-end gap-2"><button class="btn btn-success"><i class="bi bi-play-fill me-1"></i>{{ $isPrimary ? 'Run Ripoti' : 'Run Report' }}</button>@if($hasRun && $rows->isNotEmpty())<button type="button" class="btn btn-dark" onclick="window.print()"><i class="bi bi-printer me-1"></i>{{ $reportType === 'list' ? ($isPrimary ? 'Chapisha Orodha' : 'Print List') : ($isPrimary ? 'Chapisha Zote' : 'Print All') }}</button>@endif</div>
+            <div class="col-12 d-flex justify-content-end gap-2">
+                <button class="btn btn-success"><i class="bi bi-play-fill me-1"></i>{{ $isPrimary ? 'Run Ripoti' : 'Run Report' }}</button>
+                @if($hasRun && $rows->isNotEmpty())
+                    <button type="button" class="btn btn-dark" onclick="window.print()"><i class="bi bi-printer me-1"></i>{{ $reportType === 'list' ? ($isPrimary ? 'Chapisha Orodha' : 'Print List') : ($isPrimary ? 'Chapisha Zote' : 'Print All') }}</button>
+                @endif
+            </div>
         </form>
+
+        @if($assessment)
+            <div class="px-3 pb-3 d-flex justify-content-end">
+                @if($assessment->is_published)
+                    <span class="badge bg-success fs-6 px-3 py-2"><i class="bi bi-check-circle me-1"></i>{{ $isPrimary ? 'Matokeo Yamepublish' : 'Results Published' }}</span>
+                @else
+                    <form method="POST" action="{{ route('form-two-results.reports.publish', $assessment) }}" onsubmit="return confirm('{{ $isPrimary ? 'Unataka kupublish matokeo haya kwa users wote?' : 'Publish these results for all users?' }}')">
+                        @csrf
+                        <button class="btn btn-primary"><i class="bi bi-megaphone me-1"></i>{{ $isPrimary ? 'Publish Matokeo' : 'Publish Results' }}</button>
+                    </form>
+                @endif
+            </div>
+        @endif
     </div>
 
     @if($hasRun)

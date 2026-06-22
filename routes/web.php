@@ -67,6 +67,7 @@ Route::get('/admin/dashboard', [DashboardController::class, 'admin'])
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/users/{user}/avatar', UserAvatarController::class)->name('users.avatar');
+    Route::get('/published-results', [FormTwoResultsController::class, 'publishedResults'])->name('published-results.index');
     Route::get('/approval/pending', fn() => view('auth.approval-pending'))->name('approval.pending');
     Route::get('/approval/rejected', fn() => view('auth.approval-rejected'))->name('approval.rejected');
 });
@@ -96,6 +97,7 @@ Route::middleware(['auth', 'form-two-results.access'])
         Route::get('/results', [FormTwoResultsController::class, 'results'])->name('results.index');
         Route::get('/analysis', [FormTwoResultsController::class, 'analysis'])->name('analysis.index');
         Route::get('/reports', [FormTwoResultsController::class, 'reports'])->name('reports.index');
+        Route::post('/reports/{assessment}/publish', [FormTwoResultsController::class, 'publishResults'])->name('reports.publish');
         Route::get('/reports/{student}', [FormTwoResultsController::class, 'report'])->name('reports.show');
     });
 
