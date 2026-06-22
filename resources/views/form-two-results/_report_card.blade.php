@@ -22,6 +22,6 @@
             <div><strong>{{ $isPrimary ? 'Daraja la Jumla' : 'Division / Points' }}:</strong><div class="fs-4 fw-bold">{{ $isPrimary ? ($summary['overall_grade'] ?? 'ABS') : $summary['division'].' / '.($summary['points'] ?? '-') }}</div></div>
             <div><strong>Nafasi:</strong><div class="fs-4 fw-bold">{{ $summary['rank'] ? $summary['rank'].' kati ya '.$summary['ranked_count'] : '-' }}</div></div>
         </div>
-        <div class="px-3 pb-3"><strong>Maoni:</strong> {{ in_array($summary['overall_grade'], ['A', 'B', 'C', 'D'], true) ? 'Wastani wake unakubalika.' : 'Anatakiwa kuhudhuria darasa rekebishi.' }}</div>
+        <div class="px-3 pb-3"><strong>Maoni:</strong> {{ in_array($summary['overall_grade'], ['A', 'B', 'C', 'D'], true) ? 'Wastani wake unakubalika.' : 'Aongeze juhudi.' }}</div>
     </div>
 </div>
