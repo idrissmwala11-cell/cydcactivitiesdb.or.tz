@@ -8,7 +8,7 @@
         </div>
         <div class="f2-ribbon">{{ strtoupper($assessment->name) }}</div>
         <div class="report-meta">
-            <div><strong>Jina la Mwanafunzi:</strong> {{ $summary['student']->candidate_name }}</div><div><strong>Namba:</strong> {{ $summary['student']->student_number }}</div>
+            <div><strong>Jina la Mwanafunzi:</strong> {{ $summary['student']->candidate_name }}</div><div><strong>Namba:</strong> {{ $summary['display_number'] ?? $summary['student']->student_number }}</div>
             <div><strong>Jinsi:</strong> {{ $summary['student']->sex === 'F' ? 'Msichana' : 'Mvulana' }}</div><div><strong>Darasa:</strong> {{ $summary['student']->class_level }}</div>
             <div><strong>FCP:</strong> {{ $summary['student']->fcp_name ?: '-' }}</div><div><strong>Muhula:</strong> {{ $assessment->term }}</div>
         </div>

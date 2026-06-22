@@ -385,6 +385,8 @@ class FormTwoResultsController extends Controller
     {
         $assessment = $this->selectedAssessment($request);
         $selection = $this->selection($request, $assessment);
+        $reportType = trim((string) $request->input('report_type', 'cards'));
+        abort_unless(in_array($reportType, ['cards', 'list'], true), 422, 'Aina ya ripoti haikubaliki.');
         $fcpNames = $this->studentQuery($selection)
             ->where('is_active', true)
             ->whereNotNull('fcp_name')
@@ -407,6 +409,21 @@ class FormTwoResultsController extends Controller
                     fn ($row) => $row['student']->fcp_name === $selectedFcp
                 )->values();
             }
+
+            if ($reportType === 'list') {
+                $rows = $rows->sort(function (array $left, array $right): int {
+                    if ($left['rank'] === null && $right['rank'] !== null) {
+                        return 1;
+                    }
+
+                    if ($left['rank'] !== null && $right['rank'] === null) {
+                        return -1;
+                    }
+
+                    return ($left['rank'] <=> $right['rank'])
+                        ?: strcasecmp($left['student']->candidate_name, $right['student']->candidate_name);
+                })->values();
+            }
         }
 
         return view('form-two-results.reports', [
@@ -414,6 +431,7 @@ class FormTwoResultsController extends Controller
             'assessment' => $assessment,
             'fcpNames' => $fcpNames,
             'selectedFcp' => $selectedFcp,
+            'reportType' => $reportType,
             'rows' => $rows,
             'hasRun' => $request->boolean('run'),
             ...$selection,
@@ -485,10 +503,13 @@ class FormTwoResultsController extends Controller
         }
 
         $rankedCount = $rows->whereNotNull('average')->count();
+        $classCode = config('form_two_results.class_codes.'.$assessment->class_level, preg_replace('/\D/', '', $assessment->class_level));
+        $studentNumberPrefix = ($assessment->education_level === 'primary' ? 'P' : 'F').$classCode;
 
-        return $rows->map(function ($row) use ($rankMap, $rankedCount) {
+        return $rows->map(function ($row, $index) use ($rankMap, $rankedCount, $studentNumberPrefix) {
             $row['rank'] = $rankMap[$row['student']->id] ?? null;
             $row['ranked_count'] = $rankedCount;
+            $row['display_number'] = $studentNumberPrefix.'-'.str_pad((string) ($index + 1), 3, '0', STR_PAD_LEFT);
 
             return $row;
         });

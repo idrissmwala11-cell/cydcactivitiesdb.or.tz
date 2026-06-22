@@ -3,11 +3,7 @@
 @section('content')
 @include('form-two-results._styles')
 <div class="container-fluid f2-shell">
-    @php
-        $isPrimary = $educationLevel === 'primary';
-        $classCode = config('form_two_results.class_codes.'.$classLevel, preg_replace('/\D/', '', $classLevel));
-        $studentNumberPrefix = ($isPrimary ? 'P' : 'F').$classCode;
-    @endphp
+    @php($isPrimary = $educationLevel === 'primary')
     @include('form-two-results._nav')
     @include('form-two-results._alerts')
     <div class="f2-sheet">
@@ -42,7 +38,7 @@
                 <tbody>
                 @forelse($rows as $row)
                     <tr>
-                        <td class="text-center text-nowrap">{{ $studentNumberPrefix }}-{{ str_pad((string) $loop->iteration, 3, '0', STR_PAD_LEFT) }}</td><td class="sticky-col fw-bold">{{ $row['student']->candidate_name }}</td><td class="text-nowrap">{{ $row['student']->fcp_name ?: '-' }}</td><td class="text-center">{{ $row['student']->sex }}</td>
+                        <td class="text-center text-nowrap">{{ $row['display_number'] }}</td><td class="sticky-col fw-bold">{{ $row['student']->candidate_name }}</td><td class="text-nowrap">{{ $row['student']->fcp_name ?: '-' }}</td><td class="text-center">{{ $row['student']->sex }}</td>
                         <td class="small lh-lg">
                             @forelse(collect($row['subjects'])->filter(fn ($item) => $item['mark'] !== null || $item['isAbsent']) as $subjectResult)
                                 @php($markText = $subjectResult['isAbsent'] ? 'ABS' : rtrim(rtrim(number_format($subjectResult['mark'], 2, '.', ''), '0'), '.'))

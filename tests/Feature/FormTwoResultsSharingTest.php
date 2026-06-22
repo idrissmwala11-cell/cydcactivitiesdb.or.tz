@@ -14,6 +14,76 @@ class FormTwoResultsSharingTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_full_results_list_is_ordered_by_position_with_absent_students_last(): void
+    {
+        $creator = User::factory()->create(['role' => 'admin']);
+        $viewer = User::factory()->create([
+            'email' => 'snashon.tz0827@gmail.com',
+            'role' => 'user',
+        ]);
+        $subject = FormTwoSubject::where('education_level', 'secondary')
+            ->where('abbreviation', 'B/MATH')
+            ->firstOrFail();
+        $assessment = FormTwoAssessment::create([
+            'name' => 'Position Test',
+            'slug' => 'position-test',
+            'term' => 'TERM I',
+            'assessment_date' => '2026-06-22',
+            'max_marks' => 100,
+            'display_order' => 100,
+            'is_published' => true,
+            'education_level' => 'secondary',
+            'class_level' => 'Form 2',
+        ]);
+
+        $students = collect([
+            ['F2-TEST-LOW', 'LOW STUDENT', 45],
+            ['F2-TEST-ABS', 'ABS STUDENT', null],
+            ['F2-TEST-HIGH', 'HIGH STUDENT', 85],
+        ])->map(function (array $data) use ($creator, $subject, $assessment) {
+            $student = FormTwoStudent::create([
+                'student_number' => $data[0],
+                'candidate_name' => $data[1],
+                'fcp_name' => 'FCP TEST',
+                'sex' => 'F',
+                'education_level' => 'secondary',
+                'class_level' => 'Form 2',
+                'is_active' => true,
+                'created_by' => $creator->id,
+            ]);
+            $student->subjects()->attach($subject->id, ['registered' => true]);
+
+            if ($data[2] !== null) {
+                FormTwoMark::create([
+                    'assessment_id' => $assessment->id,
+                    'student_id' => $student->id,
+                    'subject_id' => $subject->id,
+                    'mark' => $data[2],
+                    'is_absent' => false,
+                    'recorded_by' => $creator->id,
+                ]);
+            }
+
+            return $student;
+        });
+
+        $response = $this->actingAs($viewer)->get(route('form-two-results.reports.index', [
+            'education_level' => 'secondary',
+            'class_level' => 'Form 2',
+            'assessment_id' => $assessment->id,
+            'report_type' => 'list',
+            'run' => 1,
+        ]));
+
+        $response->assertOk()
+            ->assertSee('FULL RESULTS LIST')
+            ->assertSeeInOrder(['HIGH STUDENT', 'LOW STUDENT', 'ABS STUDENT'])
+            ->assertSee('B/MATH')
+            ->assertSee('85-A');
+
+        $this->assertCount(3, $students);
+    }
+
     public function test_authorized_users_share_results_and_can_run_reports(): void
     {
         $creator = User::factory()->create(['role' => 'admin']);

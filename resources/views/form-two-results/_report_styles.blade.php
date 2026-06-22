@@ -6,6 +6,10 @@
     .report-meta > div:nth-child(even) { border-right: 0; }
     .report-footer { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 12px; }
     .report-page + .report-page { margin-top: 2rem; }
+    .full-results-report { max-width: none; color: #111; }
+    .full-results-table { font-size: 0.78rem; }
+    .full-results-table th, .full-results-table td { padding: 0.42rem; }
+    .subject-marks-cell { min-width: 320px; line-height: 1.65; }
     @media(max-width: 600px) {
         .report-meta, .report-footer { grid-template-columns: 1fr; }
         .report-meta > div { border-right: 0; }
@@ -14,5 +18,10 @@
         .report-page { break-after: page; page-break-after: always; }
         .report-page:last-child { break-after: auto; page-break-after: auto; }
         .report-page + .report-page { margin-top: 0; }
+        .full-results-report .table-responsive { overflow: visible !important; }
+        .full-results-table { font-size: 7.5pt; }
+        .full-results-table thead { display: table-header-group; }
+        .full-results-table tr { break-inside: avoid; page-break-inside: avoid; }
+        .subject-marks-cell { min-width: 0; }
     }
 </style>
