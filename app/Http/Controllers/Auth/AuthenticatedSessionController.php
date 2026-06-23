@@ -176,13 +176,14 @@ class AuthenticatedSessionController extends Controller
     private function sendLoginOtp(Request $request, User $user, bool $remember): void
     {
         $code = (string) random_int(100000, 999999);
+        $expireMinutes = max(5, (int) config('auth.login_otp.expire_minutes', 30));
 
         $request->session()->put('login_otp', [
             'user_id' => $user->id,
             'email' => $user->email,
             'remember' => $remember,
             'code_hash' => Hash::make($code),
-            'expires_at' => now()->addMinutes(10)->timestamp,
+            'expires_at' => now()->addMinutes($expireMinutes)->timestamp,
             'attempts' => 0,
         ]);
 

@@ -22,7 +22,7 @@
 
         <p>
             Thank you for using CYDC Activities Database. Please use the verification code below to continue accessing your account.
-            This OTP code will expire in 10 minutes for security purposes.
+            This OTP code will expire in {{ $expireMinutes ?? config('auth.login_otp.expire_minutes', 30) }} minutes for security purposes.
         </p>
 
         <div style="text-align: center; margin: 28px 0;">
