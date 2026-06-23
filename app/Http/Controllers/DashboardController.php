@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CenterDataReportMail;
+use App\Mail\UserApprovedMail;
 use App\Models\User;
 use App\Models\Participant;
 use App\Models\Instructor;
@@ -744,6 +745,8 @@ class DashboardController extends Controller
             'status' => 'required|in:pending,approved,rejected',
         ]);
 
+        $wasApproved = $user->status === 'approved';
+
         $user->update([
             'center_id' => $request->center_id,
             'email' => $request->email,
@@ -751,14 +754,31 @@ class DashboardController extends Controller
             'status' => $request->status,
         ]);
 
+        if (! $wasApproved && $user->status === 'approved') {
+            $user->forceFill([
+                'approved_at' => now(),
+                'approved_by' => auth()->id(),
+            ])->save();
+
+            $this->notifyUserApproved($user);
+        }
+
         return redirect()->back()->with('success', 'User updated successfully!');
     }
 
     public function toggleUserStatus(User $user)
     {
-        $user->update([
-            'status' => $user->status === 'approved' ? 'rejected' : 'approved',
-        ]);
+        $newStatus = $user->status === 'approved' ? 'rejected' : 'approved';
+
+        $user->forceFill([
+            'status' => $newStatus,
+            'approved_at' => $newStatus === 'approved' ? now() : $user->approved_at,
+            'approved_by' => $newStatus === 'approved' ? auth()->id() : $user->approved_by,
+        ])->save();
+
+        if ($newStatus === 'approved') {
+            $this->notifyUserApproved($user);
+        }
 
         return redirect()->back()->with('success', 'User status updated successfully!');
     }
@@ -862,24 +882,47 @@ class DashboardController extends Controller
 
     public function approveUser(User $user)
     {
-        $user->update([
+        $wasApproved = $user->status === 'approved';
+
+        $user->forceFill([
             'status' => 'approved',
             'approved_at' => now(),
             'approved_by' => auth()->id(),
-        ]);
+        ])->save();
+
+        if (! $wasApproved) {
+            $this->notifyUserApproved($user);
+        }
 
         return redirect()->back()->with('success', 'User approved successfully!');
     }
 
     public function rejectUser(User $user)
     {
-        $user->update([
+        $user->forceFill([
             'status' => 'rejected',
             'approved_at' => now(),
             'approved_by' => auth()->id(),
-        ]);
+        ])->save();
 
         return redirect()->back()->with('success', 'User rejected successfully!');
+    }
+
+    private function notifyUserApproved(User $user): void
+    {
+        if (blank($user->email)) {
+            return;
+        }
+
+        try {
+            Mail::to($user->email)->send(new UserApprovedMail($user));
+        } catch (Throwable $exception) {
+            Log::warning('Failed to send user approval email.', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 
     public function adminSearch(Request $request)

@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserRegisteredForApprovalMail;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Throwable;
 
 class RegisteredUserController extends Controller
 {
@@ -48,8 +52,41 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        $this->notifyAdminsAboutRegistration($user);
+
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    private function notifyAdminsAboutRegistration(User $user): void
+    {
+        try {
+            $adminEmails = User::query()
+                ->where('role', 'admin')
+                ->whereNotNull('email')
+                ->pluck('email')
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
+
+            if ($adminEmails === []) {
+                Log::warning('New user registration email was not sent because no admin emails were found.', [
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                ]);
+
+                return;
+            }
+
+            Mail::to($adminEmails)->send(new UserRegisteredForApprovalMail($user));
+        } catch (Throwable $exception) {
+            Log::warning('Failed to send new user registration approval email.', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 }

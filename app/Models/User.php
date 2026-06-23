@@ -19,6 +19,8 @@ class User extends Authenticatable
         'center_id',
         'cluster_name',
         'status',
+        'approved_at',
+        'approved_by',
         'profile_photo',
         // New fields for settings
         'theme_mode',       // light/dark mode
@@ -35,6 +37,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'approved_at' => 'datetime',
             'password' => 'hashed',
             'future_feature' => 'boolean',  // cast future_feature as boolean
         ];
