@@ -330,6 +330,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/run', [ReportController::class, 'run'])->name('reports.run');
     Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
+    Route::get('/reports/export', [ReportController::class, 'export'])->name('reports.export');
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::get('/chat/data', [ChatController::class, 'data'])->name('chat.data');
     Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');

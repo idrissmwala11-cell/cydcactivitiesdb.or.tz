@@ -98,6 +98,17 @@
                         >
                             Print Report
                         </a>
+                        <a
+                            href="{{ route('reports.export', [
+                                'module' => request('module'),
+                                'center_id' => ($isCentersWithoutDataReport ?? false) ? null : ($centerId ?? request('center_id')),
+                                'period' => $selectedPeriod,
+                                'class_level' => $selectedClassLevel
+                            ]) }}"
+                            class="btn btn-outline-success w-100"
+                        >
+                            Export Excel
+                        </a>
                     @endif
                 </div>
             </form>

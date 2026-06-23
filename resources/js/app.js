@@ -38,10 +38,21 @@ document.addEventListener('DOMContentLoaded', function() {
       container.innerHTML = '<div class="text-center text-muted py-3">No results found</div>';
       return;
     }
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
     const badgeClassByType = {
       'Parents Information': 'primary',
       'Center Leadership': 'info',
-      'Special Program': 'success'
+      'Special Program': 'success',
+      'System User': 'dark',
+      'Results 2026 Student': 'success',
+      'Results 2026 Assessment': 'warning'
     };
     container.innerHTML = results.map(r => {
       const badge = badgeClassByType[r.type] || 'secondary';
@@ -49,10 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
       return `
         <div class="d-flex align-items-start border-bottom py-3">
           <div class="me-3">
-            <span class="badge bg-${badge}">${r.type || 'Item'}</span>
+            <span class="badge bg-${badge}">${escapeHtml(r.type || 'Item')}</span>
           </div>
           <div class="flex-fill">
-            <div class="fw-semibold">${r.title || 'Untitled'}</div>
+            <div class="fw-semibold">${escapeHtml(r.title || 'Untitled')}</div>
+            <div class="small text-muted">${escapeHtml(r.location || 'Record')}</div>
+            <div class="small">${escapeHtml(r.description || '')}</div>
             <div class="small text-muted">By: ${r.user || ''} • ${r.date || ''} • Status: ${r.status || ''}</div>
           </div>
           <div class="ms-3">

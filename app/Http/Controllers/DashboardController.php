@@ -32,6 +32,7 @@ use App\Models\OutOfMinistryLeader;
 use App\Models\SchoolInformationRecord;
 use App\Models\ExamResult;
 use App\Models\FormTwoAssessment;
+use App\Models\FormTwoStudent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -208,6 +209,11 @@ class DashboardController extends Controller
             ->get()
             ->count();
 
+        $moduleDistribution = $this->getModuleDistributionAnalytics();
+        $topCentersByRecords = $this->getTopCentersByRecords();
+        $monthlySubmissionAnalytics = $this->getMonthlySubmissionAnalytics();
+        $alertTools = $this->getQuickAlertTools();
+
         return view('dashboard.admin', compact(
             'stats',
             'userRegistrationTrends',
@@ -222,7 +228,11 @@ class DashboardController extends Controller
             'pendingUsers',
             'centersWithoutData',
             'centerReportRecipientCount',
-            'centerReportCenterCount'
+            'centerReportCenterCount',
+            'moduleDistribution',
+            'topCentersByRecords',
+            'monthlySubmissionAnalytics',
+            'alertTools'
         ));
     }
 
@@ -1199,6 +1209,97 @@ class DashboardController extends Controller
             $results = $results->merge($items);
         }
 
+        if ($isAdminViewer) {
+            $userResults = User::query()
+                ->where(function ($builder) use ($searchTerm) {
+                    $builder->where('email', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('phone', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('center_id', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('cluster_name', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('role', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('status', 'LIKE', "%{$searchTerm}%");
+                })
+                ->latest()
+                ->limit(8)
+                ->get()
+                ->map(fn (User $user) => [
+                    'type' => 'System User',
+                    'title' => $user->center_id ?: $user->email ?: 'User',
+                    'description' => trim(($user->email ?? '') . ' ' . ($user->phone ?? '')),
+                    'user' => $user->center_id ?? 'No Center ID',
+                    'submitted_by' => $user->email ?? 'No email',
+                    'date' => optional($user->created_at)->format('M d, Y') ?? 'N/A',
+                    'sort_date' => optional($user->created_at)->timestamp ?? 0,
+                    'status' => $user->status ?? 'pending',
+                    'id' => $user->id,
+                    'location' => 'User Management',
+                    'url' => route('admin.users.index'),
+                ]);
+
+            $results = $results->merge($userResults);
+        }
+
+        if ($viewer && method_exists($viewer, 'canAccessFormTwoResults') && $viewer->canAccessFormTwoResults()) {
+            $studentResults = FormTwoStudent::query()
+                ->with('creator')
+                ->where(function ($builder) use ($searchTerm) {
+                    $builder->where('student_number', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('candidate_name', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('fcp_name', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('education_level', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('class_level', 'LIKE', "%{$searchTerm}%");
+                })
+                ->latest()
+                ->limit(10)
+                ->get()
+                ->map(fn (FormTwoStudent $student) => [
+                    'type' => 'Results 2026 Student',
+                    'title' => trim(($student->student_number ?? '') . ' - ' . ($student->candidate_name ?? 'Student')),
+                    'description' => trim(($student->fcp_name ?? '') . ' | ' . ($student->education_level ?? '') . ' ' . ($student->class_level ?? '')),
+                    'user' => $student->creator?->center_id ?? 'Results 2026',
+                    'submitted_by' => $student->creator?->email ?? 'Results 2026',
+                    'date' => optional($student->created_at)->format('M d, Y') ?? 'N/A',
+                    'sort_date' => optional($student->created_at)->timestamp ?? 0,
+                    'status' => $student->is_active ? 'active' : 'inactive',
+                    'id' => $student->id,
+                    'location' => 'Results 2026 > Students',
+                    'url' => route('form-two-results.students.index', [
+                        'education_level' => $student->education_level,
+                        'class_level' => $student->class_level,
+                    ]),
+                ]);
+
+            $assessmentResults = FormTwoAssessment::query()
+                ->where(function ($builder) use ($searchTerm) {
+                    $builder->where('name', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('term', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('education_level', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('class_level', 'LIKE', "%{$searchTerm}%");
+                })
+                ->latest()
+                ->limit(8)
+                ->get()
+                ->map(fn (FormTwoAssessment $assessment) => [
+                    'type' => 'Results 2026 Assessment',
+                    'title' => $assessment->name,
+                    'description' => trim(($assessment->education_level ?? '') . ' | ' . ($assessment->class_level ?? '') . ' | ' . ($assessment->term ?? '')),
+                    'user' => 'Results 2026',
+                    'submitted_by' => 'Results 2026',
+                    'date' => optional($assessment->created_at)->format('M d, Y') ?? 'N/A',
+                    'sort_date' => optional($assessment->created_at)->timestamp ?? 0,
+                    'status' => $assessment->is_published ? 'published' : 'draft',
+                    'id' => $assessment->id,
+                    'location' => 'Results 2026 > Assessments',
+                    'url' => route('form-two-results.results.index', [
+                        'education_level' => $assessment->education_level,
+                        'class_level' => $assessment->class_level,
+                        'assessment_id' => $assessment->id,
+                    ]),
+                ]);
+
+            $results = $results->merge($studentResults)->merge($assessmentResults);
+        }
+
         return $results
             ->sortByDesc('sort_date')
             ->take(30)
@@ -1309,6 +1410,176 @@ class DashboardController extends Controller
             })
             ->sortByDesc('count')
             ->values();
+    }
+
+    private function getModuleDistributionAnalytics()
+    {
+        return collect($this->getCenterProfileModules())
+            ->map(function (array $module, string $key) {
+                try {
+                    return [
+                        'key' => $key,
+                        'title' => $module['title'] ?? ucwords(str_replace('_', ' ', $key)),
+                        'count' => $this->buildModuleBaseQuery($module)->count(),
+                    ];
+                } catch (Throwable $exception) {
+                    Log::warning('Failed to build module distribution analytics.', [
+                        'module' => $key,
+                        'error' => $exception->getMessage(),
+                    ]);
+
+                    return [
+                        'key' => $key,
+                        'title' => $module['title'] ?? ucwords(str_replace('_', ' ', $key)),
+                        'count' => 0,
+                    ];
+                }
+            })
+            ->sortByDesc('count')
+            ->take(8)
+            ->values();
+    }
+
+    private function getTopCentersByRecords(int $limit = 8)
+    {
+        $centerCounts = [];
+
+        foreach ($this->getCenterProfileModules() as $module) {
+            try {
+                $modelClass = $module['model'];
+                $table = (new $modelClass())->getTable();
+
+                if (! Schema::hasColumn($table, 'user_id')) {
+                    continue;
+                }
+
+                $rows = $this->buildModuleBaseQuery($module)
+                    ->join('users', "{$table}.user_id", '=', 'users.id')
+                    ->whereNotNull('users.center_id')
+                    ->whereRaw("TRIM(users.center_id) <> ''")
+                    ->selectRaw('UPPER(TRIM(users.center_id)) as center_key, MIN(users.center_id) as center_id, COUNT(*) as total_records')
+                    ->groupBy('center_key')
+                    ->get();
+
+                foreach ($rows as $row) {
+                    $key = (string) $row->center_key;
+                    $centerCounts[$key] ??= [
+                        'center_id' => $row->center_id,
+                        'total_records' => 0,
+                    ];
+                    $centerCounts[$key]['total_records'] += (int) $row->total_records;
+                }
+            } catch (Throwable $exception) {
+                Log::warning('Failed to build top center analytics.', [
+                    'module' => $module['title'] ?? 'unknown',
+                    'error' => $exception->getMessage(),
+                ]);
+            }
+        }
+
+        return collect($centerCounts)
+            ->sortByDesc('total_records')
+            ->take($limit)
+            ->values();
+    }
+
+    private function getMonthlySubmissionAnalytics(int $months = 6)
+    {
+        $start = now()->startOfMonth()->subMonths($months - 1);
+        $labels = collect(range(0, $months - 1))
+            ->mapWithKeys(fn (int $offset) => [
+                $start->copy()->addMonths($offset)->format('Y-m') => [
+                    'label' => $start->copy()->addMonths($offset)->format('M Y'),
+                    'count' => 0,
+                ],
+            ])
+            ->all();
+
+        foreach ($this->getCenterProfileModules() as $module) {
+            try {
+                $modelClass = $module['model'];
+                $table = (new $modelClass())->getTable();
+
+                if (! Schema::hasColumn($table, 'created_at')) {
+                    continue;
+                }
+
+                $dates = $this->buildModuleBaseQuery($module)
+                    ->whereDate("{$table}.created_at", '>=', $start->toDateString())
+                    ->pluck("{$table}.created_at");
+
+                foreach ($dates as $date) {
+                    $key = Carbon::parse($date)->format('Y-m');
+
+                    if (isset($labels[$key])) {
+                        $labels[$key]['count']++;
+                    }
+                }
+            } catch (Throwable $exception) {
+                Log::warning('Failed to build monthly submission analytics.', [
+                    'module' => $module['title'] ?? 'unknown',
+                    'error' => $exception->getMessage(),
+                ]);
+            }
+        }
+
+        return collect($labels)->values();
+    }
+
+    private function getQuickAlertTools()
+    {
+        $message = 'Habari, tafadhali ingia kwenye CYDC Activities Database ukague taarifa zako.';
+
+        return User::query()
+            ->where('role', '!=', 'admin')
+            ->whereNotNull('phone')
+            ->whereRaw("TRIM(phone) <> ''")
+            ->orderBy('center_id')
+            ->take(12)
+            ->get()
+            ->map(function (User $user) use ($message) {
+                $phone = $this->normalizePhoneForAlerts($user->phone);
+
+                return [
+                    'center_id' => $user->center_id ?: 'No Center ID',
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'normalized_phone' => $phone,
+                    'whatsapp_url' => $phone ? 'https://wa.me/'.$phone.'?text='.rawurlencode($message) : null,
+                    'sms_url' => $phone ? 'sms:+'.$phone.'?body='.rawurlencode($message) : null,
+                ];
+            });
+    }
+
+    private function normalizePhoneForAlerts(?string $phone): ?string
+    {
+        $digits = preg_replace('/\D+/', '', (string) $phone);
+
+        if ($digits === '') {
+            return null;
+        }
+
+        if (str_starts_with($digits, '0')) {
+            return '255'.substr($digits, 1);
+        }
+
+        if (str_starts_with($digits, '255')) {
+            return $digits;
+        }
+
+        return $digits;
+    }
+
+    private function buildModuleBaseQuery(array $module)
+    {
+        $modelClass = $module['model'];
+        $query = $modelClass::query();
+
+        foreach (($module['where'] ?? []) as $column => $value) {
+            $query->where($column, $value);
+        }
+
+        return $query;
     }
 
     private function buildCenterModuleQuery(array $module, string $centerId)

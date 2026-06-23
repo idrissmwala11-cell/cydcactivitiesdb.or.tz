@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Carbon\Carbon;
 use App\Models\Submission;
 use App\Models\User;
@@ -222,6 +223,112 @@ class ReportController extends Controller
     }
 
     /**
+     * Export selected report as a CSV file that opens in Excel.
+     */
+    public function export(Request $request): StreamedResponse|RedirectResponse
+    {
+        $request->validate([
+            'module' => ['required', 'string'],
+            'center_id' => ['nullable', 'string'],
+            'period' => ['nullable', 'in:all,week,month,3months,6months'],
+            'class_level' => ['nullable', 'string'],
+        ]);
+
+        $modules = $this->getModules();
+        $moduleKey = $request->module;
+
+        if (! array_key_exists($moduleKey, $modules)) {
+            return redirect()->route('reports.index')->with('error', 'Invalid module selected.');
+        }
+
+        $user = Auth::user();
+        $period = $request->period ?? 'all';
+        $selectedClassLevel = trim((string) $request->class_level);
+
+        if ($moduleKey === 'centers_without_data') {
+            abort_if($user->role !== 'admin', 403);
+
+            $records = $this->getCentersWithoutDataRecords();
+            $filename = 'centers-without-data-'.now()->format('Ymd-His').'.csv';
+
+            return $this->streamCsv($filename, function ($handle) use ($records) {
+                fputcsv($handle, ['No.', 'Center ID', 'Total Users', 'First Registered', 'Status']);
+
+                foreach ($records as $index => $record) {
+                    fputcsv($handle, [
+                        $index + 1,
+                        strtoupper((string) $record->center_id),
+                        $record->total_users,
+                        $record->first_registered_at ? Carbon::parse($record->first_registered_at)->format('Y-m-d') : '',
+                        'No data submitted',
+                    ]);
+                }
+            });
+        }
+
+        $centerId = $user->role === 'admin'
+            ? strtoupper(trim((string) $request->center_id))
+            : strtoupper((string) $user->center_id);
+
+        if (! $centerId) {
+            return redirect()->route('reports.index')->with('error', 'Center ID is required.');
+        }
+
+        $module = $modules[$moduleKey];
+        $records = $this->buildRecordsQuery($module, $centerId);
+        $table = $this->resolveModuleTable($module);
+        $startDate = $this->resolveStartDate($period);
+
+        if ($selectedClassLevel !== '' && array_key_exists($moduleKey, $this->getExamClassLevelOptions())) {
+            $records->where('class_level', $selectedClassLevel);
+        }
+
+        if ($startDate) {
+            if ($this->hasColumn($table, 'date')) {
+                $records->whereDate('date', '>=', $startDate->toDateString());
+            } elseif ($this->hasColumn($table, 'submitted_at')) {
+                $records->whereDate('submitted_at', '>=', $startDate->toDateString());
+            } else {
+                $records->whereDate('created_at', '>=', $startDate->toDateString());
+            }
+        }
+
+        if ($this->hasColumn($table, 'date')) {
+            $records->orderByDesc('date');
+        } elseif ($this->hasColumn($table, 'submitted_at')) {
+            $records->orderByDesc('submitted_at');
+        } else {
+            $records->orderByDesc('created_at');
+        }
+
+        $records = $records->get();
+        $fields = $module['fields'] ?? [];
+        $filename = str($module['title'] ?? 'report')
+            ->slug()
+            ->append('-'.$centerId.'-'.now()->format('Ymd-His').'.csv')
+            ->toString();
+
+        return $this->streamCsv($filename, function ($handle) use ($records, $fields) {
+            fputcsv($handle, array_merge(['No.', 'Submitted By', 'Email', 'Center ID'], array_values($fields)));
+
+            foreach ($records as $index => $record) {
+                $row = [
+                    $index + 1,
+                    $record->user->center_id ?? 'Legacy record',
+                    $record->user->email ?? '',
+                    strtoupper((string) ($record->user->center_id ?? '')),
+                ];
+
+                foreach (array_keys($fields) as $field) {
+                    $row[] = $this->exportValue($record, $field);
+                }
+
+                fputcsv($handle, $row);
+            }
+        });
+    }
+
+    /**
      * Resolve selected period to start date.
      */
     private function resolveStartDate(string $period): ?Carbon
@@ -374,5 +481,40 @@ class ReportController extends Controller
                 'Form 6',
             ],
         ];
+    }
+
+    private function streamCsv(string $filename, callable $writer): StreamedResponse
+    {
+        return response()->streamDownload(function () use ($writer) {
+            $handle = fopen('php://output', 'w');
+            fwrite($handle, "\xEF\xBB\xBF");
+            $writer($handle);
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
+
+    private function exportValue($record, string $field): string
+    {
+        $value = data_get($record, $field);
+
+        if ($value === null && is_array($record->form_data ?? null)) {
+            $value = data_get($record->form_data, $field);
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format('Y-m-d H:i:s');
+        }
+
+        if (is_bool($value)) {
+            return $value ? 'Yes' : 'No';
+        }
+
+        if (is_array($value)) {
+            return collect($value)->flatten()->filter()->implode(' | ');
+        }
+
+        return trim((string) $value);
     }
 }

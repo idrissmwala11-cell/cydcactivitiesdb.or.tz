@@ -185,6 +185,147 @@
         </div>
     </div>
 
+    {{-- Live Analytics --}}
+    <div class="row g-4 mb-4">
+        <div class="col-xl-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0"><i class="bi bi-graph-up-arrow text-primary me-2"></i>Live Analytics</h5>
+                    <small class="text-muted">Monthly submissions across active modules</small>
+                </div>
+                <div class="card-body">
+                    @php
+                        $maxMonthly = max(1, collect($monthlySubmissionAnalytics ?? [])->max('count') ?? 1);
+                    @endphp
+                    @forelse($monthlySubmissionAnalytics ?? [] as $month)
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small fw-semibold mb-1">
+                                <span>{{ $month['label'] }}</span>
+                                <span>{{ number_format($month['count']) }}</span>
+                            </div>
+                            <div class="progress" style="height: 9px;">
+                                <div class="progress-bar bg-primary" style="width: {{ min(100, (($month['count'] ?? 0) / $maxMonthly) * 100) }}%"></div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-muted text-center py-4">No analytics data yet.</div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0"><i class="bi bi-pie-chart text-success me-2"></i>Top Modules</h5>
+                    <small class="text-muted">Modules with the highest records</small>
+                </div>
+                <div class="card-body">
+                    @php
+                        $maxModule = max(1, collect($moduleDistribution ?? [])->max('count') ?? 1);
+                    @endphp
+                    @forelse($moduleDistribution ?? [] as $module)
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small fw-semibold mb-1">
+                                <span>{{ $module['title'] }}</span>
+                                <span>{{ number_format($module['count']) }}</span>
+                            </div>
+                            <div class="progress" style="height: 9px;">
+                                <div class="progress-bar bg-success" style="width: {{ min(100, (($module['count'] ?? 0) / $maxModule) * 100) }}%"></div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-muted text-center py-4">No module data yet.</div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0"><i class="bi bi-building-check text-info me-2"></i>Top Centers</h5>
+                    <small class="text-muted">Centers with the most submitted data</small>
+                </div>
+                <div class="card-body">
+                    @php
+                        $maxCenter = max(1, collect($topCentersByRecords ?? [])->max('total_records') ?? 1);
+                    @endphp
+                    @forelse($topCentersByRecords ?? [] as $center)
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small fw-semibold mb-1">
+                                <span>{{ $center['center_id'] }}</span>
+                                <span>{{ number_format($center['total_records']) }}</span>
+                            </div>
+                            <div class="progress" style="height: 9px;">
+                                <div class="progress-bar bg-info" style="width: {{ min(100, (($center['total_records'] ?? 0) / $maxCenter) * 100) }}%"></div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-muted text-center py-4">No center data yet.</div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- SMS / WhatsApp Quick Alerts --}}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div>
+                            <h5 class="mb-1"><i class="bi bi-whatsapp text-success me-2"></i>SMS / WhatsApp Quick Alerts</h5>
+                            <small class="text-muted">Open a ready message to users with saved phone numbers. API gateway can be connected later.</small>
+                        </div>
+                        <span class="badge bg-success-subtle text-success">{{ number_format(collect($alertTools ?? [])->count()) }} contacts</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Center ID</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($alertTools ?? [] as $alert)
+                                    <tr>
+                                        <td class="fw-semibold">{{ $alert['center_id'] }}</td>
+                                        <td>{{ $alert['email'] }}</td>
+                                        <td>{{ $alert['phone'] }}</td>
+                                        <td class="text-end">
+                                            @if($alert['whatsapp_url'])
+                                                <a href="{{ $alert['whatsapp_url'] }}" target="_blank" class="btn btn-sm btn-success">
+                                                    <i class="bi bi-whatsapp me-1"></i>WhatsApp
+                                                </a>
+                                            @endif
+                                            @if($alert['sms_url'])
+                                                <a href="{{ $alert['sms_url'] }}" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-chat-dots me-1"></i>SMS
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-3">No phone numbers available for alerts.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <small class="text-muted">Note: this sends through the phone/browser app. For automatic bulk SMS/WhatsApp, add gateway credentials in the next phase.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Search Results --}}
     <div class="row mb-4" id="searchResults" style="display: none;">
         <div class="col-12">
