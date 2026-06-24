@@ -32,6 +32,7 @@ class LoginOtpMail extends Mailable
     {
         return new Content(
             view: 'emails.auth.login-otp',
+            text: 'emails.auth.login-otp-text',
         );
     }
 }
