@@ -22,6 +22,7 @@ class User extends Authenticatable
         'approved_at',
         'approved_by',
         'profile_photo',
+        'last_seen_at',
         // New fields for settings
         'theme_mode',       // light/dark mode
         'future_feature',   // 0 = disabled, 1 = enabled
@@ -38,6 +39,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'approved_at' => 'datetime',
+            'last_seen_at' => 'datetime',
             'password' => 'hashed',
             'future_feature' => 'boolean',  // cast future_feature as boolean
         ];
@@ -142,6 +144,12 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn (string $part): string => strtoupper(substr($part, 0, 1)))
             ->implode('') ?: 'U';
+    }
+
+    public function getIsOnlineAttribute(): bool
+    {
+        return $this->last_seen_at !== null
+            && $this->last_seen_at->greaterThanOrEqualTo(now()->subMinutes(5));
     }
 
     // Relationships

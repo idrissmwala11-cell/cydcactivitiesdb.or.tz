@@ -42,6 +42,7 @@ class ChatController extends Controller
                     'email' => $contact->email,
                     'avatar_url' => $contact->avatar_url,
                     'initials' => $contact->initials,
+                    'is_online' => $contact->is_online,
                     'unread_count' => ChatMessage::where('sender_id', $contact->id)
                         ->where('recipient_id', $user->id)
                         ->whereNull('read_at')
@@ -54,6 +55,7 @@ class ChatController extends Controller
                 'email' => $selectedContact->email,
                 'avatar_url' => $selectedContact->avatar_url,
                 'initials' => $selectedContact->initials,
+                'is_online' => $selectedContact->is_online,
             ] : null,
             'messages' => $messages->map(function ($message) use ($user) {
                 return [
@@ -62,6 +64,7 @@ class ChatController extends Controller
                     'sender_name' => $message->sender->center_id ?: $message->sender->email,
                     'sender_avatar_url' => $message->sender->avatar_url,
                     'sender_initials' => $message->sender->initials,
+                    'sender_is_online' => $message->sender->is_online,
                     'message' => $message->message,
                     'created_at' => optional($message->created_at)->format('d M Y H:i'),
                 ];
@@ -99,6 +102,7 @@ class ChatController extends Controller
                     'sender_name' => $user->center_id ?: $user->email,
                     'sender_avatar_url' => $user->avatar_url,
                     'sender_initials' => $user->initials,
+                    'sender_is_online' => $user->is_online,
                     'message' => $message->message,
                     'created_at' => optional($message->created_at)->format('d M Y H:i'),
                 ],

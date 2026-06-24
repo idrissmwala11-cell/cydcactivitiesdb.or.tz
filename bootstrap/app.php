@@ -23,6 +23,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         // Apply user status middleware to web routes
         $middleware->web(append: [
             \App\Http\Middleware\UserStatusMiddleware::class,
+            \App\Http\Middleware\TrackUserActivity::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

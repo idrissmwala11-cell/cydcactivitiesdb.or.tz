@@ -20,4 +20,12 @@
             onerror="this.style.display='none'"
         >
     @endif
+
+    @if($user?->is_online)
+        <span
+            aria-label="Online"
+            title="Online"
+            style="position:absolute;right:0;bottom:0;width:{{ max(8, (int) round($size * 0.28)) }}px;height:{{ max(8, (int) round($size * 0.28)) }}px;border-radius:999px;background:#22c55e;border:2px solid #fff;box-shadow:0 0 0 2px rgba(34,197,94,.18);z-index:2;"
+        ></span>
+    @endif
 </span>

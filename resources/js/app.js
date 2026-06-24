@@ -205,11 +205,15 @@ document.addEventListener('DOMContentLoaded', function () {
   function chatAvatar(person, size = 34) {
     const initials = escapeHtml(person.initials || person.sender_initials || 'U');
     const avatarUrl = person.avatar_url || person.sender_avatar_url;
+    const isOnline = Boolean(person.is_online || person.sender_is_online);
     const image = avatarUrl
       ? `<img src="${escapeHtml(avatarUrl)}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`
       : '';
+    const onlineDot = isOnline
+      ? `<span title="Online" aria-label="Online" style="position:absolute;right:0;bottom:0;width:${Math.max(8, Math.round(size * .28))}px;height:${Math.max(8, Math.round(size * .28))}px;border-radius:999px;background:#22c55e;border:2px solid #fff;box-shadow:0 0 0 2px rgba(34,197,94,.18);z-index:2"></span>`
+      : '';
 
-    return `<span class="d-inline-flex align-items-center justify-content-center rounded-circle overflow-hidden flex-shrink-0" style="width:${size}px;height:${size}px;position:relative;background:linear-gradient(135deg,#0f766e,#2563eb);color:#fff;font-weight:700;font-size:${Math.max(10, Math.round(size * .34))}px"><span>${initials}</span>${image}</span>`;
+    return `<span class="d-inline-flex align-items-center justify-content-center rounded-circle overflow-hidden flex-shrink-0" style="width:${size}px;height:${size}px;position:relative;background:linear-gradient(135deg,#0f766e,#2563eb);color:#fff;font-weight:700;font-size:${Math.max(10, Math.round(size * .34))}px"><span>${initials}</span>${image}${onlineDot}</span>`;
   }
 
   function playBeep() {
