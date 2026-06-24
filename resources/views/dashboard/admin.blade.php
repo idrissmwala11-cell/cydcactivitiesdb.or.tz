@@ -394,6 +394,149 @@
         </div>
     @endif
 
+    {{-- Statistics - selected cards only --}}
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card dashboard-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                            <i class="bi bi-person-plus text-success" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-success-subtle text-success">
+                                <i class="bi bi-arrow-up"></i> +8%
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="h2 mb-1 fw-bold">{{ number_format($stats['recent_users'] ?? 0) }}</h3>
+                    <p class="text-muted mb-2">New Users (7 days)</p>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+                    </div>
+                    <small class="text-muted mt-1">Growing steadily</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card dashboard-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-info bg-opacity-10 rounded-circle p-3">
+                            <i class="bi bi-shield-check text-info" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-info-subtle text-info">
+                                <i class="bi bi-shield"></i> Secure
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="h2 mb-1 fw-bold">{{ number_format($stats['admin_users'] ?? 0) }}</h3>
+                    <p class="text-muted mb-2">Admin Users</p>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 90%"></div>
+                    </div>
+                    <small class="text-muted mt-1">System secured</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card dashboard-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-warning bg-opacity-10 rounded-circle p-3">
+                            <i class="bi bi-clock-history text-warning" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-warning-subtle text-warning">
+                                <i class="bi bi-hourglass-split"></i> Pending
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="h2 mb-1 fw-bold">{{ number_format($stats['pending_users'] ?? 0) }}</h3>
+                    <p class="text-muted mb-2">Pending Approval</p>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{ ($stats['pending_users'] ?? 0) > 0 ? min((($stats['pending_users'] ?? 0) / max(($stats['total_users'] ?? 1), 1)) * 100, 100) : 0 }}%"></div>
+                    </div>
+                    <small class="text-muted mt-1">Awaiting review</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card dashboard-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                            <i class="bi bi-check-circle text-success" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-success-subtle text-success">
+                                <i class="bi bi-check"></i> Approved
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="h2 mb-1 fw-bold">{{ number_format($stats['approved_users'] ?? 0) }}</h3>
+                    <p class="text-muted mb-2">Approved Users</p>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ ($stats['approved_users'] ?? 0) > 0 ? min((($stats['approved_users'] ?? 0) / max(($stats['total_users'] ?? 1), 1)) * 100, 100) : 0 }}%"></div>
+                    </div>
+                    <small class="text-muted mt-1">Active accounts</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card dashboard-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-danger bg-opacity-10 rounded-circle p-3">
+                            <i class="bi bi-x-circle text-danger" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-danger-subtle text-danger">
+                                <i class="bi bi-x"></i> Rejected
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="h2 mb-1 fw-bold">{{ number_format($stats['rejected_users'] ?? 0) }}</h3>
+                    <p class="text-muted mb-2">Rejected Users</p>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: {{ ($stats['rejected_users'] ?? 0) > 0 ? min((($stats['rejected_users'] ?? 0) / max(($stats['total_users'] ?? 1), 1)) * 100, 100) : 0 }}%"></div>
+                    </div>
+                    <small class="text-muted mt-1">Denied access</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card dashboard-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                            <i class="bi bi-people text-primary" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div class="text-end">
+                            @if(Route::has('admin.users.index'))
+                                <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-gear"></i> Manage
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                    <h3 class="h2 mb-1 fw-bold">{{ number_format($stats['total_users'] ?? 0) }}</h3>
+                    <p class="text-muted mb-2">Total Users</p>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"></div>
+                    </div>
+                    <small class="text-muted mt-1">All registered users</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @if(false)
     {{-- Statistics --}}
     <div class="row g-4 mb-4">
