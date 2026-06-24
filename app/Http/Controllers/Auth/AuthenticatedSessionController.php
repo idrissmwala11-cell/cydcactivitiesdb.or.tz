@@ -86,7 +86,10 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('login');
         }
 
-        if (now()->timestamp > $otp['expires_at']) {
+        $otp = $this->removeExpiredOtpCodes($otp);
+        $request->session()->put('login_otp', $otp);
+
+        if (empty($otp['code_hashes'])) {
             $request->session()->forget('login_otp');
 
             return redirect()
@@ -94,7 +97,7 @@ class AuthenticatedSessionController extends Controller
                 ->withErrors(['email' => 'Verification code ime-expire. Tafadhali login tena.']);
         }
 
-        if (! Hash::check($validated['code'], $otp['code_hash'])) {
+        if (! $this->otpCodeMatches($validated['code'], $otp)) {
             $attempts = (int) ($otp['attempts'] ?? 0) + 1;
             $otp['attempts'] = $attempts;
             $request->session()->put('login_otp', $otp);
@@ -137,7 +140,7 @@ class AuthenticatedSessionController extends Controller
         $user = User::findOrFail($otp['user_id']);
 
         try {
-            $this->sendLoginOtp($request, $user, (bool) ($otp['remember'] ?? false));
+            $this->sendLoginOtp($request, $user, (bool) ($otp['remember'] ?? false), appendToExisting: true);
         } catch (Throwable $exception) {
             Log::error('Login OTP resend email failed.', [
                 'user_id' => $user->id,
@@ -173,20 +176,69 @@ class AuthenticatedSessionController extends Controller
         }
     }
 
-    private function sendLoginOtp(Request $request, User $user, bool $remember): void
+    private function sendLoginOtp(Request $request, User $user, bool $remember, bool $appendToExisting = false): void
     {
         $code = (string) random_int(100000, 999999);
+        $expiresAt = now()->addMinutes(10)->timestamp;
+
+        $existingOtp = $appendToExisting ? $request->session()->get('login_otp', []) : [];
+        $codeHashes = $appendToExisting ? $this->removeExpiredOtpCodes($existingOtp)['code_hashes'] ?? [] : [];
+        $codeHashes[] = [
+            'hash' => Hash::make($code),
+            'expires_at' => $expiresAt,
+        ];
+        $codeHashes = array_slice($codeHashes, -5);
 
         $request->session()->put('login_otp', [
             'user_id' => $user->id,
             'email' => $user->email,
             'remember' => $remember,
-            'code_hash' => Hash::make($code),
-            'expires_at' => now()->addMinutes(10)->timestamp,
-            'attempts' => 0,
+            'code_hash' => $codeHashes[array_key_last($codeHashes)]['hash'],
+            'code_hashes' => $codeHashes,
+            'expires_at' => max(array_column($codeHashes, 'expires_at')),
+            'attempts' => $appendToExisting ? (int) ($existingOtp['attempts'] ?? 0) : 0,
         ]);
 
         Mail::to($user->email)->send(new LoginOtpMail($code, $user));
+    }
+
+    private function otpCodeMatches(string $code, array $otp): bool
+    {
+        foreach ($otp['code_hashes'] ?? [] as $codeHash) {
+            if (Hash::check($code, $codeHash['hash'])) {
+                return true;
+            }
+        }
+
+        if (isset($otp['code_hash'])) {
+            return Hash::check($code, $otp['code_hash']);
+        }
+
+        return false;
+    }
+
+    private function removeExpiredOtpCodes(array $otp): array
+    {
+        $now = now()->timestamp;
+        $codeHashes = $otp['code_hashes'] ?? [];
+
+        if (empty($codeHashes) && isset($otp['code_hash'], $otp['expires_at'])) {
+            $codeHashes[] = [
+                'hash' => $otp['code_hash'],
+                'expires_at' => $otp['expires_at'],
+            ];
+        }
+
+        $otp['code_hashes'] = array_values(array_filter(
+            $codeHashes,
+            fn (array $codeHash): bool => ($codeHash['expires_at'] ?? 0) >= $now
+        ));
+
+        $otp['expires_at'] = empty($otp['code_hashes'])
+            ? 0
+            : max(array_column($otp['code_hashes'], 'expires_at'));
+
+        return $otp;
     }
 
     /**
