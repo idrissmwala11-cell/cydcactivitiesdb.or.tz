@@ -212,7 +212,6 @@ class DashboardController extends Controller
         $moduleDistribution = $this->getModuleDistributionAnalytics();
         $topCentersByRecords = $this->getTopCentersByRecords();
         $monthlySubmissionAnalytics = $this->getMonthlySubmissionAnalytics();
-        $alertTools = $this->getQuickAlertTools();
 
         return view('dashboard.admin', compact(
             'stats',
@@ -231,8 +230,7 @@ class DashboardController extends Controller
             'centerReportCenterCount',
             'moduleDistribution',
             'topCentersByRecords',
-            'monthlySubmissionAnalytics',
-            'alertTools'
+            'monthlySubmissionAnalytics'
         ));
     }
 
@@ -1524,50 +1522,6 @@ class DashboardController extends Controller
         }
 
         return collect($labels)->values();
-    }
-
-    private function getQuickAlertTools()
-    {
-        $message = 'Habari, tafadhali ingia kwenye CYDC Activities Database ukague taarifa zako.';
-
-        return User::query()
-            ->where('role', '!=', 'admin')
-            ->whereNotNull('phone')
-            ->whereRaw("TRIM(phone) <> ''")
-            ->orderBy('center_id')
-            ->take(12)
-            ->get()
-            ->map(function (User $user) use ($message) {
-                $phone = $this->normalizePhoneForAlerts($user->phone);
-
-                return [
-                    'center_id' => $user->center_id ?: 'No Center ID',
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                    'normalized_phone' => $phone,
-                    'whatsapp_url' => $phone ? 'https://wa.me/'.$phone.'?text='.rawurlencode($message) : null,
-                    'sms_url' => $phone ? 'sms:+'.$phone.'?body='.rawurlencode($message) : null,
-                ];
-            });
-    }
-
-    private function normalizePhoneForAlerts(?string $phone): ?string
-    {
-        $digits = preg_replace('/\D+/', '', (string) $phone);
-
-        if ($digits === '') {
-            return null;
-        }
-
-        if (str_starts_with($digits, '0')) {
-            return '255'.substr($digits, 1);
-        }
-
-        if (str_starts_with($digits, '255')) {
-            return $digits;
-        }
-
-        return $digits;
     }
 
     private function buildModuleBaseQuery(array $module)

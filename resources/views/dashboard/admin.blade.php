@@ -269,63 +269,6 @@
         </div>
     </div>
 
-    {{-- SMS / WhatsApp Quick Alerts --}}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-header bg-white border-0">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                        <div>
-                            <h5 class="mb-1"><i class="bi bi-whatsapp text-success me-2"></i>SMS / WhatsApp Quick Alerts</h5>
-                            <small class="text-muted">Open a ready message to users with saved phone numbers. API gateway can be connected later.</small>
-                        </div>
-                        <span class="badge bg-success-subtle text-success">{{ number_format(collect($alertTools ?? [])->count()) }} contacts</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-sm align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Center ID</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th class="text-end">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($alertTools ?? [] as $alert)
-                                    <tr>
-                                        <td class="fw-semibold">{{ $alert['center_id'] }}</td>
-                                        <td>{{ $alert['email'] }}</td>
-                                        <td>{{ $alert['phone'] }}</td>
-                                        <td class="text-end">
-                                            @if($alert['whatsapp_url'])
-                                                <a href="{{ $alert['whatsapp_url'] }}" target="_blank" class="btn btn-sm btn-success">
-                                                    <i class="bi bi-whatsapp me-1"></i>WhatsApp
-                                                </a>
-                                            @endif
-                                            @if($alert['sms_url'])
-                                                <a href="{{ $alert['sms_url'] }}" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-chat-dots me-1"></i>SMS
-                                                </a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center text-muted py-3">No phone numbers available for alerts.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    <small class="text-muted">Note: this sends through the phone/browser app. For automatic bulk SMS/WhatsApp, add gateway credentials in the next phase.</small>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{-- Search Results --}}
     <div class="row mb-4" id="searchResults" style="display: none;">
         <div class="col-12">
