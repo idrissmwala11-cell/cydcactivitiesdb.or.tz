@@ -16,9 +16,7 @@ class LoginOtpMail extends Mailable
     public function __construct(
         public string $code,
         public User $user,
-        public ?int $expireMinutes = null,
     ) {
-        $this->expireMinutes ??= (int) config('auth.login_otp.expire_minutes', 30);
     }
 
     public function envelope(): Envelope
@@ -32,7 +30,6 @@ class LoginOtpMail extends Mailable
     {
         return new Content(
             view: 'emails.auth.login-otp',
-            text: 'emails.auth.login-otp-text',
         );
     }
 }

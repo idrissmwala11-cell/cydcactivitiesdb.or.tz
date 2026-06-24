@@ -36,7 +36,7 @@
                 class="text-center text-2xl font-bold tracking-[0.45em]"
             />
             <x-input-error :messages="$errors->get('code')" class="mt-2" />
-            <p class="text-sm text-gray-500">This code expires after {{ config('auth.login_otp.expire_minutes', 30) }} minutes.</p>
+            <p class="text-sm text-gray-500">This code expires after 10 minutes.</p>
         </div>
 
         <div class="mt-8">
