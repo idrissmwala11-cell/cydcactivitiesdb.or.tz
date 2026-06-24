@@ -394,6 +394,7 @@
         </div>
     @endif
 
+    @if(false)
     {{-- Statistics --}}
     <div class="row g-4 mb-4">
         <div class="col-xl-3 col-md-6">
@@ -681,6 +682,8 @@
             </div>
         </div>
     </div>
+
+    @endif
 
     {{-- Data Management Categories --}}
     <div class="row mb-4">
