@@ -31,4 +31,22 @@ return [
         'Form 2' => '2',
         'Form 4' => '4',
     ],
+
+    'excluded_subject_abbreviations' => [
+        'Form 2' => [
+            'CIV',
+            'ICS',
+            'B/KP',
+            'B/KNW',
+            'LIT-ENG',
+        ],
+        'Form 4' => [
+            'HTM',
+            'ICS',
+            'COMM',
+            'B/KP',
+            'B/KNW',
+            'LIT-ENG',
+        ],
+    ],
 ];

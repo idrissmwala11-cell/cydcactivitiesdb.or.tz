@@ -38,8 +38,15 @@ class FormFourStudentsImportTest extends TestCase
         $studentsWithIncorrectSubjectCount = (clone $students)
             ->withCount('subjects')
             ->get()
-            ->where('subjects_count', '!=', 15);
+            ->where('subjects_count', '!=', 9);
 
         $this->assertCount(0, $studentsWithIncorrectSubjectCount);
+
+        $removedSubjects = ['HTM', 'ICS', 'COMM', 'B/KP', 'B/KNW', 'LIT-ENG'];
+        $studentsWithRemovedSubjects = (clone $students)
+            ->whereHas('subjects', fn ($query) => $query->whereIn('abbreviation', $removedSubjects))
+            ->count();
+
+        $this->assertSame(0, $studentsWithRemovedSubjects);
     }
 }

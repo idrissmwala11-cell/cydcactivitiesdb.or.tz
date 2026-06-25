@@ -150,6 +150,7 @@ return new class extends Migration
 
         $subjectIds = DB::table('form_two_subjects')
             ->where('education_level', 'secondary')
+            ->whereNotIn('abbreviation', ['CIV', 'ICS', 'B/KP', 'B/KNW', 'LIT-ENG'])
             ->pluck('id', 'abbreviation');
         $usedStudentNumbers = DB::table('form_two_students')
             ->where('student_number', 'like', 'F2-%')

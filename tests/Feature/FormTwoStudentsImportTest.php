@@ -65,5 +65,12 @@ class FormTwoStudentsImportTest extends TestCase
                 ->subjects()
                 ->count()
         );
+
+        $removedSubjects = ['CIV', 'ICS', 'B/KP', 'B/KNW', 'LIT-ENG'];
+        $studentsWithRemovedSubjects = (clone $students)
+            ->whereHas('subjects', fn ($query) => $query->whereIn('abbreviation', $removedSubjects))
+            ->count();
+
+        $this->assertSame(0, $studentsWithRemovedSubjects);
     }
 }

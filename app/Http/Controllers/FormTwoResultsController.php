@@ -28,7 +28,7 @@ class FormTwoResultsController extends Controller
 
         return view('form-two-results.index', [
             'studentCount' => $this->studentQuery($selection)->where('is_active', true)->count(),
-            'subjectCount' => FormTwoSubject::where('is_active', true)->where('education_level', $selection['education_level'])->count(),
+            'subjectCount' => $this->subjectQuery($selection)->where('is_active', true)->count(),
             'assessmentCount' => $this->assessmentQuery($selection)->count(),
             'markCount' => FormTwoMark::whereHas('assessment', fn ($query) => $this->applySelection($query, $selection))->count(),
             'latestAssessment' => $latestAssessment,
@@ -41,7 +41,7 @@ class FormTwoResultsController extends Controller
         $selection = $this->selection($request);
 
         return view('form-two-results.subjects', [
-            'subjects' => FormTwoSubject::where('education_level', $selection['education_level'])->orderBy('display_order')->get(),
+            'subjects' => $this->subjectQuery($selection)->orderBy('display_order')->get(),
             ...$selection,
         ]);
     }
@@ -75,8 +75,11 @@ class FormTwoResultsController extends Controller
         $selection = $this->selection($request);
 
         return view('form-two-results.students.index', [
-            'students' => $this->studentQuery($selection)->with('subjects')->orderBy('student_number')->get(),
-            'subjects' => FormTwoSubject::where('is_active', true)->where('education_level', $selection['education_level'])->orderBy('display_order')->get(),
+            'students' => $this->studentQuery($selection)
+                ->with(['subjects' => fn ($query) => $this->applySubjectSelection($query, $selection)])
+                ->orderBy('student_number')
+                ->get(),
+            'subjects' => $this->subjectQuery($selection)->where('is_active', true)->orderBy('display_order')->get(),
             ...$selection,
         ]);
     }
@@ -111,7 +114,10 @@ class FormTwoResultsController extends Controller
 
         return view('form-two-results.students.edit', [
             'student' => $student,
-            'subjects' => FormTwoSubject::where('education_level', $student->education_level)->orderBy('display_order')->get(),
+            'subjects' => $this->subjectQuery([
+                'education_level' => $student->education_level,
+                'class_level' => $student->class_level,
+            ])->orderBy('display_order')->get(),
             'educationLevel' => $student->education_level,
             'classLevel' => $student->class_level,
             'classOptions' => config('form_two_results.classes'),
@@ -230,6 +236,7 @@ class FormTwoResultsController extends Controller
         $students = $this->studentQuery($selection)->where('is_active', true)
             ->with(['subjects' => fn ($query) => $query
                 ->where('form_two_subjects.is_active', true)
+                ->whereNotIn('form_two_subjects.abbreviation', $this->excludedSubjectAbbreviations($selection))
                 ->where('form_two_student_subject.registered', true), 'marks' => function ($query) use ($assessment) {
                 if ($assessment) {
                     $query->where('assessment_id', $assessment->id);
@@ -261,10 +268,15 @@ class FormTwoResultsController extends Controller
             'education_level' => $assessment->education_level,
             'class_level' => $assessment->class_level,
         ])->pluck('id');
+        $allowedSubjectIds = $this->subjectQuery([
+            'education_level' => $assessment->education_level,
+            'class_level' => $assessment->class_level,
+        ])->pluck('id');
 
         $allowedPairs = DB::table('form_two_student_subject')
             ->where('registered', true)
             ->whereIn('student_id', $allowedStudentIds)
+            ->whereIn('subject_id', $allowedSubjectIds)
             ->get(['student_id', 'subject_id'])
             ->mapWithKeys(fn ($row) => [$row->student_id.':'.$row->subject_id => true]);
 
@@ -326,7 +338,7 @@ class FormTwoResultsController extends Controller
         $subjectAnalysis = collect();
         if ($assessment) {
             $isPrimary = $selection['education_level'] === 'primary';
-            $subjectAnalysis = FormTwoSubject::where('is_active', true)->where('education_level', $selection['education_level'])->orderBy('display_order')->get()->map(function ($subject) use ($rows, $assessment, $isPrimary) {
+            $subjectAnalysis = $this->subjectQuery($selection)->where('is_active', true)->orderBy('display_order')->get()->map(function ($subject) use ($rows, $assessment, $isPrimary) {
                 $entries = $rows->flatMap(fn ($row) => collect($row['subjects'])->where('subject.id', $subject->id));
                 $marks = $entries->pluck('mark')->filter(fn ($mark) => $mark !== null);
                 $passed = $marks->filter(fn ($mark) => in_array($this->calculator->grade((float) $mark, (float) $assessment->max_marks, $isPrimary), ['A', 'B', 'C', 'D'], true))->count();
@@ -516,8 +528,8 @@ class FormTwoResultsController extends Controller
 
         abort_unless(in_array($validated['class_level'], config("form_two_results.classes.{$validated['education_level']}", []), true), 422, 'Darasa halilingani na ngazi iliyochaguliwa.');
 
-        $validSubjectCount = FormTwoSubject::whereIn('id', $validated['subject_ids'])
-            ->where('education_level', $validated['education_level'])
+        $validSubjectCount = $this->subjectQuery($validated)
+            ->whereIn('id', $validated['subject_ids'])
             ->count();
         abort_unless($validSubjectCount === count(array_unique($validated['subject_ids'])), 422, 'Masomo hayalingani na ngazi iliyochaguliwa.');
 
@@ -544,7 +556,10 @@ class FormTwoResultsController extends Controller
             ->where('education_level', $assessment->education_level)
             ->where('class_level', $assessment->class_level)
             ->with([
-                'subjects' => fn ($query) => $query->where('form_two_subjects.is_active', true),
+                'subjects' => fn ($query) => $this->applySubjectSelection($query, [
+                    'education_level' => $assessment->education_level,
+                    'class_level' => $assessment->class_level,
+                ])->where('form_two_subjects.is_active', true),
                 'marks' => fn ($query) => $query->where('assessment_id', $assessment->id),
             ])
             ->orderBy('student_number')
@@ -619,6 +634,33 @@ class FormTwoResultsController extends Controller
         return FormTwoStudent::query()
             ->where('education_level', $selection['education_level'])
             ->where('class_level', $selection['class_level']);
+    }
+
+    private function subjectQuery(array $selection)
+    {
+        return $this->applySubjectSelection(
+            FormTwoSubject::query(),
+            $selection
+        );
+    }
+
+    private function applySubjectSelection($query, array $selection)
+    {
+        return $query
+            ->where('form_two_subjects.education_level', $selection['education_level'])
+            ->when(
+                ! empty($this->excludedSubjectAbbreviations($selection)),
+                fn ($query) => $query->whereNotIn('form_two_subjects.abbreviation', $this->excludedSubjectAbbreviations($selection))
+            );
+    }
+
+    private function excludedSubjectAbbreviations(array $selection): array
+    {
+        if (($selection['education_level'] ?? null) !== 'secondary') {
+            return [];
+        }
+
+        return config('form_two_results.excluded_subject_abbreviations.'.($selection['class_level'] ?? ''), []);
     }
 
     private function assessmentQuery(array $selection)

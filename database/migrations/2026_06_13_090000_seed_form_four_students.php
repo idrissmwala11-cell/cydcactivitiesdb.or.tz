@@ -55,6 +55,7 @@ return new class extends Migration
         $subjectIds = DB::table('form_two_subjects')
             ->where('education_level', 'secondary')
             ->where('is_active', true)
+            ->whereNotIn('abbreviation', ['HTM', 'ICS', 'COMM', 'B/KP', 'B/KNW', 'LIT-ENG'])
             ->orderBy('display_order')
             ->pluck('id');
 
