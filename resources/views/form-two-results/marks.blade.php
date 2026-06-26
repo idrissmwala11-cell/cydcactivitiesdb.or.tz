@@ -33,6 +33,13 @@
             <form id="marks-form" method="POST" action="{{ route('form-two-results.marks.store', $assessment) }}">
                 @csrf @method('PUT')
                 <input type="hidden" name="marks_payload" id="marks-payload">
+                <div class="p-3 f2-no-print border-bottom bg-light">
+                    <label for="marks-student-search" class="form-label fw-bold mb-1">
+                        <i class="bi bi-search me-1"></i>{{ $isPrimary ? 'Tafuta jina la mwanafunzi' : 'Search candidate name' }}
+                    </label>
+                    <input type="search" id="marks-student-search" class="form-control" placeholder="{{ $isPrimary ? 'Andika jina la mwanafunzi, namba au FCP...' : 'Type candidate name, number or FCP...' }}" autocomplete="off">
+                    <div id="marks-student-search-count" class="small text-muted mt-1"></div>
+                </div>
                 <div class="table-responsive" style="max-height:68vh">
                     <table class="table table-bordered f2-table f2-marks-table mb-0">
                         <colgroup>
@@ -53,7 +60,7 @@
                         </thead>
                         <tbody>
                         @foreach($students as $student)
-                            <tr data-student-row="{{ $student->id }}">
+                            <tr data-student-row="{{ $student->id }}" data-student-search="{{ strtolower($student->student_number.' '.$student->candidate_name.' '.$student->fcp_name) }}">
                                 <td class="text-center">{{ $student->student_number }}</td>
                                 <td class="sticky-col f2-student-name-col fw-bold">{{ $student->candidate_name }}</td>
                                 <td class="f2-fcp-name-col fw-semibold">{{ $student->fcp_name ?: '-' }}</td>
@@ -79,6 +86,9 @@
                                 </td>
                             </tr>
                         @endforeach
+                            <tr id="marks-student-search-empty" class="d-none">
+                                <td colspan="5" class="f2-empty">{{ $isPrimary ? 'Hakuna mwanafunzi aliyepatikana kwa jina hilo.' : 'No candidate found for that search.' }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -91,6 +101,35 @@
 @if($assessment && $students->isNotEmpty())
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('marks-student-search');
+    const searchCount = document.getElementById('marks-student-search-count');
+    const emptyRow = document.getElementById('marks-student-search-empty');
+    const searchableRows = Array.from(document.querySelectorAll('[data-student-search]'));
+    const shownLabel = @json($isPrimary ? 'wanafunzi wameonekana' : 'students shown');
+
+    if (searchInput) {
+        const filterStudents = function () {
+            const term = searchInput.value.trim().toLowerCase();
+            let visible = 0;
+
+            searchableRows.forEach(function (row) {
+                const isMatch = term === '' || row.dataset.studentSearch.includes(term);
+                row.classList.toggle('d-none', ! isMatch);
+                if (isMatch) visible++;
+            });
+
+            if (emptyRow) {
+                emptyRow.classList.toggle('d-none', visible !== 0);
+            }
+
+            if (searchCount) {
+                searchCount.textContent = term === '' ? '' : `${visible} ${shownLabel}`;
+            }
+        };
+
+        searchInput.addEventListener('input', filterStudents);
+    }
+
     document.querySelectorAll('.f2-absent').forEach(function (checkbox) {
         const selector = `.f2-mark[data-student="${checkbox.dataset.student}"][data-subject="${checkbox.dataset.subject}"]`;
         const input = document.querySelector(selector);
