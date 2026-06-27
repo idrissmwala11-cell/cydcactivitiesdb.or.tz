@@ -199,6 +199,14 @@ class FormTwoResultsSharingTest extends TestCase
             ->assertSee('B/MATH')
             ->assertSee('85-A');
 
+        $this->actingAs($viewer)->get(route('form-two-results.results.index', [
+            'education_level' => 'secondary',
+            'class_level' => 'Form 2',
+            'assessment_id' => $assessment->id,
+        ]))
+            ->assertOk()
+            ->assertSeeInOrder(['HIGH STUDENT', 'LOW STUDENT', 'ABS STUDENT']);
+
         $this->assertCount(3, $students);
     }
 

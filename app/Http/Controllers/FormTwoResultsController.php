@@ -320,7 +320,7 @@ class FormTwoResultsController extends Controller
     {
         $assessment = $this->selectedAssessment($request);
         $selection = $this->selection($request, $assessment);
-        $rows = $assessment ? $this->resultRows($assessment) : collect();
+        $rows = $assessment ? $this->sortRowsByPosition($this->resultRows($assessment)) : collect();
 
         return view('form-two-results.results', [
             'assessments' => $this->assessmentQuery($selection)->orderBy('display_order')->get(),
@@ -626,14 +626,22 @@ class FormTwoResultsController extends Controller
         $rows = $students->map(fn ($student) => $this->calculator->summary($student, $assessment));
         $rankMap = [];
         $previousAverage = null;
+        $previousTotal = null;
         $previousRank = null;
 
-        foreach ($rows->filter(fn ($row) => $row['average'] !== null)->sortByDesc('average')->values() as $index => $row) {
-            $rank = $previousAverage !== null && (float) $row['average'] === (float) $previousAverage
+        foreach ($rows->filter(fn ($row) => $row['average'] !== null)->sort(function (array $left, array $right): int {
+            return ($right['average'] <=> $left['average'])
+                ?: ($right['total'] <=> $left['total'])
+                ?: strcasecmp($left['student']->candidate_name, $right['student']->candidate_name);
+        })->values() as $index => $row) {
+            $rank = $previousAverage !== null
+                && (float) $row['average'] === (float) $previousAverage
+                && (float) $row['total'] === (float) $previousTotal
                 ? $previousRank
                 : $index + 1;
             $rankMap[$row['student']->id] = $rank;
             $previousAverage = $row['average'];
+            $previousTotal = $row['total'];
             $previousRank = $rank;
         }
 
@@ -662,6 +670,8 @@ class FormTwoResultsController extends Controller
             }
 
             return ($left['rank'] <=> $right['rank'])
+                ?: ($right['average'] <=> $left['average'])
+                ?: ($right['total'] <=> $left['total'])
                 ?: strcasecmp($left['student']->candidate_name, $right['student']->candidate_name);
         })->values();
     }
