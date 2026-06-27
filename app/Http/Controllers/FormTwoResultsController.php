@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PublishedResultsMail;
 use App\Models\FormTwoAssessment;
 use App\Models\FormTwoMark;
 use App\Models\FormTwoStudent;
 use App\Models\FormTwoSubject;
+use App\Models\User;
 use App\Services\FormTwoResultCalculator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -459,6 +462,7 @@ class FormTwoResultsController extends Controller
         }
 
         $assessment->update(['is_published' => true]);
+        $this->sendPublishedResultsEmail($assessment, $request->user());
 
         return redirect()->route('form-two-results.reports.index', [
             'education_level' => $assessment->education_level,
@@ -467,6 +471,60 @@ class FormTwoResultsController extends Controller
             'report_type' => 'list',
             'run' => 1,
         ])->with('success', 'Orodha ya matokeo imepublish na sasa inaonekana kwa users wote.');
+    }
+
+    private function sendPublishedResultsEmail(FormTwoAssessment $assessment, User $publishedBy): void
+    {
+        $recipients = $this->publishedResultsEmailRecipients();
+
+        if ($recipients === []) {
+            return;
+        }
+
+        Mail::to($recipients)->send(new PublishedResultsMail(
+            $assessment,
+            $publishedBy,
+            route('published-results.index', [
+                'education_level' => $assessment->education_level,
+                'class_level' => $assessment->class_level,
+                'assessment_id' => $assessment->id,
+            ])
+        ));
+    }
+
+    private function publishedResultsEmailRecipients(): array
+    {
+        $systemRecipients = [
+            config('center_data_reports.primary_admin_email', 'ekawira@tz.ci.org'),
+            config('center_data_reports.secondary_admin_email', 'idrissmwala11@gmail.com'),
+        ];
+
+        $userRecipients = User::query()
+            ->whereNotNull('email')
+            ->where('email', '<>', '')
+            ->orderBy('center_id')
+            ->orderBy('email')
+            ->pluck('email')
+            ->all();
+
+        $seen = [];
+
+        return collect([...$systemRecipients, ...$userRecipients])
+            ->map(fn ($email) => trim((string) $email))
+            ->filter()
+            ->reject(function (string $email) use (&$seen): bool {
+                $key = strtolower($email);
+
+                if (isset($seen[$key])) {
+                    return true;
+                }
+
+                $seen[$key] = true;
+
+                return false;
+            })
+            ->values()
+            ->all();
     }
 
     public function unpublishResults(Request $request, FormTwoAssessment $assessment): RedirectResponse

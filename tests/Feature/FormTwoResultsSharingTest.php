@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Mail\PublishedResultsMail;
 use App\Models\FormTwoAssessment;
 use App\Models\FormTwoMark;
 use App\Models\FormTwoStudent;
 use App\Models\FormTwoSubject;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class FormTwoResultsSharingTest extends TestCase
@@ -16,6 +18,10 @@ class FormTwoResultsSharingTest extends TestCase
 
     public function test_authorized_user_can_publish_results_for_read_only_access_by_all_users(): void
     {
+        Mail::fake();
+        config()->set('center_data_reports.primary_admin_email', 'ekawira@tz.ci.org');
+        config()->set('center_data_reports.secondary_admin_email', 'idrissmwala11@gmail.com');
+
         $creator = User::factory()->create(['role' => 'admin']);
         $publisher = User::factory()->create([
             'email' => 'snashon.tz0827@gmail.com',
@@ -85,6 +91,16 @@ class FormTwoResultsSharingTest extends TestCase
             ->assertRedirect();
 
         $this->assertTrue($assessment->fresh()->is_published);
+        Mail::assertSent(PublishedResultsMail::class, function (PublishedResultsMail $mail) use ($publisher, $resultsEditor, $viewer, $assessment) {
+            $to = collect($mail->to)->pluck('address')->all();
+
+            return $to[0] === 'ekawira@tz.ci.org'
+                && $to[1] === 'idrissmwala11@gmail.com'
+                && in_array($publisher->email, $to, true)
+                && in_array($resultsEditor->email, $to, true)
+                && in_array($viewer->email, $to, true)
+                && $mail->assessment->is($assessment);
+        });
 
         $this->actingAs($viewer)
             ->get(route('dashboard'))
