@@ -36,7 +36,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">{{ $isPrimary ? 'Mtihani Uliopublish' : 'Published Assessment' }}</label>
                 <select class="form-select" name="assessment_id" onchange="this.form.submit()" @disabled($assessments->isEmpty())>
                     @forelse($assessments as $item)
@@ -46,8 +46,16 @@
                     @endforelse
                 </select>
             </div>
-            <div class="col-md-2 d-grid">
-                <button type="button" class="btn btn-dark" onclick="window.print()" @disabled(! $assessment || $rows->isEmpty())><i class="bi bi-printer me-1"></i>{{ $isPrimary ? 'Chapisha' : 'Print List' }}</button>
+            <div class="col-md-3">
+                <label class="form-label d-none d-md-block">&nbsp;</label>
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-dark flex-fill" onclick="window.print()" @disabled(! $assessment || $rows->isEmpty())><i class="bi bi-printer me-1"></i>{{ $isPrimary ? 'Chapisha' : 'Print List' }}</button>
+                    <a class="btn btn-success flex-fill {{ ! $assessment || $rows->isEmpty() ? 'disabled' : '' }}"
+                       href="{{ route('published-results.download', ['education_level' => $educationLevel, 'class_level' => $classLevel, 'assessment_id' => $assessment?->id]) }}"
+                       @if(! $assessment || $rows->isEmpty()) aria-disabled="true" tabindex="-1" @endif>
+                        <i class="bi bi-download me-1"></i>{{ $isPrimary ? 'Pakua' : 'Download' }}
+                    </a>
+                </div>
             </div>
         </form>
     </div>

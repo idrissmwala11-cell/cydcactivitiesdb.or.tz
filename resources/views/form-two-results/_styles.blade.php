@@ -35,8 +35,17 @@
     .f2-logo { width: 76px; height: 76px; object-fit: contain; }
     @media print {
         body { background: #fff !important; }
-        .sidebar, .topbar, .f2-no-print, footer { display: none !important; }
-        .main-content, .content-wrapper { margin: 0 !important; padding: 0 !important; }
+        .sidebar,
+        .sidebar-backdrop,
+        .navbar,
+        .topbar,
+        .topbar-icon-link,
+        .dropdown-menu,
+        .offcanvas,
+        .modal,
+        .f2-no-print,
+        footer { display: none !important; }
+        .main-content, .content-wrapper, .container-fluid, .f2-shell { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; }
         .f2-sheet { box-shadow: none; border-radius: 0; }
     }
 </style>

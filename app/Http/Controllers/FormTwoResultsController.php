@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FormTwoResultsController extends Controller
 {
@@ -567,6 +568,81 @@ class FormTwoResultsController extends Controller
             'assessment' => $assessment,
             'rows' => $rows,
             ...$selection,
+        ]);
+    }
+
+    public function downloadPublishedResults(Request $request): StreamedResponse
+    {
+        $selection = $this->selection($request);
+        $assessment = $this->assessmentQuery($selection)
+            ->where('is_published', true)
+            ->when(
+                $request->filled('assessment_id'),
+                fn ($query) => $query->whereKey($request->integer('assessment_id'))
+            )
+            ->orderByDesc('display_order')
+            ->first();
+
+        abort_unless($assessment, 404, 'Matokeo haya hayajapublish au hayapo kwenye darasa lililochaguliwa.');
+
+        $rows = $this->sortRowsByPosition($this->resultRows($assessment));
+        $isPrimary = $assessment->education_level === 'primary';
+        $filename = Str::slug($assessment->class_level.' '.$assessment->name.' results').'.xls';
+
+        return response()->streamDownload(function () use ($assessment, $rows, $isPrimary): void {
+            echo '<!DOCTYPE html><html><head><meta charset="utf-8">';
+            echo '<style>body{font-family:Arial,sans-serif;} table{border-collapse:collapse;width:100%;} th,td{border:1px solid #333;padding:5px;font-size:12px;vertical-align:top;} th{background:#12372a;color:#fff;} .center{text-align:center;} .right{text-align:right;} h2,h3,p{text-align:center;margin:4px 0;}</style>';
+            echo '</head><body>';
+            echo '<h2>'.e(config('form_two_results.school_name')).'</h2>';
+            echo '<h3>'.e(config('form_two_results.school_subtitle')).'</h3>';
+            echo '<p><strong>'.e(strtoupper($assessment->name)).' / '.e(strtoupper($assessment->class_level)).'</strong></p>';
+            echo '<table><thead><tr>';
+
+            $headings = $isPrimary
+                ? ['Na.', 'Jina la Mwanafunzi', 'FCP', 'Jinsi', 'Masomo na Alama', 'Jumla', 'Wastani', 'Daraja', 'Nafasi']
+                : ['Na.', "Candidate's Name", 'FCP', 'Sex', 'Subject Marks', 'Total', 'Average', 'Points', 'Division', 'Position'];
+
+            foreach ($headings as $heading) {
+                echo '<th>'.e($heading).'</th>';
+            }
+
+            echo '</tr></thead><tbody>';
+
+            foreach ($rows as $row) {
+                $subjectMarks = collect($row['subjects'])
+                    ->filter(fn ($item) => $item['mark'] !== null || $item['isAbsent'])
+                    ->map(function ($item): string {
+                        $markText = $item['isAbsent']
+                            ? 'ABS'
+                            : rtrim(rtrim(number_format($item['mark'], 2, '.', ''), '0'), '.');
+
+                        return $item['subject']->abbreviation.' '.$markText.'-'.$item['grade'];
+                    })
+                    ->join(' | ');
+
+                echo '<tr>';
+                echo '<td>'.e($row['display_number']).'</td>';
+                echo '<td><strong>'.e($row['student']->candidate_name).'</strong></td>';
+                echo '<td>'.e($row['student']->fcp_name ?: '-').'</td>';
+                echo '<td class="center">'.e($row['student']->sex).'</td>';
+                echo '<td>'.e($subjectMarks !== '' ? $subjectMarks : '-').'</td>';
+                echo '<td class="right">'.number_format($row['total'], 2).'</td>';
+                echo '<td class="center">'.($row['average'] !== null ? number_format($row['average'], 2) : 'ABS').'</td>';
+
+                if ($isPrimary) {
+                    echo '<td class="center"><strong>'.e($row['overall_grade'] ?? 'ABS').'</strong></td>';
+                } else {
+                    echo '<td class="center">'.e($row['points'] ?? '-').'</td>';
+                    echo '<td class="center"><strong>'.e($row['division']).'</strong></td>';
+                }
+
+                echo '<td class="center"><strong>'.e($row['rank'] ?? '-').'</strong></td>';
+                echo '</tr>';
+            }
+
+            echo '</tbody></table></body></html>';
+        }, $filename, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
         ]);
     }
 

@@ -116,6 +116,11 @@ class FormTwoResultsSharingTest extends TestCase
             ->assertDontSee('Marks Entry')
             ->assertDontSee('Publish Results');
 
+        $download = $this->actingAs($viewer)->get(route('published-results.download', $query));
+        $download->assertOk();
+        $this->assertStringContainsString('.xls', (string) $download->headers->get('content-disposition'));
+        $this->assertStringContainsString('PUBLISHED STUDENT', $download->streamedContent());
+
         $this->actingAs($resultsEditor)
             ->delete(route('form-two-results.reports.unpublish', $assessment))
             ->assertForbidden();
