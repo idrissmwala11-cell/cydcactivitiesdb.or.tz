@@ -9,6 +9,9 @@
         <div class="fw-bold">{{ config('form_two_results.school_subtitle') }}</div>
         <div class="mt-1">{{ $isPrimary ? 'ORODHA KAMILI YA MATOKEO' : 'FULL RESULTS LIST' }}</div>
     </div>
+    @isset($groups)
+        @include('form-two-results._performance_summary_table')
+    @endisset
     <div class="f2-ribbon">
         {{ strtoupper($assessment->name) }} / {{ strtoupper($classLevel) }}
         @if($selectedFcp !== '') - {{ strtoupper($selectedFcp) }} @endif

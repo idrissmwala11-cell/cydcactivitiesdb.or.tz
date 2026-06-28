@@ -567,6 +567,7 @@ class FormTwoResultsController extends Controller
             'assessments' => $assessments,
             'assessment' => $assessment,
             'rows' => $rows,
+            'groups' => $this->performanceGroups($rows, $selection['education_level'] === 'primary'),
             ...$selection,
         ]);
     }
@@ -587,15 +588,17 @@ class FormTwoResultsController extends Controller
 
         $rows = $this->sortRowsByPosition($this->resultRows($assessment));
         $isPrimary = $assessment->education_level === 'primary';
+        $groups = $this->performanceGroups($rows, $isPrimary);
         $filename = Str::slug($assessment->class_level.' '.$assessment->name.' results').'.xls';
 
-        return response()->streamDownload(function () use ($assessment, $rows, $isPrimary): void {
+        return response()->streamDownload(function () use ($assessment, $rows, $isPrimary, $groups): void {
             echo '<!DOCTYPE html><html><head><meta charset="utf-8">';
-            echo '<style>body{font-family:Arial,sans-serif;} table{border-collapse:collapse;width:100%;} th,td{border:1px solid #333;padding:5px;font-size:12px;vertical-align:top;} th{background:#12372a;color:#fff;} .center{text-align:center;} .right{text-align:right;} h2,h3,p{text-align:center;margin:4px 0;}</style>';
+            echo '<style>body{font-family:Arial,sans-serif;} table{border-collapse:collapse;width:100%;margin-bottom:18px;} th,td{border:1px solid #333;padding:5px;font-size:12px;vertical-align:top;} th{background:#12372a;color:#fff;} .ribbon{background:#f4c430;font-weight:bold;text-align:center;} .center{text-align:center;} .right{text-align:right;} h2,h3,p{text-align:center;margin:4px 0;}</style>';
             echo '</head><body>';
             echo '<h2>'.e(config('form_two_results.school_name')).'</h2>';
             echo '<h3>'.e(config('form_two_results.school_subtitle')).'</h3>';
             echo '<p><strong>'.e(strtoupper($assessment->name)).' / '.e(strtoupper($assessment->class_level)).'</strong></p>';
+            $this->writePerformanceSummaryHtml($assessment, $groups, $isPrimary);
             echo '<table><thead><tr>';
 
             $headings = $isPrimary
@@ -644,6 +647,48 @@ class FormTwoResultsController extends Controller
         }, $filename, [
             'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
         ]);
+    }
+
+    private function writePerformanceSummaryHtml(FormTwoAssessment $assessment, Collection $groups, bool $isPrimary): void
+    {
+        $columns = $isPrimary ? ['A', 'B', 'C', 'D', 'E'] : ['I', 'II', 'III', 'IV', '0', 'INC'];
+        $columnCount = 6 + count($columns);
+
+        echo '<table>';
+        echo '<tr><td colspan="'.$columnCount.'" class="ribbon">'.e(($isPrimary ? 'Msingi' : 'Secondary').' / '.$assessment->class_level.' - '.$assessment->name).'</td></tr>';
+        echo '<tr>';
+        echo '<th>'.e($isPrimary ? 'Kundi' : 'Group').'</th>';
+        echo '<th>'.e($isPrimary ? 'Waliosajiliwa' : 'REG').'</th>';
+        echo '<th>'.e($isPrimary ? 'Waliofanya' : 'SAT').'</th>';
+        echo '<th>'.e($isPrimary ? 'Wasiokuwepo' : 'ABS').'</th>';
+
+        foreach ($columns as $column) {
+            echo '<th>'.e($isPrimary ? 'DARAJA '.$column : 'DIV '.$column).'</th>';
+        }
+
+        echo '<th>'.e($isPrimary ? 'Waliofaulu' : 'PASS').'</th>';
+        echo '<th>'.e($isPrimary ? 'Ufaulu %' : 'PASS %').'</th>';
+        echo '</tr>';
+
+        foreach (['F' => ($isPrimary ? 'Wasichana' : 'Girls'), 'M' => ($isPrimary ? 'Wavulana' : 'Boys'), 'ALL' => ($isPrimary ? 'Jumla' : 'Total')] as $key => $label) {
+            $group = $groups[$key];
+            echo '<tr>';
+            echo '<td><strong>'.e($label).'</strong></td>';
+            echo '<td>'.e($group['registered']).'</td>';
+            echo '<td>'.e($group['sat']).'</td>';
+            echo '<td>'.e($group['absent']).'</td>';
+
+            foreach ($columns as $column) {
+                $value = $isPrimary ? $group['grades'][$column] : $group['divisions'][$column];
+                echo '<td>'.e($value).'</td>';
+            }
+
+            echo '<td>'.e($group['passed']).'</td>';
+            echo '<td><strong>'.number_format($group['pass_rate'], 1).'%</strong></td>';
+            echo '</tr>';
+        }
+
+        echo '</table>';
     }
 
     private function validateStudent(Request $request, ?FormTwoStudent $student = null): array

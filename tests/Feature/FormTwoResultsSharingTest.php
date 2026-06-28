@@ -111,6 +111,8 @@ class FormTwoResultsSharingTest extends TestCase
             ->get(route('published-results.index', $query))
             ->assertOk()
             ->assertSee('PUBLISHED RESULTS')
+            ->assertSee('Group')
+            ->assertSee('PASS %')
             ->assertSee('PUBLISHED STUDENT')
             ->assertSee('76-A')
             ->assertDontSee('Marks Entry')
@@ -119,7 +121,9 @@ class FormTwoResultsSharingTest extends TestCase
         $download = $this->actingAs($viewer)->get(route('published-results.download', $query));
         $download->assertOk();
         $this->assertStringContainsString('.xls', (string) $download->headers->get('content-disposition'));
-        $this->assertStringContainsString('PUBLISHED STUDENT', $download->streamedContent());
+        $downloadedContent = $download->streamedContent();
+        $this->assertStringContainsString('Group', $downloadedContent);
+        $this->assertStringContainsString('PUBLISHED STUDENT', $downloadedContent);
 
         $this->actingAs($resultsEditor)
             ->delete(route('form-two-results.reports.unpublish', $assessment))
