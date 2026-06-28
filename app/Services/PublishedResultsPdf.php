@@ -37,8 +37,8 @@ class PublishedResultsPdf
     private function drawHeader(FormTwoAssessment $assessment): void
     {
         $logoY = self::PAGE_HEIGHT - self::MARGIN - 52;
-        $this->drawImage('Im1', public_path('logos/church-logo-1.jpeg'), 72, $logoY, 50, 50);
-        $this->drawImage('Im2', public_path('logos/church-logo-2.jpeg'), self::PAGE_WIDTH - 122, $logoY, 50, 50);
+        $this->drawImage('Im1', $this->logoPath('church-logo-1.jpeg'), 72, $logoY, 50, 50);
+        $this->drawImage('Im2', $this->logoPath('church-logo-2.jpeg'), self::PAGE_WIDTH - 122, $logoY, 50, 50);
 
         $this->textCenter(config('form_two_results.school_name'), $this->y, 13, true);
         $this->y -= 17;
@@ -221,7 +221,23 @@ class PublishedResultsPdf
         $this->commands[] = "0 0 0 RG {$x} ".($topY - $height)." {$width} {$height} re S";
     }
 
-    private function drawImage(string $name, string $path, float $x, float $y, float $width, float $height): void
+    private function logoPath(string $filename): ?string
+    {
+        foreach ([
+            public_path('logos/'.$filename),
+            public_path('public/logos/'.$filename),
+            base_path('public/logos/'.$filename),
+            base_path('public/public/logos/'.$filename),
+        ] as $path) {
+            if (is_file($path)) {
+                return $path;
+            }
+        }
+
+        return null;
+    }
+
+    private function drawImage(string $name, ?string $path, float $x, float $y, float $width, float $height): void
     {
         if (! isset($this->imageResources[$name])) {
             $image = $this->loadJpegImage($path);
@@ -236,9 +252,9 @@ class PublishedResultsPdf
         $this->commands[] = "q {$width} 0 0 {$height} {$x} {$y} cm /{$name} Do Q";
     }
 
-    private function loadJpegImage(string $path): ?array
+    private function loadJpegImage(?string $path): ?array
     {
-        if (! is_file($path)) {
+        if ($path === null || ! is_file($path)) {
             return null;
         }
 

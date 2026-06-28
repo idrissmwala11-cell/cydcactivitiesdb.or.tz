@@ -126,6 +126,7 @@ class FormTwoResultsSharingTest extends TestCase
         $this->assertStringContainsString('.pdf', (string) $download->headers->get('content-disposition'));
         $downloadedContent = $download->streamedContent();
         $this->assertStringStartsWith('%PDF', $downloadedContent);
+        $this->assertSame(2, substr_count($downloadedContent, '/Subtype /Image'));
 
         $this->actingAs($resultsEditor)
             ->delete(route('form-two-results.reports.unpublish', $assessment))
