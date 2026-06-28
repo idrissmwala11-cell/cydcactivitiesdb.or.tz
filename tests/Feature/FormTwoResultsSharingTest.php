@@ -120,10 +120,10 @@ class FormTwoResultsSharingTest extends TestCase
 
         $download = $this->actingAs($viewer)->get(route('published-results.download', $query));
         $download->assertOk();
-        $this->assertStringContainsString('.xls', (string) $download->headers->get('content-disposition'));
+        $this->assertStringContainsString('application/pdf', (string) $download->headers->get('content-type'));
+        $this->assertStringContainsString('.pdf', (string) $download->headers->get('content-disposition'));
         $downloadedContent = $download->streamedContent();
-        $this->assertStringContainsString('Group', $downloadedContent);
-        $this->assertStringContainsString('PUBLISHED STUDENT', $downloadedContent);
+        $this->assertStringStartsWith('%PDF', $downloadedContent);
 
         $this->actingAs($resultsEditor)
             ->delete(route('form-two-results.reports.unpublish', $assessment))
