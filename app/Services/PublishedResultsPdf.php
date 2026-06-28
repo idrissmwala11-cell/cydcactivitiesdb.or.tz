@@ -13,6 +13,7 @@ class PublishedResultsPdf
 
     private array $pages = [];
     private array $commands = [];
+    private array $imageResources = [];
     private float $y = self::PAGE_HEIGHT - self::MARGIN;
     private bool $isPrimary = false;
 
@@ -20,6 +21,7 @@ class PublishedResultsPdf
     {
         $this->pages = [];
         $this->commands = [];
+        $this->imageResources = [];
         $this->isPrimary = $assessment->education_level === 'primary';
 
         $this->addPage();
@@ -34,6 +36,10 @@ class PublishedResultsPdf
 
     private function drawHeader(FormTwoAssessment $assessment): void
     {
+        $logoY = self::PAGE_HEIGHT - self::MARGIN - 52;
+        $this->drawImage('Im1', public_path('logos/church-logo-1.jpeg'), 72, $logoY, 50, 50);
+        $this->drawImage('Im2', public_path('logos/church-logo-2.jpeg'), self::PAGE_WIDTH - 122, $logoY, 50, 50);
+
         $this->textCenter(config('form_two_results.school_name'), $this->y, 13, true);
         $this->y -= 17;
         $this->textCenter(config('form_two_results.school_subtitle'), $this->y, 10, true);
@@ -215,6 +221,41 @@ class PublishedResultsPdf
         $this->commands[] = "0 0 0 RG {$x} ".($topY - $height)." {$width} {$height} re S";
     }
 
+    private function drawImage(string $name, string $path, float $x, float $y, float $width, float $height): void
+    {
+        if (! isset($this->imageResources[$name])) {
+            $image = $this->loadJpegImage($path);
+
+            if ($image === null) {
+                return;
+            }
+
+            $this->imageResources[$name] = $image;
+        }
+
+        $this->commands[] = "q {$width} 0 0 {$height} {$x} {$y} cm /{$name} Do Q";
+    }
+
+    private function loadJpegImage(string $path): ?array
+    {
+        if (! is_file($path)) {
+            return null;
+        }
+
+        $info = @getimagesize($path);
+        $data = @file_get_contents($path);
+
+        if (! is_array($info) || $data === false || ($info[2] ?? null) !== IMAGETYPE_JPEG) {
+            return null;
+        }
+
+        return [
+            'width' => (int) $info[0],
+            'height' => (int) $info[1],
+            'data' => $data,
+        ];
+    }
+
     private function textCenter(string $text, float $y, float $size, bool $bold = false): void
     {
         $x = (self::PAGE_WIDTH - $this->textWidth($text, $size)) / 2;
@@ -270,15 +311,32 @@ class PublishedResultsPdf
     {
         $objects = [
             '<< /Type /Catalog /Pages 2 0 R >>',
-            '<< /Type /Pages /Kids ['.implode(' ', array_map(fn ($i) => (3 + ($i * 2)).' 0 R', array_keys($this->pages))).'] /Count '.count($this->pages).' >>',
+            '',
         ];
+        $imageObjects = [];
+
+        foreach ($this->imageResources as $name => $image) {
+            $objectNumber = count($objects) + 1;
+            $imageObjects[$name] = $objectNumber;
+            $objects[] = "<< /Type /XObject /Subtype /Image /Width {$image['width']} /Height {$image['height']} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ".strlen($image['data'])." >>\nstream\n{$image['data']}\nendstream";
+        }
+
+        $pageObjectNumbers = [];
 
         foreach ($this->pages as $index => $content) {
-            $pageObject = 3 + ($index * 2);
+            $pageObject = count($objects) + 1;
             $contentObject = $pageObject + 1;
-            $objects[] = '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '.self::PAGE_WIDTH.' '.self::PAGE_HEIGHT.'] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >> >> >> /Contents '.$contentObject.' 0 R >>';
+            $pageObjectNumbers[] = $pageObject;
+            $xObjects = collect($imageObjects)
+                ->map(fn (int $objectNumber, string $name): string => "/{$name} {$objectNumber} 0 R")
+                ->implode(' ');
+            $xObjectResource = $xObjects !== '' ? " /XObject << {$xObjects} >>" : '';
+
+            $objects[] = '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '.self::PAGE_WIDTH.' '.self::PAGE_HEIGHT.'] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >> >>'.$xObjectResource.' >> /Contents '.$contentObject.' 0 R >>';
             $objects[] = "<< /Length ".strlen($content)." >>\nstream\n{$content}endstream";
         }
+
+        $objects[1] = '<< /Type /Pages /Kids ['.implode(' ', array_map(fn ($number) => "{$number} 0 R", $pageObjectNumbers)).'] /Count '.count($this->pages).' >>';
 
         $pdf = "%PDF-1.4\n";
         $offsets = [0];

@@ -111,6 +111,8 @@ class FormTwoResultsSharingTest extends TestCase
             ->get(route('published-results.index', $query))
             ->assertOk()
             ->assertSee('PUBLISHED RESULTS')
+            ->assertSee('logos/church-logo-1.jpeg')
+            ->assertSee('logos/church-logo-2.jpeg')
             ->assertSee('Group')
             ->assertSee('PASS %')
             ->assertSee('PUBLISHED STUDENT')

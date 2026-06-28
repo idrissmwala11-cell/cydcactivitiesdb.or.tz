@@ -5,9 +5,13 @@
 </style>
 <div class="f2-sheet full-results-report">
     <div class="report-head">
-        <h5 class="fw-bold mb-1">{{ config('form_two_results.school_name') }}</h5>
-        <div class="fw-bold">{{ config('form_two_results.school_subtitle') }}</div>
-        <div class="mt-1">{{ $isPrimary ? 'ORODHA KAMILI YA MATOKEO' : 'FULL RESULTS LIST' }}</div>
+        <img src="{{ asset('logos/church-logo-1.jpeg') }}" alt="CCT Logo" class="report-head__logo report-head__logo--left">
+        <div class="report-head__content">
+            <h5 class="fw-bold mb-1">{{ config('form_two_results.school_name') }}</h5>
+            <div class="fw-bold">{{ config('form_two_results.school_subtitle') }}</div>
+            <div class="mt-1">{{ $isPrimary ? 'ORODHA KAMILI YA MATOKEO' : 'FULL RESULTS LIST' }}</div>
+        </div>
+        <img src="{{ asset('logos/church-logo-2.jpeg') }}" alt="CPCT Logo" class="report-head__logo report-head__logo--right">
     </div>
     @isset($groups)
         @include('form-two-results._performance_summary_table')

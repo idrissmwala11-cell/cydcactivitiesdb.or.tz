@@ -1,6 +1,10 @@
 <style>
     .report-card-sheet { max-width: 940px; margin: 0 auto; color: #111; }
-    .report-head { padding: 16px; text-align: center; border-bottom: 2px solid #12372a; }
+    .report-head { position: relative; min-height: 112px; padding: 16px 124px; text-align: center; border-bottom: 2px solid #12372a; display: flex; align-items: center; justify-content: center; }
+    .report-head__content { max-width: 640px; margin: 0 auto; }
+    .report-head__logo { position: absolute; top: 50%; width: 82px; height: 82px; object-fit: contain; transform: translateY(-50%); }
+    .report-head__logo--left { left: 76px; }
+    .report-head__logo--right { right: 76px; }
     .report-meta { display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 2px solid #12372a; }
     .report-meta > div { padding: 8px 12px; border-right: 1px solid #12372a; }
     .report-meta > div:nth-child(even) { border-right: 0; }
@@ -13,11 +17,18 @@
     @media(max-width: 600px) {
         .report-meta, .report-footer { grid-template-columns: 1fr; }
         .report-meta > div { border-right: 0; }
+        .report-head { padding: 14px 70px; min-height: 92px; }
+        .report-head__logo { width: 54px; height: 54px; }
+        .report-head__logo--left { left: 12px; }
+        .report-head__logo--right { right: 12px; }
     }
     @media print {
         body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .full-results-report { border: 1px solid #12372a !important; margin: 0 !important; width: 100% !important; }
-        .full-results-report .report-head { padding: 10px 12px; }
+        .full-results-report .report-head { min-height: 76px; padding: 8px 96px; }
+        .full-results-report .report-head__logo { width: 58px; height: 58px; }
+        .full-results-report .report-head__logo--left { left: 44px; }
+        .full-results-report .report-head__logo--right { right: 44px; }
         .full-results-report .f2-ribbon { padding: 6px 8px; }
         .report-page { break-after: page; page-break-after: always; }
         .report-page:last-child { break-after: auto; page-break-after: auto; }
