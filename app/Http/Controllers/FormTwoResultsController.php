@@ -643,12 +643,20 @@ class FormTwoResultsController extends Controller
                 $passed = $isPrimary
                     ? $satRows->whereIn('overall_grade', ['A', 'B', 'C', 'D'])->count()
                     : $satRows->whereIn('division', ['I', 'II', 'III', 'IV'])->count();
+                $divisions = collect(['I', 'II', 'III', 'IV', '0', 'INC'])->mapWithKeys(
+                    fn ($division) => [$division => $groupRows->where('division', $division)->count()]
+                );
+                $grades = collect(['A', 'B', 'C', 'D', 'E'])->mapWithKeys(
+                    fn ($grade) => [$grade => $groupRows->where('overall_grade', $grade)->count()]
+                );
 
                 return [
                     'fcp_name' => $fcpName,
                     'registered' => $groupRows->count(),
                     'sat' => $sat,
                     'absent' => $groupRows->whereNull('average')->count(),
+                    'divisions' => $divisions,
+                    'grades' => $grades,
                     'average' => $sat ? round($satRows->avg('average'), 2) : null,
                     'pass_rate' => $sat ? round(($passed / $sat) * 100, 1) : 0,
                     'passed' => $passed,

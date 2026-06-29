@@ -14,6 +14,23 @@
     .full-results-table { font-size: 0.78rem; }
     .full-results-table th, .full-results-table td { padding: 0.42rem; }
     .subject-marks-cell { min-width: 320px; line-height: 1.65; }
+    .fcp-winner-cell { position: relative; overflow: visible; min-width: 76px; }
+    .fcp-winner-trophy { display: inline-block; margin-right: 0.35rem; color: #f6b900; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25)); animation: fcpTrophyBounce 1.35s ease-in-out infinite; }
+    .fcp-fireworks { position: absolute; left: 50%; top: 50%; width: 58px; height: 58px; transform: translate(-50%, -50%); pointer-events: none; }
+    .fcp-fireworks span { position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; border-radius: 999px; background: #f6b900; opacity: 0; animation: fcpSparkBurst 1.25s ease-out infinite; }
+    .fcp-fireworks span:nth-child(2) { background: #22c55e; animation-delay: 0.12s; }
+    .fcp-fireworks span:nth-child(3) { background: #0ea5e9; animation-delay: 0.24s; }
+    .fcp-fireworks span:nth-child(4) { background: #ef4444; animation-delay: 0.36s; }
+    .fcp-fireworks span:nth-child(5) { background: #a855f7; animation-delay: 0.48s; }
+    @keyframes fcpSparkBurst {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.35); }
+        20% { opacity: 1; }
+        100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.1); }
+    }
+    @keyframes fcpTrophyBounce {
+        0%, 100% { transform: translateY(0) rotate(-6deg) scale(1); }
+        50% { transform: translateY(-5px) rotate(6deg) scale(1.08); }
+    }
     @media(max-width: 600px) {
         .report-meta, .report-footer { grid-template-columns: 1fr; }
         .report-meta > div { border-right: 0; }
@@ -45,5 +62,6 @@
         .full-results-table thead { display: table-header-group; }
         .full-results-table tr { break-inside: avoid; page-break-inside: avoid; }
         .subject-marks-cell { min-width: 0; line-height: 1.35; white-space: normal; overflow-wrap: anywhere; }
+        .fcp-winner-trophy, .fcp-fireworks span { animation: none !important; }
     }
 </style>

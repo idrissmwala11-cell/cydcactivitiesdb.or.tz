@@ -132,6 +132,8 @@ class FormTwoResultsSharingTest extends TestCase
             ->get(route('published-results.index', $query + ['view_mode' => 'fcp_ranking']))
             ->assertOk()
             ->assertSee('BEST FCP PERFORMANCE RANKING')
+            ->assertSee('DIV INC')
+            ->assertSee('fcp-fireworks', false)
             ->assertSee('FCP PUBLISH');
 
         $download = $this->actingAs($viewer)->get(route('published-results.download', $query));
