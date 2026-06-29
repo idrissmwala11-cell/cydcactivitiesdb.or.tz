@@ -48,7 +48,7 @@
                             @endforelse
                         </td>
                         <td class="text-end">{{ number_format($row['total'], 2) }}</td><td class="text-center">{{ $row['average'] !== null ? number_format($row['average'], 2) : 'ABS' }}</td>
-                        @if($isPrimary)<td class="text-center f2-grade-{{ $row['overall_grade'] }}">{{ $row['overall_grade'] ?? 'ABS' }}</td>@else<td class="text-center">{{ $row['points'] ?? '-' }}</td><td class="text-center fw-bold">{{ $row['division'] }}</td>@endif<td class="text-center">{{ $row['rank'] ?? '-' }}</td>
+                        @if($isPrimary)<td class="text-center f2-grade-{{ $row['overall_grade'] }}">{{ $row['overall_grade'] ?? 'ABS' }}</td>@else<td class="text-center">{{ $row['points'] ?? '-' }}</td><td class="text-center fw-bold">@if(in_array($row['division'], ['I', 'II'], true))<span class="division-celebration" title="Excellent performance"><i class="bi bi-stars"></i><span></span><span></span><span></span></span>@endif{{ $row['division'] }}</td>@endif<td class="text-center">{{ $row['rank'] ?? '-' }}</td>
                         <td class="text-center"><a class="btn btn-sm btn-outline-success" href="{{ route('form-two-results.reports.show', [$row['student'], 'assessment_id' => $assessment?->id]) }}"><i class="bi bi-file-earmark-person"></i></a></td>
                     </tr>
                 @empty

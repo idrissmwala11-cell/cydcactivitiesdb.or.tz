@@ -61,7 +61,14 @@
                             <td class="text-center fw-bold f2-grade-{{ $row['overall_grade'] }}">{{ $row['overall_grade'] ?? 'ABS' }}</td>
                         @else
                             <td class="text-center">{{ $row['points'] ?? '-' }}</td>
-                            <td class="text-center fw-bold">{{ $row['division'] }}</td>
+                            <td class="text-center fw-bold">
+                                @if(in_array($row['division'], ['I', 'II'], true))
+                                    <span class="division-celebration" title="Excellent performance">
+                                        <i class="bi bi-stars"></i><span></span><span></span><span></span>
+                                    </span>
+                                @endif
+                                {{ $row['division'] }}
+                            </td>
                         @endif
                         <td class="text-center fw-bold">{{ $row['rank'] ?? '-' }}</td>
                     </tr>

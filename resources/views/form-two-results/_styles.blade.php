@@ -33,6 +33,21 @@
     .f2-grade-D, .f2-grade-E, .f2-grade-F { background: #ffe2e2 !important; color: #8a1515; font-weight: 800; }
     .f2-empty { padding: 3rem 1rem; text-align: center; color: #68766e; }
     .f2-logo { width: 76px; height: 76px; object-fit: contain; }
+    .division-celebration { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 1.45rem; height: 1.45rem; margin-right: .35rem; color: #f4b400; vertical-align: middle; }
+    .division-celebration i { position: relative; z-index: 2; filter: drop-shadow(0 1px 2px rgba(0,0,0,.25)); animation: divisionStarPop 1.25s ease-in-out infinite; }
+    .division-celebration span { position: absolute; width: .32rem; height: .32rem; border-radius: 999px; background: #f4c430; opacity: 0; animation: divisionSpark 1.15s ease-out infinite; }
+    .division-celebration span:nth-child(2) { --x: -12px; --y: -12px; background: #22c55e; }
+    .division-celebration span:nth-child(3) { --x: 12px; --y: -10px; background: #0ea5e9; animation-delay: .16s; }
+    .division-celebration span:nth-child(4) { --x: 0; --y: -16px; background: #ef4444; animation-delay: .32s; }
+    @keyframes divisionSpark {
+        0% { transform: translate(0, 0) scale(.4); opacity: 0; }
+        25% { opacity: 1; }
+        100% { transform: translate(var(--x), var(--y)) scale(.05); opacity: 0; }
+    }
+    @keyframes divisionStarPop {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-3px) scale(1.12); }
+    }
     @media print {
         body { background: #fff !important; }
         .sidebar,
@@ -47,5 +62,6 @@
         footer { display: none !important; }
         .main-content, .content-wrapper, .container-fluid, .f2-shell { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; }
         .f2-sheet { box-shadow: none; border-radius: 0; }
+        .division-celebration i, .division-celebration span { animation: none !important; }
     }
 </style>
