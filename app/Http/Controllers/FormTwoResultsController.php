@@ -560,15 +560,36 @@ class FormTwoResultsController extends Controller
             abort_unless($assessment, 404, 'Matokeo haya hayajapublish au hayapo kwenye darasa lililochaguliwa.');
         }
 
-        $rows = $assessment
+        $allRows = $assessment
             ? $this->sortRowsByPosition($this->resultRows($assessment))
             : collect();
+        $fcpNames = $allRows
+            ->map(fn ($row) => trim((string) $row['student']->fcp_name))
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values();
+        $selectedFcp = trim($request->string('fcp_name')->toString());
+        $viewMode = $request->string('view_mode')->toString() === 'fcp_ranking' ? 'fcp_ranking' : 'results';
+
+        if ($selectedFcp !== '' && ! $fcpNames->contains($selectedFcp)) {
+            abort(422, 'FCP iliyochaguliwa haipo kwenye matokeo haya.');
+        }
+
+        $rows = $selectedFcp !== ''
+            ? $allRows->filter(fn ($row) => $row['student']->fcp_name === $selectedFcp)->values()
+            : $allRows;
+        $isPrimary = $selection['education_level'] === 'primary';
 
         return view('form-two-results.published-results', [
             'assessments' => $assessments,
             'assessment' => $assessment,
             'rows' => $rows,
-            'groups' => $this->performanceGroups($rows, $selection['education_level'] === 'primary'),
+            'groups' => $this->performanceGroups($rows, $isPrimary),
+            'fcpNames' => $fcpNames,
+            'selectedFcp' => $selectedFcp,
+            'viewMode' => $viewMode,
+            'fcpRankings' => $this->fcpPerformanceRows($allRows, $isPrimary),
             ...$selection,
         ]);
     }
@@ -588,9 +609,17 @@ class FormTwoResultsController extends Controller
         abort_unless($assessment, 404, 'Matokeo haya hayajapublish au hayapo kwenye darasa lililochaguliwa.');
 
         $rows = $this->sortRowsByPosition($this->resultRows($assessment));
+        $selectedFcp = trim($request->string('fcp_name')->toString());
+
+        if ($selectedFcp !== '') {
+            $fcpExists = $rows->contains(fn ($row) => $row['student']->fcp_name === $selectedFcp);
+            abort_unless($fcpExists, 422, 'FCP iliyochaguliwa haipo kwenye matokeo haya.');
+            $rows = $rows->filter(fn ($row) => $row['student']->fcp_name === $selectedFcp)->values();
+        }
+
         $isPrimary = $assessment->education_level === 'primary';
         $groups = $this->performanceGroups($rows, $isPrimary);
-        $filename = Str::slug($assessment->class_level.' '.$assessment->name.' results').'.pdf';
+        $filename = Str::slug($assessment->class_level.' '.$assessment->name.($selectedFcp !== '' ? ' '.$selectedFcp : '').' results').'.pdf';
         $pdf = app(PublishedResultsPdf::class)->generate($assessment, $rows, $groups);
 
         return response()->streamDownload(
@@ -598,6 +627,65 @@ class FormTwoResultsController extends Controller
             $filename,
             ['Content-Type' => 'application/pdf']
         );
+    }
+
+    private function fcpPerformanceRows(Collection $rows, bool $isPrimary): Collection
+    {
+        $rank = 0;
+        $previousAverage = null;
+        $previousPassRate = null;
+
+        return $rows
+            ->groupBy(fn ($row) => trim((string) $row['student']->fcp_name) ?: 'No FCP')
+            ->map(function (Collection $groupRows, string $fcpName) use ($isPrimary): array {
+                $satRows = $groupRows->whereNotNull('average');
+                $sat = $satRows->count();
+                $passed = $isPrimary
+                    ? $satRows->whereIn('overall_grade', ['A', 'B', 'C', 'D'])->count()
+                    : $satRows->whereIn('division', ['I', 'II', 'III', 'IV'])->count();
+
+                return [
+                    'fcp_name' => $fcpName,
+                    'registered' => $groupRows->count(),
+                    'sat' => $sat,
+                    'absent' => $groupRows->whereNull('average')->count(),
+                    'average' => $sat ? round($satRows->avg('average'), 2) : null,
+                    'pass_rate' => $sat ? round(($passed / $sat) * 100, 1) : 0,
+                    'passed' => $passed,
+                    'best_position' => $satRows->pluck('rank')->filter()->min(),
+                    'position' => null,
+                ];
+            })
+            ->sort(function (array $left, array $right): int {
+                if ($left['average'] === null && $right['average'] !== null) {
+                    return 1;
+                }
+
+                if ($left['average'] !== null && $right['average'] === null) {
+                    return -1;
+                }
+
+                return ($right['average'] <=> $left['average'])
+                    ?: ($right['pass_rate'] <=> $left['pass_rate'])
+                    ?: ($right['sat'] <=> $left['sat'])
+                    ?: strcasecmp($left['fcp_name'], $right['fcp_name']);
+            })
+            ->values()
+            ->map(function (array $row, int $index) use (&$rank, &$previousAverage, &$previousPassRate): array {
+                $position = $previousAverage !== null
+                    && $row['average'] !== null
+                    && (float) $row['average'] === (float) $previousAverage
+                    && (float) $row['pass_rate'] === (float) $previousPassRate
+                        ? $rank
+                        : $index + 1;
+
+                $rank = $position;
+                $previousAverage = $row['average'];
+                $previousPassRate = $row['pass_rate'];
+                $row['position'] = $position;
+
+                return $row;
+            });
     }
 
     private function validateStudent(Request $request, ?FormTwoStudent $student = null): array

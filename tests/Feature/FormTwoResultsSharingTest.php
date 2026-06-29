@@ -111,6 +111,7 @@ class FormTwoResultsSharingTest extends TestCase
             ->get(route('published-results.index', $query))
             ->assertOk()
             ->assertSee('PUBLISHED RESULTS')
+            ->assertSee('View Best FCPs')
             ->assertSee('public/logos/church-logo-1.jpeg')
             ->assertSee('public/logos/church-logo-2.jpeg')
             ->assertSee('Group')
@@ -119,6 +120,19 @@ class FormTwoResultsSharingTest extends TestCase
             ->assertSee('76-A')
             ->assertDontSee('Marks Entry')
             ->assertDontSee('Publish Results');
+
+        $this->actingAs($viewer)
+            ->get(route('published-results.index', $query + ['fcp_name' => 'FCP PUBLISH']))
+            ->assertOk()
+            ->assertSee('Viewing FCP:')
+            ->assertSee('FCP PUBLISH')
+            ->assertSee('PUBLISHED STUDENT');
+
+        $this->actingAs($viewer)
+            ->get(route('published-results.index', $query + ['view_mode' => 'fcp_ranking']))
+            ->assertOk()
+            ->assertSee('BEST FCP PERFORMANCE RANKING')
+            ->assertSee('FCP PUBLISH');
 
         $download = $this->actingAs($viewer)->get(route('published-results.download', $query));
         $download->assertOk();
