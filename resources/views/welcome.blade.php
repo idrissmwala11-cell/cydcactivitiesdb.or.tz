@@ -34,6 +34,7 @@
             font-family: 'Figtree', sans-serif;
             line-height: 1.6;
             color: #333;
+            overflow-x: hidden;
         }
         
         .container {
@@ -637,25 +638,134 @@
             0% { transform: translateX(-22%); }
             100% { transform: translateX(22%); }
         }
-
-        text-align: center;
-        padding: 2rem 0;
-    }
     
     /* Responsive */
         @media (max-width: 768px) {
+            html {
+                font-size: 92%;
+            }
+
+            .container {
+                width: 100%;
+                padding: 0 16px;
+            }
+
+            header {
+                position: sticky;
+                padding: 0.75rem 0;
+            }
+
+            nav {
+                align-items: center;
+                gap: 0.75rem;
+            }
+
             .nav-links {
                 display: none;
+            }
+
+            .logo {
+                min-width: 0;
+                gap: 0.65rem;
+                flex: 1 1 auto;
+            }
+
+            .logo-switcher {
+                width: 46px;
+                height: 46px;
+                border-radius: 14px;
+                padding: 6px;
+            }
+
+            .logo-switcher img {
+                inset: 6px;
+                width: calc(100% - 12px);
+                height: calc(100% - 12px);
+            }
+
+            .logo-title {
+                font-size: 1.25rem;
+            }
+
+            .logo-subtitle {
+                max-width: 145px;
+                font-size: 0.62rem;
+                letter-spacing: 0.05em;
+                line-height: 1.25;
+            }
+
+            .auth-buttons {
+                flex-direction: row;
+                gap: 0.45rem;
+                flex: 0 0 auto;
+            }
+
+            .btn {
+                padding: 0.42rem 0.7rem;
+                border-radius: 8px;
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+
+            .hero {
+                padding: 46px 0 48px;
+            }
+
+            .hero-brand {
+                gap: 0.55rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-heading h1 {
+                font-size: clamp(2.6rem, 16vw, 3.4rem);
+                letter-spacing: 0.1em;
+            }
+
+            .hero-heading .hero-subtitle {
+                max-width: 320px;
+                font-size: 1rem;
+                letter-spacing: 0.01em;
+                line-height: 1.45;
+            }
+
+            .hero-heading .hero-clusters {
+                font-size: 0.78rem;
+                letter-spacing: 0.14em;
+                line-height: 1.5;
+            }
+
+            .hero p {
+                max-width: 330px;
+                font-size: 1rem;
+                line-height: 1.55;
+                margin-bottom: 1.25rem;
+            }
+
+            .cta-button,
+            .mission-cta {
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
+                padding: 0.85rem 1.1rem;
+            }
+
+            .ministry-mission,
+            .services,
+            .about,
+            .contact {
+                padding: 44px 0;
             }
 
             .developer-contact {
                 grid-column: 1 / -1;
                 max-width: 100%;
+                padding-top: 0.25rem;
             }
 
-            .logo-subtitle,
-            .hero-heading .hero-subtitle {
-                letter-spacing: 0.12em;
+            .developer-contact .contact-item {
+                white-space: normal;
+                text-align: center;
+                line-height: 1.45;
             }
 
             .hero h1 {
@@ -670,20 +780,97 @@
         }
         
         .mission-header h2 {
-            font-size: 2.2rem;
+            font-size: clamp(2rem, 10vw, 2.45rem);
+            text-align: center;
+        }
+
+        .mission-header {
+            text-align: center;
+        }
+
+        .mission-header .subtitle {
+            font-size: 1rem;
+            line-height: 1.45;
         }
         
         .mission-header .description {
             margin-bottom: 1.5rem;
+            font-size: 1rem;
         }
         
-        .mission-text h2 {
-            font-size: 2rem;
+        .mission-text {
+            padding: 1.35rem;
+            border-radius: 14px;
+        }
+
+        .mission-text p {
+            text-align: left;
+            font-size: 0.98rem;
+            line-height: 1.65;
         }
         
+        .footer {
+            padding-top: 1.4rem;
+        }
+
+        .footer-content {
+            grid-template-columns: 1fr;
+            text-align: center;
+            gap: 1.1rem;
+        }
+
+        .footer-section p {
+            max-width: 330px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-links {
+            align-items: center;
+        }
+
+        .contact-details .contact-item {
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+        }
+
+        .footer-bottom-content p {
+            white-space: normal;
+            animation: none;
+            line-height: 1.45;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 430px) {
+        nav.container {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .logo {
+            flex: 1 1 100%;
+            justify-content: center;
+            text-align: left;
+        }
+
         .auth-buttons {
-            flex-direction: column;
-            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .auth-buttons .btn {
+            min-width: 112px;
+            text-align: center;
+        }
+
+        .hero {
+            padding-top: 34px;
+        }
+
+        .logo-subtitle {
+            max-width: 190px;
         }
     }
 </style>
