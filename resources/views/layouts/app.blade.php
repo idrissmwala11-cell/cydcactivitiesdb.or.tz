@@ -692,10 +692,115 @@
                 min-width: 720px;
             }
 
+            form .row {
+                --bs-gutter-x: .8rem;
+                --bs-gutter-y: .95rem;
+            }
+
+            form .row > [class*="col-"]:not(.col-auto) {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            label,
+            .form-label {
+                font-size: .95rem;
+                font-weight: 700;
+                margin-bottom: .45rem;
+                color: #111827;
+            }
+
             .btn,
             .form-control,
             .form-select {
-                min-height: 42px;
+                min-height: 50px;
+                font-size: 16px;
+                border-radius: 12px;
+            }
+
+            .form-control,
+            .form-select {
+                padding: .76rem .9rem;
+            }
+
+            textarea.form-control {
+                min-height: 124px;
+            }
+
+            .form-text,
+            .invalid-feedback,
+            .valid-feedback {
+                font-size: .86rem;
+            }
+
+            .input-group {
+                gap: .55rem;
+            }
+
+            .input-group > .form-control,
+            .input-group > .form-select,
+            .input-group > .btn {
+                width: 100%;
+                border-radius: 12px !important;
+            }
+
+            form .d-flex.justify-content-end,
+            form .d-flex.justify-content-between,
+            form .d-flex.flex-wrap {
+                gap: .65rem !important;
+            }
+
+            form .d-flex.justify-content-end .btn:not(.btn-sm),
+            form .d-flex.justify-content-between .btn:not(.btn-sm),
+            form .d-flex.flex-wrap .btn:not(.btn-sm),
+            form button[type="submit"].btn:not(.btn-sm) {
+                width: 100%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .card-header,
+            .card-footer {
+                padding: 1rem !important;
+            }
+
+            .card-header.d-flex,
+            .card-footer.d-flex {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: .75rem;
+            }
+
+            .card-header .btn:not(.btn-sm),
+            .card-footer .btn:not(.btn-sm) {
+                width: 100%;
+            }
+
+            .mobile-select-search {
+                min-height: 46px;
+                border-style: dashed;
+                background: #f8fafc;
+                margin-bottom: .45rem;
+            }
+
+            .mobile-select-search:focus {
+                background: #ffffff;
+            }
+
+            .table-responsive form .btn,
+            .table-responsive .btn-group .btn {
+                width: auto;
+                min-height: 36px;
+                font-size: .85rem;
+                border-radius: 8px;
+                padding: .35rem .55rem;
+            }
+
+            .table-responsive .btn-group {
+                display: inline-flex;
+                width: auto;
+                white-space: nowrap;
             }
 
             .chat-drawer {
@@ -1564,6 +1669,68 @@
                 }
             });
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileBreakpoint = window.matchMedia('(max-width: 768px)');
+
+        function normalize(value) {
+            return String(value || '').toLowerCase().trim();
+        }
+
+        function enhanceMobileSelects() {
+            if (!mobileBreakpoint.matches) {
+                return;
+            }
+
+            document.querySelectorAll('select.form-select, select.form-control').forEach(function(select) {
+                if (select.multiple || select.dataset.mobileSearch === 'off' || select.dataset.mobileSearchReady === '1') {
+                    return;
+                }
+
+                if (select.options.length < 8 || select.closest('.table-responsive')) {
+                    return;
+                }
+
+                const search = document.createElement('input');
+                search.type = 'search';
+                search.className = 'form-control mobile-select-search';
+                search.placeholder = select.dataset.mobileSearchPlaceholder || 'Tafuta kwenye orodha hii...';
+                search.setAttribute('aria-label', 'Tafuta chaguo kwenye dropdown');
+                search.autocomplete = 'off';
+
+                Array.from(select.options).forEach(function(option) {
+                    option.dataset.mobileOriginalDisabled = option.disabled ? '1' : '0';
+                });
+
+                search.addEventListener('input', function() {
+                    const query = normalize(search.value);
+
+                    Array.from(select.options).forEach(function(option, index) {
+                        const isPlaceholder = index === 0 && option.value === '';
+                        const originalDisabled = option.dataset.mobileOriginalDisabled === '1';
+                        const matches = !query
+                            || normalize(option.textContent).includes(query)
+                            || normalize(option.value).includes(query);
+                        const shouldHide = !isPlaceholder && !matches && !option.selected;
+
+                        option.hidden = shouldHide;
+                        option.disabled = originalDisabled || shouldHide;
+                    });
+                });
+
+                select.addEventListener('change', function() {
+                    search.value = '';
+                    search.dispatchEvent(new Event('input'));
+                });
+
+                select.parentNode.insertBefore(search, select);
+                select.dataset.mobileSearchReady = '1';
+            });
+        }
+
+        enhanceMobileSelects();
+        mobileBreakpoint.addEventListener?.('change', enhanceMobileSelects);
     });
 
     document.addEventListener('DOMContentLoaded', function () {
