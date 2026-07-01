@@ -632,8 +632,7 @@ class FormTwoResultsController extends Controller
     private function fcpPerformanceRows(Collection $rows, bool $isPrimary): Collection
     {
         $rank = 0;
-        $previousAverage = null;
-        $previousPassRate = null;
+        $previousSortKey = null;
 
         return $rows
             ->groupBy(fn ($row) => trim((string) $row['student']->fcp_name) ?: 'No FCP')
@@ -660,36 +659,48 @@ class FormTwoResultsController extends Controller
                     'average' => $sat ? round($satRows->avg('average'), 2) : null,
                     'pass_rate' => $sat ? round(($passed / $sat) * 100, 1) : 0,
                     'passed' => $passed,
+                    'top_count' => $isPrimary
+                        ? ($grades['A'] + $grades['B'])
+                        : ($divisions['I'] + $divisions['II']),
                     'best_position' => $satRows->pluck('rank')->filter()->min(),
                     'position' => null,
                 ];
             })
             ->sort(function (array $left, array $right): int {
-                if ($left['average'] === null && $right['average'] !== null) {
+                if ($left['best_position'] === null && $right['best_position'] !== null) {
                     return 1;
                 }
 
-                if ($left['average'] !== null && $right['average'] === null) {
+                if ($left['best_position'] !== null && $right['best_position'] === null) {
                     return -1;
                 }
 
-                return ($right['average'] <=> $left['average'])
+                return ($left['best_position'] <=> $right['best_position'])
+                    ?: ($right['top_count'] <=> $left['top_count'])
+                    ?: ($right['passed'] <=> $left['passed'])
                     ?: ($right['pass_rate'] <=> $left['pass_rate'])
+                    ?: ($right['average'] <=> $left['average'])
                     ?: ($right['sat'] <=> $left['sat'])
                     ?: strcasecmp($left['fcp_name'], $right['fcp_name']);
             })
             ->values()
-            ->map(function (array $row, int $index) use (&$rank, &$previousAverage, &$previousPassRate): array {
-                $position = $previousAverage !== null
-                    && $row['average'] !== null
-                    && (float) $row['average'] === (float) $previousAverage
-                    && (float) $row['pass_rate'] === (float) $previousPassRate
+            ->map(function (array $row, int $index) use (&$rank, &$previousSortKey): array {
+                $sortKey = [
+                    $row['best_position'],
+                    $row['top_count'],
+                    $row['passed'],
+                    $row['pass_rate'],
+                    $row['average'],
+                    $row['sat'],
+                ];
+
+                $position = $previousSortKey !== null
+                    && $sortKey === $previousSortKey
                         ? $rank
                         : $index + 1;
 
                 $rank = $position;
-                $previousAverage = $row['average'];
-                $previousPassRate = $row['pass_rate'];
+                $previousSortKey = $sortKey;
                 $row['position'] = $position;
 
                 return $row;

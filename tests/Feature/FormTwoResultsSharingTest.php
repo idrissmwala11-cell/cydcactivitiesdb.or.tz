@@ -321,4 +321,66 @@ class FormTwoResultsSharingTest extends TestCase
             ->assertSee('SHARED STUDENT')
             ->assertSee('1 kati ya 1');
     }
+
+    public function test_primary_fcp_ranking_prioritizes_the_fcp_with_the_best_student_position(): void
+    {
+        $creator = User::factory()->create(['role' => 'admin']);
+        $viewer = User::factory()->create(['role' => 'user']);
+        $subjects = FormTwoSubject::where('education_level', 'primary')
+            ->orderBy('display_order')
+            ->take(6)
+            ->get();
+
+        $assessment = FormTwoAssessment::create([
+            'name' => 'UNIC-2026',
+            'slug' => 'unic-2026-primary-ranking',
+            'term' => 'TERM I',
+            'assessment_date' => '2026-06-22',
+            'max_marks' => 50,
+            'display_order' => 102,
+            'is_published' => true,
+            'education_level' => 'primary',
+            'class_level' => 'Darasa la Saba',
+        ]);
+
+        $createStudent = function (string $number, string $name, string $fcp, int $mark) use ($creator, $assessment, $subjects): void {
+            $student = FormTwoStudent::create([
+                'student_number' => $number,
+                'candidate_name' => $name,
+                'fcp_name' => $fcp,
+                'sex' => 'F',
+                'education_level' => 'primary',
+                'class_level' => 'Darasa la Saba',
+                'is_active' => true,
+                'created_by' => $creator->id,
+            ]);
+
+            $student->subjects()->attach($subjects->pluck('id')->all(), ['registered' => true]);
+
+            foreach ($subjects as $subject) {
+                FormTwoMark::create([
+                    'assessment_id' => $assessment->id,
+                    'student_id' => $student->id,
+                    'subject_id' => $subject->id,
+                    'mark' => $mark,
+                    'is_absent' => false,
+                    'recorded_by' => $creator->id,
+                ]);
+            }
+        };
+
+        $createStudent('P7-USSOKE-1', 'BEST MORAVIAN STUDENT', 'MORAVIAN USSOKE', 50);
+        $createStudent('P7-USSOKE-2', 'LOW MORAVIAN STUDENT', 'MORAVIAN USSOKE', 10);
+        $createStudent('P7-EAGT-1', 'AVERAGE EAGT STUDENT', 'EAGT URAMBO', 35);
+
+        $this->actingAs($viewer)
+            ->get(route('published-results.index', [
+                'education_level' => 'primary',
+                'class_level' => 'Darasa la Saba',
+                'assessment_id' => $assessment->id,
+                'view_mode' => 'fcp_ranking',
+            ]))
+            ->assertOk()
+            ->assertSeeInOrder(['MORAVIAN USSOKE', 'EAGT URAMBO']);
+    }
 }
