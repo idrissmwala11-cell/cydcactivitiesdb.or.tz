@@ -31,9 +31,51 @@
                     font-size: 100%;
                 }
             }
+
+            :root {
+                --system-bg-image: url('{{ asset('public/images/system-background.png') }}?v=20260705');
+            }
+
+            body.system-photo-bg {
+                min-height: 100vh;
+                position: relative;
+                isolation: isolate;
+                background: transparent !important;
+            }
+
+            body.system-photo-bg::before {
+                content: "";
+                position: fixed;
+                inset: -26px;
+                z-index: -2;
+                pointer-events: none;
+                background-image: var(--system-bg-image);
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                filter: blur(12px);
+                opacity: 0.36;
+                transform: scale(1.04);
+            }
+
+            body.system-photo-bg::after {
+                content: "";
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                pointer-events: none;
+                background:
+                    linear-gradient(135deg, rgba(102, 126, 234, 0.76), rgba(118, 75, 162, 0.74)),
+                    radial-gradient(circle at 50% 18%, rgba(255,255,255,0.26), transparent 34%);
+            }
+
+            .guest-auth-card {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
         </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; position: relative;">
+    <body class="system-photo-bg font-sans text-gray-900 antialiased">
         <!-- Animated background elements -->
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full animate-pulse"></div>
@@ -50,7 +92,7 @@
 
             <!-- Form Container -->
             <div class="w-full sm:max-w-md px-4 sm:px-0">
-                <div class="bg-white/95 backdrop-blur-sm shadow-2xl overflow-hidden rounded-2xl border border-white/20">
+                <div class="guest-auth-card bg-white/95 backdrop-blur-sm shadow-2xl overflow-hidden rounded-2xl border border-white/20">
                     <div class="px-6 sm:px-8 py-8">
                         <div class="space-y-6">
                             {{ $slot }}

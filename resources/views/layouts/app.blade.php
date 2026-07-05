@@ -518,6 +518,69 @@
             100% { transform: translateX(22%); }
         }
 
+        :root {
+            --system-bg-image: url('{{ asset('public/images/system-background.png') }}?v=20260705');
+        }
+
+        body.system-photo-bg {
+            min-height: 100vh;
+            position: relative;
+            isolation: isolate;
+            background: transparent !important;
+        }
+
+        body.system-photo-bg::before {
+            content: "";
+            position: fixed;
+            inset: -26px;
+            z-index: -2;
+            pointer-events: none;
+            background-image: var(--system-bg-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(12px);
+            opacity: 0.22;
+            transform: scale(1.04);
+        }
+
+        body.system-photo-bg::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                linear-gradient(135deg, rgba(248, 250, 252, 0.90), rgba(239, 246, 255, 0.86)),
+                radial-gradient(circle at 20% 10%, rgba(255,255,255,0.78), transparent 34%),
+                radial-gradient(circle at 88% 18%, rgba(219,234,254,0.62), transparent 30%);
+        }
+
+        body.system-photo-bg .main-content {
+            background: transparent !important;
+        }
+
+        body.system-photo-bg .main-content > .navbar {
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        body.system-photo-bg .card,
+        body.system-photo-bg .dashboard-card,
+        body.system-photo-bg .f2-sheet,
+        body.system-photo-bg .bg-white {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        @media print {
+            body.system-photo-bg::before,
+            body.system-photo-bg::after {
+                display: none !important;
+            }
+        }
+
         .sidebar-backdrop {
             display: none;
         }
@@ -812,7 +875,7 @@
 
     <script src="{{ asset('js/search-test.js') }}"></script>
 </head>
-<body @class(['admin-layout' => auth()->check() && auth()->user()->role === 'admin'])>
+<body @class(['system-photo-bg', 'admin-layout' => auth()->check() && auth()->user()->role === 'admin'])>
 @auth
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
