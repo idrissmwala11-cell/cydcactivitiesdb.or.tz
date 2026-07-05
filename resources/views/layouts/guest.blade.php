@@ -40,7 +40,9 @@
                 min-height: 100vh;
                 position: relative;
                 isolation: isolate;
-                background: transparent !important;
+                background:
+                    linear-gradient(135deg, rgba(102, 126, 234, 0.48), rgba(118, 75, 162, 0.44)),
+                    var(--system-bg-image) center / cover fixed no-repeat !important;
             }
 
             body.system-photo-bg::before {
@@ -53,8 +55,8 @@
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;
-                filter: blur(12px);
-                opacity: 0.36;
+                filter: blur(9px);
+                opacity: 0.52;
                 transform: scale(1.04);
             }
 
@@ -65,8 +67,8 @@
                 z-index: -1;
                 pointer-events: none;
                 background:
-                    linear-gradient(135deg, rgba(102, 126, 234, 0.76), rgba(118, 75, 162, 0.74)),
-                    radial-gradient(circle at 50% 18%, rgba(255,255,255,0.26), transparent 34%);
+                    linear-gradient(135deg, rgba(102, 126, 234, 0.42), rgba(118, 75, 162, 0.40)),
+                    radial-gradient(circle at 50% 18%, rgba(255,255,255,0.18), transparent 34%);
             }
 
             .guest-auth-card {

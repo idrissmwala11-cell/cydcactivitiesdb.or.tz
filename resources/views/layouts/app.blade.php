@@ -526,7 +526,9 @@
             min-height: 100vh;
             position: relative;
             isolation: isolate;
-            background: transparent !important;
+            background:
+                linear-gradient(135deg, rgba(248, 250, 252, 0.68), rgba(239, 246, 255, 0.62)),
+                var(--system-bg-image) center / cover fixed no-repeat !important;
         }
 
         body.system-photo-bg::before {
@@ -539,8 +541,8 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            filter: blur(12px);
-            opacity: 0.22;
+            filter: blur(9px);
+            opacity: 0.42;
             transform: scale(1.04);
         }
 
@@ -551,9 +553,9 @@
             z-index: -1;
             pointer-events: none;
             background:
-                linear-gradient(135deg, rgba(248, 250, 252, 0.90), rgba(239, 246, 255, 0.86)),
-                radial-gradient(circle at 20% 10%, rgba(255,255,255,0.78), transparent 34%),
-                radial-gradient(circle at 88% 18%, rgba(219,234,254,0.62), transparent 30%);
+                linear-gradient(135deg, rgba(248, 250, 252, 0.58), rgba(239, 246, 255, 0.48)),
+                radial-gradient(circle at 20% 10%, rgba(255,255,255,0.42), transparent 34%),
+                radial-gradient(circle at 88% 18%, rgba(219,234,254,0.34), transparent 30%);
         }
 
         body.system-photo-bg .main-content {
