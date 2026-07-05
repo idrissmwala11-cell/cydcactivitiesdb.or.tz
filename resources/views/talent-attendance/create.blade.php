@@ -86,52 +86,15 @@
                         <hr class="my-4">
 
                         <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div>
-                                    <h5 class="text-primary mb-1">{{ __('Participants Attendance') }}</h5>
-                                    <p class="text-muted small mb-0">{{ __('Add present and absent participants for this session.') }}</p>
-                                </div>
-                                <button type="button" class="btn btn-sm btn-outline-primary" id="add-participant">
-                                    <i class="fas fa-plus"></i> {{ __('Add Participant') }}
-                                </button>
-                            </div>
-
-                            <div id="participants-container">
-                                @php
-                                    $oldParticipants = old('participants', [
-                                        ['participant_name' => '', 'participant_number' => '', 'status' => 'present']
-                                    ]);
-                                @endphp
-
-                                @foreach($oldParticipants as $index => $participant)
-                                    <div class="row mb-2 participant-row">
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control"
-                                                   name="participants[{{ $index }}][participant_name]"
-                                                   placeholder="{{ __('Participant Name') }}"
-                                                   value="{{ $participant['participant_name'] ?? '' }}">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control"
-                                                   name="participants[{{ $index }}][participant_number]"
-                                                   placeholder="{{ __('Participant Number') }}"
-                                                   value="{{ $participant['participant_number'] ?? '' }}">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select class="form-control participant-status"
-                                                    name="participants[{{ $index }}][status]">
-                                                <option value="present" {{ (($participant['status'] ?? '') === 'present') ? 'selected' : '' }}>Present</option>
-                                                <option value="absent" {{ (($participant['status'] ?? '') === 'absent') ? 'selected' : '' }}>Absent</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <button type="button" class="btn btn-sm btn-outline-danger remove-participant w-100">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
+                            <x-attendance-checklist
+                                field-name="participants"
+                                :participants="old('participants', [['participant_name' => '', 'participant_number' => '', 'status' => 'present']])"
+                                count-input-id="attendance_count"
+                                count-input-mode="total"
+                                title="Select Participants"
+                                help-text="Tick waliopo na untick wasiokuwepo. Present na Absent zitahesabika zenyewe."
+                                add-button-text="Add Participant"
+                            />
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -148,80 +111,4 @@
         </div>
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    let participantIndex = {{ old('participants') ? count(old('participants')) : 1 }};
-    const container = document.getElementById('participants-container');
-    const addButton = document.getElementById('add-participant');
-    const attendanceCountInput = document.getElementById('attendance_count');
-
-    function updateAttendanceCount() {
-        const rows = container.querySelectorAll('.participant-row');
-        let count = 0;
-
-        rows.forEach(row => {
-            const nameInput = row.querySelector('input[name*="[participant_name]"]');
-            if (nameInput && nameInput.value.trim() !== '') {
-                count++;
-            }
-        });
-
-        attendanceCountInput.value = count;
-    }
-
-    addButton.addEventListener('click', function() {
-        const row = document.createElement('div');
-        row.className = 'row mb-2 participant-row';
-        row.innerHTML = `
-            <div class="col-md-4">
-                <input type="text" class="form-control"
-                       name="participants[${participantIndex}][participant_name]"
-                       placeholder="{{ __('Participant Name') }}">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control"
-                       name="participants[${participantIndex}][participant_number]"
-                       placeholder="{{ __('Participant Number') }}">
-            </div>
-            <div class="col-md-3">
-                <select class="form-control participant-status"
-                        name="participants[${participantIndex}][status]">
-                    <option value="present">Present</option>
-                    <option value="absent">Absent</option>
-                </select>
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn btn-sm btn-outline-danger remove-participant w-100">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `;
-        container.appendChild(row);
-        participantIndex++;
-        updateAttendanceCount();
-    });
-
-    container.addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-participant') || (e.target.parentElement && e.target.parentElement.classList.contains('remove-participant'))) {
-            const row = e.target.closest('.participant-row');
-            if (row) {
-                const rows = container.querySelectorAll('.participant-row');
-                if (rows.length > 1) {
-                    row.remove();
-                    updateAttendanceCount();
-                }
-            }
-        }
-    });
-
-    container.addEventListener('input', function(e) {
-        if (e.target.name && e.target.name.includes('[participant_name]')) {
-            updateAttendanceCount();
-        }
-    });
-
-    updateAttendanceCount();
-});
-</script>
 @endsection

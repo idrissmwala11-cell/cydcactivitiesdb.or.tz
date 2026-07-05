@@ -49,7 +49,7 @@ class CurriculumAttendanceController extends Controller
             ->values();
 
         $attendanceData = collect($validated)->except('participants')->toArray();
-        $attendanceData['wahudhuria'] = $participants->count();
+        $attendanceData['wahudhuria'] = $participants->where('status', 'present')->count();
         $attendanceData['user_id'] = Auth::id();
 
         $attendance = CurriculumAttendance::create($attendanceData);
@@ -109,7 +109,7 @@ class CurriculumAttendanceController extends Controller
             ->values();
 
         $attendanceData = collect($validated)->except('participants')->toArray();
-        $attendanceData['wahudhuria'] = $participants->count();
+        $attendanceData['wahudhuria'] = $participants->where('status', 'present')->count();
 
         $curriculumAttendance->update($attendanceData);
         $curriculumAttendance->participants()->delete();

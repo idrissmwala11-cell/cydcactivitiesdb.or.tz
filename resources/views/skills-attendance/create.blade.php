@@ -31,7 +31,7 @@
 
                         <div>
                             <x-input-label for="present_count" :value="__('Present Count')" />
-                            <x-text-input id="present_count" name="present_count" type="number" class="mt-1 block w-full" :value="old('present_count')" required min="0" />
+                            <x-text-input id="present_count" name="present_count" type="number" class="mt-1 block w-full bg-gray-100" :value="old('present_count', 0)" required min="0" readonly />
                             <x-input-error class="mt-2" :messages="$errors->get('present_count')" />
                         </div>
                     </div>
@@ -55,34 +55,15 @@
                     </div>
 
                     <div class="mt-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="text-lg font-medium text-gray-900">Absent Participants</h4>
-                            <button type="button" id="add-participant" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
-                                Add Participant
-                            </button>
-                        </div>
-                        
-                        <div id="participants-container">
-                            @if(old('absent_participants'))
-                                @foreach(old('absent_participants') as $index => $participant)
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 border border-gray-200 rounded-lg">
-                                    <div>
-                                        <label class="block font-medium text-sm text-gray-700">Participant Name</label>
-                                        <input type="text" name="absent_participants[{{ $index }}][participant_name]" value="{{ $participant['participant_name'] ?? '' }}" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
-                                    </div>
-                                    <div class="flex items-end">
-                                        <div class="flex-1">
-                                            <label class="block font-medium text-sm text-gray-700">Participant Number</label>
-                                            <input type="text" name="absent_participants[{{ $index }}][participant_number]" value="{{ $participant['participant_number'] ?? '' }}" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
-                                        </div>
-                                        <button type="button" class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded remove-participant">
-                                            Remove
-                                        </button>
-                                    </div>
-                                </div>
-                                @endforeach
-                            @endif
-                        </div>
+                        <x-attendance-checklist
+                            field-name="participants"
+                            :participants="old('participants', [['participant_name' => '', 'participant_number' => '', 'status' => 'present']])"
+                            count-input-id="present_count"
+                            count-input-mode="present"
+                            title="Select Participants"
+                            help-text="Tick waliopo na untick wasiokuwepo. Present na Absent zitahesabika zenyewe."
+                            add-button-text="Add Participant"
+                        />
                     </div>
 
                     <div class="flex items-center justify-end mt-6">
@@ -98,41 +79,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    let participantIndex = {{ old('absent_participants') ? count(old('absent_participants')) : 0 }};
-    
-    document.getElementById('add-participant').addEventListener('click', function() {
-        const container = document.getElementById('participants-container');
-        const participantDiv = document.createElement('div');
-        participantDiv.className = 'grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 border border-gray-200 rounded-lg';
-        participantDiv.innerHTML = `
-            <div>
-                <label class="block font-medium text-sm text-gray-700">Participant Name</label>
-                <input type="text" name="absent_participants[${participantIndex}][participant_name]" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
-            </div>
-            <div class="flex items-end">
-                <div class="flex-1">
-                    <label class="block font-medium text-sm text-gray-700">Participant Number</label>
-                    <input type="text" name="absent_participants[${participantIndex}][participant_number]" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
-                </div>
-                <button type="button" class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded remove-participant">
-                    Remove
-                </button>
-            </div>
-        `;
-        container.appendChild(participantDiv);
-        participantIndex++;
-        
-        participantDiv.querySelector('.remove-participant').addEventListener('click', function() {
-            participantDiv.remove();
-        });
-    });
-
-    document.querySelectorAll('.remove-participant').forEach(function(button) {
-        button.addEventListener('click', function() {
-            button.closest('.grid').remove();
-        });
-    });
-</script>
 @endsection

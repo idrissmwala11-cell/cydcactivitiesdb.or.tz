@@ -64,49 +64,13 @@
                     </div>
 
                     <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Participants Attendance</h3>
-
-                        <div class="overflow-x-auto border rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200" id="participants-table">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Participant Name</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Participant Number</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if(old('participants'))
-                                        @foreach(old('participants') as $index => $participant)
-                                            <tr>
-                                                <td class="px-4 py-2">
-                                                    <input type="text" name="participants[{{ $index }}][participant_name]" value="{{ $participant['participant_name'] ?? '' }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                                </td>
-                                                <td class="px-4 py-2">
-                                                    <input type="text" name="participants[{{ $index }}][participant_number]" value="{{ $participant['participant_number'] ?? '' }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                                </td>
-                                                <td class="px-4 py-2">
-                                                    <select name="participants[{{ $index }}][status]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                                        <option value="present" {{ (($participant['status'] ?? '') === 'present') ? 'selected' : '' }}>Present</option>
-                                                        <option value="absent" {{ (($participant['status'] ?? '') === 'absent') ? 'selected' : '' }}>Absent</option>
-                                                    </select>
-                                                </td>
-                                                <td class="px-4 py-2 text-center">
-                                                    <button type="button" class="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded remove-participant">
-                                                        Remove
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <button type="button" id="add-participant" class="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Add Participant
-                        </button>
+                        <x-attendance-checklist
+                            field-name="participants"
+                            :participants="old('participants', [['participant_name' => '', 'participant_number' => '', 'status' => 'present']])"
+                            title="Select Participants"
+                            help-text="Tick waliopo na untick wasiokuwepo. Present na Absent zitahesabika zenyewe."
+                            add-button-text="Add Participant"
+                        />
                     </div>
 
                     <div class="mt-6 flex space-x-2">
@@ -124,48 +88,4 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tbody = document.querySelector('#participants-table tbody');
-            const addButton = document.getElementById('add-participant');
-
-            let rowIndex = tbody.querySelectorAll('tr').length;
-
-            function bindRemoveButtons() {
-                document.querySelectorAll('.remove-participant').forEach(button => {
-                    button.onclick = function () {
-                        this.closest('tr').remove();
-                    };
-                });
-            }
-
-            addButton.addEventListener('click', function () {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-4 py-2">
-                        <input type="text" name="participants[${rowIndex}][participant_name]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                    </td>
-                    <td class="px-4 py-2">
-                        <input type="text" name="participants[${rowIndex}][participant_number]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                    </td>
-                    <td class="px-4 py-2">
-                        <select name="participants[${rowIndex}][status]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                            <option value="present">Present</option>
-                            <option value="absent">Absent</option>
-                        </select>
-                    </td>
-                    <td class="px-4 py-2 text-center">
-                        <button type="button" class="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded remove-participant">
-                            Remove
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-                rowIndex++;
-                bindRemoveButtons();
-            });
-
-            bindRemoveButtons();
-        });
-    </script>
 </x-app-layout>

@@ -111,7 +111,7 @@
 
                                 <td>
                                     <span class="badge bg-danger-subtle text-danger px-3 py-2">
-                                        {{ $attendance->absentParticipants->count() }}
+                                        {{ $attendance->absent_count }}
                                     </span>
                                 </td>
 

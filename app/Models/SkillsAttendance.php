@@ -36,4 +36,14 @@ class SkillsAttendance extends Model
     {
         return $this->hasMany(AbsentParticipant::class, 'attendance_id');
     }
+
+    public function getAbsentCountAttribute(): int
+    {
+        return $this->absentParticipants()->where('status', 'absent')->count();
+    }
+
+    public function getTotalParticipantsCountAttribute(): int
+    {
+        return $this->present_count + $this->absent_count;
+    }
 }
