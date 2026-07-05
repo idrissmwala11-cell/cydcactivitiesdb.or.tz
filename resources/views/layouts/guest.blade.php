@@ -42,7 +42,7 @@
                 isolation: isolate;
                 background:
                     linear-gradient(135deg, rgba(102, 126, 234, 0.48), rgba(118, 75, 162, 0.44)),
-                    var(--system-bg-image) center / cover fixed no-repeat !important;
+                    var(--system-bg-image) center / contain fixed no-repeat !important;
             }
 
             body.system-photo-bg::before {
@@ -52,7 +52,7 @@
                 z-index: -2;
                 pointer-events: none;
                 background-image: var(--system-bg-image);
-                background-size: cover;
+                background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
                 filter: blur(9px);
