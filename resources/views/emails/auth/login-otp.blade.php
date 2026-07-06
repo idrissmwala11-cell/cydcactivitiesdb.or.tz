@@ -18,7 +18,19 @@
             </tr>
         </table>
 
-        <p>Hello Dear User,</p>
+        @php
+            $emailName = \Illuminate\Support\Str::of((string) $user->email)
+                ->before('@')
+                ->replace(['.', '_', '-'], ' ')
+                ->squish()
+                ->title();
+
+            $recipientName = trim((string) ($user->name ?? '')) !== ''
+                ? $user->name
+                : ($emailName->isNotEmpty() ? (string) $emailName : 'Dear User');
+        @endphp
+
+        <p>Hello {{ $recipientName }},</p>
 
         <p>
             Thank you for using CYDC Activities Database. Please use the verification code below to continue accessing your account.

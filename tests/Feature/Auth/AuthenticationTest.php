@@ -82,6 +82,17 @@ class AuthenticationTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
+    public function test_otp_email_greets_user_by_readable_email_name(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'faith.kanjanja@example.com',
+        ]);
+
+        $html = (new LoginOtpMail('123456', $user))->render();
+
+        $this->assertStringContainsString('Hello Faith Kanjanja,', $html);
+    }
+
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();
