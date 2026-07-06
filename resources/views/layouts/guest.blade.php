@@ -93,7 +93,11 @@
             </div>
 
             <!-- Form Container -->
-            <div class="w-full sm:max-w-md px-4 sm:px-0">
+            <div @class([
+                'w-full px-4 sm:px-0',
+                'sm:max-w-3xl' => request()->routeIs('register'),
+                'sm:max-w-md' => ! request()->routeIs('register'),
+            ])>
                 <div class="guest-auth-card bg-white/95 backdrop-blur-sm shadow-2xl overflow-hidden rounded-2xl border border-white/20">
                     <div class="px-6 sm:px-8 py-8">
                         <div class="space-y-6">
