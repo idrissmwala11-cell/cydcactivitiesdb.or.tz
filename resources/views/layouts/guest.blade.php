@@ -75,6 +75,33 @@
                 backdrop-filter: blur(12px);
                 -webkit-backdrop-filter: blur(12px);
             }
+
+            .guest-form-container {
+                width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .guest-form-container--default {
+                max-width: 28rem;
+            }
+
+            .guest-form-container--register {
+                max-width: 52rem;
+            }
+
+            @media (min-width: 640px) {
+                .guest-form-container {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .guest-form-container--register {
+                    max-width: 28rem;
+                }
+            }
         </style>
     </head>
     <body class="system-photo-bg font-sans text-gray-900 antialiased">
@@ -94,9 +121,9 @@
 
             <!-- Form Container -->
             <div @class([
-                'w-full px-4 sm:px-0',
-                'sm:max-w-3xl' => request()->routeIs('register'),
-                'sm:max-w-md' => ! request()->routeIs('register'),
+                'guest-form-container',
+                'guest-form-container--register' => request()->routeIs('register'),
+                'guest-form-container--default' => ! request()->routeIs('register'),
             ])>
                 <div class="guest-auth-card bg-white/95 backdrop-blur-sm shadow-2xl overflow-hidden rounded-2xl border border-white/20">
                     <div class="px-6 sm:px-8 py-8">
