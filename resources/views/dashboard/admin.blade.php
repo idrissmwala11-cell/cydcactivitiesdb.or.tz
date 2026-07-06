@@ -69,9 +69,14 @@
                         <p class="mb-0 opacity-75">Advanced system management and user control</p>
                     </div>
                     <div class="col-md-4 text-end">
-                        <a href="{{ route('published-results.index') }}" class="btn btn-outline-primary bg-white fw-semibold">
-                            <i class="bi bi-table me-1"></i>View Results List
-                        </a>
+                        <div class="d-flex flex-wrap justify-content-md-end gap-2">
+                            <a href="{{ route('admin.sms-gateway.index') }}" class="btn btn-success fw-semibold">
+                                <i class="bi bi-chat-dots me-1"></i>SMS Gateway
+                            </a>
+                            <a href="{{ route('published-results.index') }}" class="btn btn-outline-primary bg-white fw-semibold">
+                                <i class="bi bi-table me-1"></i>View Results List
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

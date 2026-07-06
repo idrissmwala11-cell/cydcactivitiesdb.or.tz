@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PerformanceReportController;
 use App\Http\Controllers\FormTwoResultsController;
 use App\Http\Controllers\UserAvatarController;
+use App\Http\Controllers\AdminSmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -375,6 +376,8 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+    Route::get('/sms-gateway', [AdminSmsController::class, 'index'])->name('sms-gateway.index');
+    Route::post('/sms-gateway/test', [AdminSmsController::class, 'sendTest'])->name('sms-gateway.test');
 
     Route::get('/users', [DashboardController::class, 'manageUsers'])->name('users.index');
     Route::get('/centers-without-data', [DashboardController::class, 'centersWithoutData'])->name('centers-without-data');
