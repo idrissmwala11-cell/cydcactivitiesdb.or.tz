@@ -21,14 +21,16 @@ class SmsGatewayClient
             throw new RuntimeException('SMS gateway username/password are missing in .env.');
         }
 
-        $endpoint = rtrim((string) config('sms_gateway.base_url'), '/').'/message';
+        $endpoint = rtrim((string) config('sms_gateway.base_url'), '/').'/messages';
 
         return Http::timeout((int) config('sms_gateway.timeout', 20))
             ->acceptJson()
             ->asJson()
             ->withBasicAuth($username, $password)
             ->post($endpoint, [
-                'message' => $message,
+                'textMessage' => [
+                    'text' => $message,
+                ],
                 'phoneNumbers' => array_values($phoneNumbers),
             ])
             ->throw();

@@ -55,8 +55,8 @@ class AdminSmsGatewayTest extends TestCase
             'provider_message_id' => 'sms-123',
         ]);
 
-        Http::assertSent(fn ($request) => $request->url() === 'https://api.sms-gate.app/3rdparty/v1/message'
-            && $request['message'] === 'Shalom! Test SMS.'
+        Http::assertSent(fn ($request) => $request->url() === 'https://api.sms-gate.app/3rdparty/v1/messages'
+            && $request['textMessage']['text'] === 'Shalom! Test SMS.'
             && $request['phoneNumbers'] === ['+255673746031']);
     }
 
