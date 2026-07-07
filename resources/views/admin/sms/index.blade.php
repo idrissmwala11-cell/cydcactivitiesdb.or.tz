@@ -66,6 +66,7 @@
                                 <label class="form-label fw-semibold" for="phone">Phone Number</label>
                                 <input id="phone" name="phone" value="{{ old('phone') }}" class="form-control @error('phone') is-invalid @enderror" placeholder="0673746031" required>
                                 @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <div class="form-text">Inakubali 0614036031, 255614036031, au +255614036031.</div>
                             </div>
                             <div class="col-md-8">
                                 <label class="form-label fw-semibold" for="message">Message</label>

@@ -63,13 +63,32 @@ class SmsSender
 
     public function normalizePhone(string $phone): string
     {
-        $phone = trim($phone);
+        $phone = trim(str_replace(["\u{00A0}", "\t", "\n", "\r"], ' ', $phone));
 
         if (str_starts_with($phone, '+')) {
-            return '+'.preg_replace('/\D+/', '', substr($phone, 1));
+            $digits = preg_replace('/\D+/', '', substr($phone, 1)) ?: '';
+
+            return $this->normalizeDigitsWithCountry($digits);
         }
 
         $digits = preg_replace('/\D+/', '', $phone) ?: '';
+
+        if (str_starts_with($digits, '00')) {
+            $digits = substr($digits, 2);
+        }
+
+        return $this->normalizeDigitsWithCountry($digits);
+    }
+
+    private function normalizeDigitsWithCountry(string $digits): string
+    {
+        if (str_starts_with($digits, '2550')) {
+            return '+255'.substr($digits, 4);
+        }
+
+        if (str_starts_with($digits, '255')) {
+            return '+'.$digits;
+        }
 
         if (str_starts_with($digits, '0') && strlen($digits) === 10) {
             return '+255'.substr($digits, 1);
@@ -79,11 +98,7 @@ class SmsSender
             return '+255'.$digits;
         }
 
-        if (str_starts_with($digits, '255')) {
-            return '+'.$digits;
-        }
-
-        return $digits;
+        return $digits === '' ? '' : '+'.$digits;
     }
 
     private function extractMessageId(mixed $payload): ?string

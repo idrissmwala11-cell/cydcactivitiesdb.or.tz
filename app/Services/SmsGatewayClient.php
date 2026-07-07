@@ -27,11 +27,13 @@ class SmsGatewayClient
             ->acceptJson()
             ->asJson()
             ->withBasicAuth($username, $password)
-            ->post($endpoint, [
+            ->post($endpoint.'?skipPhoneValidation=true&deviceActiveWithin=12', [
                 'textMessage' => [
                     'text' => $message,
                 ],
                 'phoneNumbers' => array_values($phoneNumbers),
+                'ttl' => 3600,
+                'priority' => 100,
             ])
             ->throw();
     }

@@ -55,14 +55,29 @@ class AdminSmsGatewayTest extends TestCase
             'provider_message_id' => 'sms-123',
         ]);
 
-        Http::assertSent(fn ($request) => $request->url() === 'https://api.sms-gate.app/3rdparty/v1/messages'
+        Http::assertSent(fn ($request) => str_starts_with($request->url(), 'https://api.sms-gate.app/3rdparty/v1/messages')
             && str_contains($request['textMessage']['text'], 'CHILD AND YOUTH DEVELOPMENT CENTER (CYDC)')
             && str_contains($request['textMessage']['text'], 'Shalom!')
             && str_contains($request['textMessage']['text'], 'Test SMS.')
             && str_contains($request['textMessage']['text'], 'Best Regards,')
             && str_contains($request['textMessage']['text'], 'CYDC ACTIVITIES DATABASE')
             && str_contains($request['textMessage']['text'], 'support@cydcactivitiesdb.or.tz')
-            && $request['phoneNumbers'] === ['+255673746031']);
+            && $request['phoneNumbers'] === ['+255673746031']
+            && $request['ttl'] === 3600
+            && $request['priority'] === 100);
+    }
+
+    public function test_tanzania_phone_numbers_are_normalized_for_sms_gateway(): void
+    {
+        $sender = app(\App\Services\SmsSender::class);
+
+        $this->assertSame('+255614036031', $sender->normalizePhone('0614036031'));
+        $this->assertSame('+255614036031', $sender->normalizePhone('+255614036031'));
+        $this->assertSame('+255614036031', $sender->normalizePhone('255614036031'));
+        $this->assertSame('+255614036031', $sender->normalizePhone('2550614036031'));
+        $this->assertSame('+255614036031', $sender->normalizePhone('00255614036031'));
+        $this->assertSame('+255614036031', $sender->normalizePhone('614036031'));
+        $this->assertSame('+255714036031', $sender->normalizePhone('0714 036 031'));
     }
 
     public function test_sms_failure_is_logged(): void
