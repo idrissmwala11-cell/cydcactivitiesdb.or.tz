@@ -15,17 +15,18 @@ class SmsSender
     public function sendToPhone(string $phone, string $message, string $type = 'manual', ?User $user = null): SmsLog
     {
         $normalizedPhone = $this->normalizePhone($phone);
+        $formattedMessage = $this->formatMessage($message);
 
         $log = SmsLog::create([
             'user_id' => $user?->id,
             'phone' => $normalizedPhone,
             'type' => $type,
-            'message' => $message,
+            'message' => $formattedMessage,
             'status' => 'pending',
         ]);
 
         try {
-            $response = $this->client->send([$normalizedPhone], $message);
+            $response = $this->client->send([$normalizedPhone], $formattedMessage);
             $payload = $response->json();
 
             $log->update([
@@ -42,6 +43,22 @@ class SmsSender
         }
 
         return $log->fresh();
+    }
+
+    public function formatMessage(string $body): string
+    {
+        $body = trim($body);
+        $title = trim((string) config('sms_gateway.format.title'));
+        $greeting = trim((string) config('sms_gateway.format.greeting'));
+        $signature = trim((string) config('sms_gateway.format.signature'));
+
+        if ($greeting !== '' && str_starts_with(strtolower($body), strtolower($greeting))) {
+            $body = trim(substr($body, strlen($greeting)));
+        }
+
+        return collect([$title, $greeting, $body, $signature])
+            ->filter(fn (string $part): bool => trim($part) !== '')
+            ->implode("\n\n");
     }
 
     public function normalizePhone(string $phone): string

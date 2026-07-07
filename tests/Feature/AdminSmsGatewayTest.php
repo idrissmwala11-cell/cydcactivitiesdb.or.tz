@@ -43,7 +43,7 @@ class AdminSmsGatewayTest extends TestCase
         $this->actingAs($admin)
             ->post(route('admin.sms-gateway.test'), [
                 'phone' => '0673746031',
-                'message' => 'Shalom! Test SMS.',
+                'message' => 'Test SMS.',
             ])
             ->assertRedirect()
             ->assertSessionHas('success');
@@ -56,7 +56,12 @@ class AdminSmsGatewayTest extends TestCase
         ]);
 
         Http::assertSent(fn ($request) => $request->url() === 'https://api.sms-gate.app/3rdparty/v1/messages'
-            && $request['textMessage']['text'] === 'Shalom! Test SMS.'
+            && str_contains($request['textMessage']['text'], 'CHILD AND YOUTH DEVELOPMENT CENTER (CYDC)')
+            && str_contains($request['textMessage']['text'], 'Shalom!')
+            && str_contains($request['textMessage']['text'], 'Test SMS.')
+            && str_contains($request['textMessage']['text'], 'Best Regards,')
+            && str_contains($request['textMessage']['text'], 'CYDC ACTIVITIES DATABASE')
+            && str_contains($request['textMessage']['text'], 'support@cydcactivitiesdb.or.tz')
             && $request['phoneNumbers'] === ['+255673746031']);
     }
 

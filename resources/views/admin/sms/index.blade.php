@@ -69,8 +69,9 @@
                             </div>
                             <div class="col-md-8">
                                 <label class="form-label fw-semibold" for="message">Message</label>
-                                <textarea id="message" name="message" rows="3" maxlength="480" class="form-control @error('message') is-invalid @enderror" required>{{ old('message', 'Shalom! Hii ni test SMS kutoka CYDC Activities Database.') }}</textarea>
+                                <textarea id="message" name="message" rows="3" maxlength="480" class="form-control @error('message') is-invalid @enderror" required>{{ old('message', 'Hii ni test SMS kutoka CYDC Activities Database.') }}</textarea>
                                 @error('message')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <div class="form-text">System itaongeza title, salamu ya Shalom!, na signature automatically.</div>
                             </div>
                         </div>
                         <div class="text-end mt-3">
