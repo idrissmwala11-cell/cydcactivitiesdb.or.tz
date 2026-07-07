@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\SmsLog;
 use App\Models\User;
+use App\Services\SmsSender;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -69,7 +70,7 @@ class AdminSmsGatewayTest extends TestCase
 
     public function test_tanzania_phone_numbers_are_normalized_for_sms_gateway(): void
     {
-        $sender = app(\App\Services\SmsSender::class);
+        $sender = app(SmsSender::class);
 
         $this->assertSame('+255614036031', $sender->normalizePhone('0614036031'));
         $this->assertSame('+255614036031', $sender->normalizePhone('+255614036031'));
@@ -78,6 +79,33 @@ class AdminSmsGatewayTest extends TestCase
         $this->assertSame('+255614036031', $sender->normalizePhone('00255614036031'));
         $this->assertSame('+255614036031', $sender->normalizePhone('614036031'));
         $this->assertSame('+255714036031', $sender->normalizePhone('0714 036 031'));
+    }
+
+    public function test_scheduled_sms_reminders_are_personalized(): void
+    {
+        Http::fake([
+            'api.sms-gate.app/*' => Http::response(['id' => 'sms-123'], 202),
+        ]);
+
+        config()->set('sms_gateway.enabled', true);
+        config()->set('sms_gateway.username', 'gateway-user');
+        config()->set('sms_gateway.password', 'gateway-pass');
+        config()->set('sms_gateway.reminders.enabled', true);
+        config()->set('sms_gateway.reminders.sleep_seconds', 0);
+        config()->set('sms_gateway.reminders.messages.morning', 'Good morning {name}. This is a kind reminder to fill in your center data in the CYDC Activities Database system. Have a blessed morning.');
+
+        User::factory()->create([
+            'role' => 'user',
+            'status' => 'approved',
+            'center_id' => 'TZ0827',
+            'phone' => '0673746031',
+        ]);
+
+        $this->artisan('sms:send-reminder morning')
+            ->assertSuccessful();
+
+        Http::assertSent(fn ($request) => str_contains($request['textMessage']['text'], 'Good morning TZ0827.')
+            && str_contains($request['textMessage']['text'], 'kind reminder to fill in your center data'));
     }
 
     public function test_sms_failure_is_logged(): void

@@ -50,7 +50,12 @@ class SendSmsReminder extends Command
             ->orderBy('id')
             ->chunkById($batchSize, function ($users) use ($sender, $message, $type, $sleep, &$sent, &$failed): void {
                 foreach ($users as $user) {
-                    $log = $sender->sendToPhone((string) $user->phone, $message, $type.'_reminder', $user);
+                    $log = $sender->sendToPhone(
+                        (string) $user->phone,
+                        $this->personalizeMessage($message, $user),
+                        $type.'_reminder',
+                        $user
+                    );
 
                     $log->status === 'sent' ? $sent++ : $failed++;
 
@@ -63,5 +68,24 @@ class SendSmsReminder extends Command
         $this->info("SMS reminder completed. Sent: {$sent}. Failed: {$failed}.");
 
         return $failed > 0 ? self::FAILURE : self::SUCCESS;
+    }
+
+    private function personalizeMessage(string $message, User $user): string
+    {
+        $name = trim((string) ($user->name ?? ''));
+
+        if ($name === '') {
+            $name = trim((string) ($user->center_id ?? ''));
+        }
+
+        if ($name === '') {
+            $name = 'dear user';
+        }
+
+        return str_replace(
+            ['{name}', '{center_id}', '{email}'],
+            [$name, (string) ($user->center_id ?? ''), (string) ($user->email ?? '')],
+            $message
+        );
     }
 }

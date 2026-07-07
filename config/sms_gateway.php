@@ -22,9 +22,9 @@ return [
         'sleep_seconds' => (int) env('SMS_REMINDERS_SLEEP_SECONDS', 2),
 
         'messages' => [
-            'morning' => env('SMS_REMINDER_MORNING_MESSAGE', 'Habari za asubuhi. Tafadhali kumbuka kujaza data za kituo chako kwenye CYDC Activities Database leo. Asante.'),
-            'afternoon' => env('SMS_REMINDER_AFTERNOON_MESSAGE', 'Habari za mchana. Tafadhali hakikisha data zote za kituo chako zimejazwa kwenye CYDC Activities Database. Asante.'),
-            'evening' => env('SMS_REMINDER_EVENING_MESSAGE', 'Habari za jioni. Asante kwa huduma ya leo. Tafadhali kamilisha data zilizosalia. Usiku mwema.'),
+            'morning' => env('SMS_REMINDER_MORNING_MESSAGE', 'Good morning {name}. This is a kind reminder to fill in your center data in the CYDC Activities Database system. Have a blessed morning.'),
+            'afternoon' => env('SMS_REMINDER_AFTERNOON_MESSAGE', 'Good afternoon {name}. This is a kind reminder to fill in your center data in the CYDC Activities Database system. Have a blessed afternoon.'),
+            'evening' => env('SMS_REMINDER_EVENING_MESSAGE', 'Good evening {name}. This is a kind reminder to fill in your center data in the CYDC Activities Database system. Have a blessed evening and a good night.'),
         ],
     ],
 ];
