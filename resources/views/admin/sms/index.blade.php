@@ -146,7 +146,7 @@ SMS_REMINDERS_SLEEP_SECONDS=2</code></pre>
                 <tbody>
                     @forelse($latestLogs as $log)
                         <tr>
-                            <td>{{ $log->created_at?->format('M d, Y H:i') }}</td>
+                            <td>{{ $log->created_at?->timezone(config('app.timezone'))->format('M d, Y H:i') }} EAT</td>
                             <td>{{ str_replace('_', ' ', $log->type) }}</td>
                             <td>{{ $log->phone }}</td>
                             <td>{{ $log->user?->display_name ?? '-' }}</td>

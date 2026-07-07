@@ -29,6 +29,11 @@ class AdminSmsGatewayTest extends TestCase
             ->assertSee('SMS Gateway for Android');
     }
 
+    public function test_app_uses_tanzania_timezone_by_default(): void
+    {
+        $this->assertSame('Africa/Nairobi', config('app.timezone'));
+    }
+
     public function test_admin_can_send_test_sms_with_gateway_credentials(): void
     {
         Http::fake([
