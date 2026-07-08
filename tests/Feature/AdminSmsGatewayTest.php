@@ -113,6 +113,23 @@ class AdminSmsGatewayTest extends TestCase
             && str_contains($request['textMessage']['text'], 'kind reminder to fill in your center data'));
     }
 
+    public function test_blocked_numbers_are_not_sent_sms(): void
+    {
+        Http::fake();
+
+        config()->set('sms_gateway.enabled', true);
+        config()->set('sms_gateway.username', 'gateway-user');
+        config()->set('sms_gateway.password', 'gateway-pass');
+        config()->set('sms_gateway.blocked_numbers', ['0747746838', '0687752210']);
+
+        $sender = app(SmsSender::class);
+        $log = $sender->sendToPhone('0747746838', 'Test SMS.', 'test');
+
+        $this->assertSame('blocked', $log->status);
+        $this->assertSame('+255747746838', $log->phone);
+        Http::assertNothingSent();
+    }
+
     public function test_sms_failure_is_logged(): void
     {
         Http::fake([

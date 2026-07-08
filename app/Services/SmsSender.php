@@ -25,6 +25,15 @@ class SmsSender
             'status' => 'pending',
         ]);
 
+        if ($this->isBlockedPhone($normalizedPhone)) {
+            $log->update([
+                'status' => 'blocked',
+                'error_message' => 'Phone number is blocked from SMS reminders and manual SMS.',
+            ]);
+
+            return $log->fresh();
+        }
+
         try {
             $response = $this->client->send([$normalizedPhone], $formattedMessage);
             $payload = $response->json();
@@ -99,6 +108,20 @@ class SmsSender
         }
 
         return $digits === '' ? '' : '+'.$digits;
+    }
+
+    public function isBlockedPhone(string $phone): bool
+    {
+        $normalizedPhone = $this->normalizePhone($phone);
+        $blockedNumbers = config('sms_gateway.blocked_numbers');
+
+        if (! is_array($blockedNumbers) || $blockedNumbers === []) {
+            $blockedNumbers = ['0747746838', '0687752210'];
+        }
+
+        return collect($blockedNumbers)
+            ->map(fn (string $blockedPhone): string => $this->normalizePhone($blockedPhone))
+            ->contains($normalizedPhone);
     }
 
     private function extractMessageId(mixed $payload): ?string

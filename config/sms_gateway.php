@@ -10,6 +10,11 @@ return [
 
     'from_name' => env('SMS_GATEWAY_FROM_NAME', 'CYDC'),
 
+    'blocked_numbers' => array_filter(array_map(
+        'trim',
+        explode(',', filled(env('SMS_BLOCKED_NUMBERS')) ? env('SMS_BLOCKED_NUMBERS') : '0747746838,0687752210')
+    )),
+
     'format' => [
         'title' => env('SMS_MESSAGE_TITLE', 'CHILD AND YOUTH DEVELOPMENT CENTER (CYDC)'),
         'greeting' => env('SMS_MESSAGE_GREETING', 'Shalom!'),
